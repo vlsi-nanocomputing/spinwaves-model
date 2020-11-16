@@ -1,4 +1,4 @@
-function [out_S,out_C] = DC2(in_power)
+function [out_S,out_C] = DC2_ver1(in_power)
 
 % DC2 operates in a nonlinear regime and simultaneously performs XOR and AND logic operations.
 % in_power = [0, 0.5, 1]

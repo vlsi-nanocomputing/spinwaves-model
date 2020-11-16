@@ -1,4 +1,4 @@
-function [out,out_I] = DC1(in_A,in_B,fase_A,fase_B,w)
+function [out,out_I] = DC1_ver1(in_A,in_B)
 % Directional Coupler 1
 
 % in_A and in_B are the input spin waves of the circuit

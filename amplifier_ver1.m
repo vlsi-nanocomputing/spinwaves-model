@@ -1,4 +1,4 @@
-function [output_power] = amplifier(input_power)
+function [output_power] = amplifier_ver1(input_power)
 
 
 

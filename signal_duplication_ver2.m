@@ -1,58 +1,53 @@
 clear all
 close all
 clc
-% This script is used to find the length (Lw) of the regenerator design.
-% At the beginning, you need to set your degrated values. The goal is to
-% attenuate (using the nonlinearity of DC) the degrated '0' towards zero,
-% but keep the level of the '1'. At the end we can use a small amplifier
-% to amplify the '1'.
+% This script is used to design a block that can duplicate a signal into
+% two same ones.
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-degrated_1 = 0.02447;
-degrated_0 = 0.10775;
-h=30;                                    %thinckness (nm)
-w=100;                                    %width(nm)
+%%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+max_ak=0.153;       % max amplitude
+min_ak=0;           % min amplitude
+h=30;               % thinckness  [nm]
+w=100;              % width  [nm]
+gap=50;             % the gap between the coupled waveguides  [nm]
 SW_frequency=2.282; % frequency of the SW, it is constant for all device [GHz]
-gap=10; % the gap between the second coupled waveguides [nm]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+d=w+gap;            % [nm]
+B=0;                % external field [mT]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-d=w+gap;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Ms=1.4e5;                                 %Ms(A/m)
-A=3.5e-12;                                %exchange constant(J/m)
-u=pi*4e-7;                                %permeability of vacuum(H/m)
-r=2.21e5;                                 %gyromagnetic ratio(m/(s.A))
+%%%%%%%%%%%%%%%%%% physical parameters (constants) %%%%%%%%%%%%%%%%%%%%
+Ms=1.4e5;       % Ms  [A/m]
+A=3.5e-12;      % exchange constant  [J/m]
+u=pi*4e-7;      % permeability of vacuum  [H/m]
+r=2.21e5;       % gyromagnetic ratio  [m/(s.A)]
 
 j=1;
 
-B=0; %  field [mT]
-H=B*796;     %external field(A/m), H=B/u0, u0=4*pi*e-7 H/m
+H=B*796;        % external field  [A/m] 
+                % H=B/u0, u0=4*pi*e-7  [H/m]
 
-damping=2e-4;                          %damping
-dH0=0.2*796;                           %inhomogeneous linewidth
+damping=2e-4;   % damping
+dH0=0.2*796;    % inhomogeneous linewidth
     
-Wm=r*Ms*1e-9;                             %unit(GHz)
-Wh=r*H*1e-9;                              %unit(GHz)
-Le=sqrt(2*A/(u*Ms^2))*1e9;                %exchange length
+Wm=r*Ms*1e-9;   % [GHz]
+Wh=r*H*1e-9;    % [GHz]
+Le=sqrt(2*A/(u*Ms^2))*1e9;   % exchange length
 
-weff=inf;                                %effective width extract from Mumax3
+weff=inf;       % effective width extract from Mumax3
 
 k=1*pi/weff;
-Ky=k;                                    %the effective wave number describing SW mode across the width direction
-i1=1;
+Ky=k;           %the effective wave number describing SW mode across the width direction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+%%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 dkx=1e-3;
 kmax=0.04;
 kmin=0.001;
-
-
-
-limitation=0.74;
+limitation=8;
+i1=1;
 
 for kx=dkx:dkx:kmax                       
 
@@ -79,11 +74,12 @@ for kx=dkx:dkx:kmax
     f5=@(ky)(abs(2*sqrt(2./(1+sinc(k*w./pi))).*(ky.*cos(k.*w./2).*sin(ky.*w./2)-k.*(cos(ky.*w./2).*sin(k.*w./2)))./(ky.^2-k.^2))).^2./w.*(2*kx).^2./((2*kx).^2+ky.^2).*(1-(1-exp(-sqrt((2*kx).^2+ky.^2).*h))./(sqrt((2*kx).^2+ky.^2).*h))./(2*pi);
     F2kxxx0(i1) = integral(f5,-limitation,limitation); 
     
-    Tkx(i1) = (Wh-Akx(i1)+Bkx(i1).^2./(2*wm0(i1).^2).*( Wm.*(4*Le.^2.*(kx.^2+Ky.^2)+F2kxxx0(i1))+3*Wh))./(2*pi);  % [GHz]
+    Tkx(i1) = (Wh-Akx(i1)+Bkx(i1).^2./(2*(2*pi*SW_frequency).^2).*( Wm.*(4*Le.^2.*(kx.^2+Ky.^2)+F2kxxx0(i1))+3*Wh))./(2*pi);  % [GHz]
+    
     
     i1=i1+1;
 end
-    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 k1=dkx:dkx:kmax;
 ff0=wm0./(2*pi);
@@ -91,21 +87,21 @@ ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
 
-akx1 = 0.02447;  % SW amplitude of the degraded '0'
+akx1 = min_ak;  % SW amplitude of the degraded '0'
 ff1_s1 = ff1+Tkx.*abs(akx1).^2;
 ff2_s1 = ff2+Tkx.*abs(akx1).^2;
-akx2 = 0.10775;  % SW amplitude of the degraded '1'
+akx2 = max_ak;  % SW amplitude of the degraded '1'
 ff1_s2 = ff1+Tkx.*abs(akx2).^2;
 ff2_s2 = ff2+Tkx.*abs(akx2).^2;
 
 
-ks = interp1(abs(ff1_s1),k1,SW_frequency);
-kas = interp1(abs(ff2_s1),k1,SW_frequency);
-Lc1 = pi/abs(ks-kas);  % [nm]
+ks1 = interp1(abs(ff1_s1),k1,SW_frequency);
+kas1 = interp1(abs(ff2_s1),k1,SW_frequency);
+Lc1 = pi/abs(ks1-kas1);  % [nm]
 
-ks = interp1(abs(ff1_s2),k1,SW_frequency);
-kas = interp1(abs(ff2_s2),k1,SW_frequency);
-Lc2 = pi/abs(ks-kas);  % [nm]
+ks2 = interp1(abs(ff1_s2),k1,SW_frequency);
+kas2 = interp1(abs(ff2_s2),k1,SW_frequency);
+Lc2 = pi/abs(ks2-kas2);  % [nm]
 
 i1=1;
 for Lw=100:1:3000
@@ -117,7 +113,6 @@ for Lw=100:1:3000
     i1=i1+1;
 end
 
-
 Lw=100:1:3000;
 hold on
 plot(Lw,pow_par1,'LineWidth',1.5)
@@ -125,4 +120,3 @@ plot(Lw,pow_par2,'LineWidth',1.5)
 hold off
 xlabel("Lw  [nm]")
 legend('logic 0','logic 1')
-% result: Lw_optimal = 985 nm

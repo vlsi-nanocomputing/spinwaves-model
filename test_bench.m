@@ -3,7 +3,7 @@ clear all
 clc
 
 
-Nbit = 2;
+Nbit = 4;
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
 for i = 0:2^Nbit-1
 for j = 0:2^Nbit-1
@@ -34,7 +34,7 @@ for j = 0:2^Nbit-1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Data-Path %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-    output = RCA_2bit_ver2(in_A,in_B,in_C);
+    output = RCA_Nbit_ver2(in_A,in_B,in_C,Nbit);
     
     % in order to evaluate the error of result bits, in this point we keep
     % the amplitudes, and at the "max error evaluation" section we will
@@ -44,7 +44,7 @@ for j = 0:2^Nbit-1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% reference solution calculation %%%%%%%%%%%%%%%%%%%
-    exact_output(4*i+j+1,:) = RCA_2bit_ver1(A,B,C);
+    exact_output(4*i+j+1,:) = RCA_Nbit_ver1(A,B,C,Nbit);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,7 +87,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%% max error evaluation %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%  error evaluation %%%%%%%%%%%%%%%%%%%%%%%%%%
 normalized_output = (output_sig./0.153).^2*100;
 
 

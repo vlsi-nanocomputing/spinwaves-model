@@ -3,7 +3,7 @@ clear all
 clc
 
 
-Nbit = 4;
+Nbit = 2;
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
 for i = 0:2^Nbit-1
 for j = 0:2^Nbit-1

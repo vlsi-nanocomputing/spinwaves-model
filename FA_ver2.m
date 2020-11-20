@@ -5,6 +5,6 @@ function [S,C] = FA_ver2(A,B,carry_in)
 
 [S,C2] = HA_ver2(S1,carry_in);
 
-C = OR_ver2(C1,C2);
+C = XOR_ver2(C1,C2);
 end
 

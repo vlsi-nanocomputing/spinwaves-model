@@ -11,8 +11,10 @@ clc
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-degrated_1 = 0.02447;
-degrated_0 = 0.10775;
+% degrated_0 = 0.007288833634871;  % C
+% degrated_1 = 0.152018414027034;  % C
+degrated_0 = 0.024470404143517;  % S
+degrated_1 = 0.107753604321917;  % S 
 h=30;                                    %thinckness (nm)
 w=100;                                    %width(nm)
 SW_frequency=2.282; % frequency of the SW, it is constant for all device [GHz]
@@ -46,7 +48,7 @@ k=1*pi/weff;
 Ky=k;                                    %the effective wave number describing SW mode across the width direction
 i1=1;
 
-dkx=1e-3;
+dkx=1e-5;
 kmax=0.04;
 kmin=0.001;
 
@@ -91,10 +93,10 @@ ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
 
-akx1 = 0.02447;  % SW amplitude of the degraded '0'
+akx1 = degrated_0;  % SW amplitude of the degraded '0'
 ff1_s1 = ff1+Tkx.*abs(akx1).^2;
 ff2_s1 = ff2+Tkx.*abs(akx1).^2;
-akx2 = 0.10775;  % SW amplitude of the degraded '1'
+akx2 = degrated_1;  % SW amplitude of the degraded '1'
 ff1_s2 = ff1+Tkx.*abs(akx2).^2;
 ff2_s2 = ff2+Tkx.*abs(akx2).^2;
 
@@ -108,7 +110,7 @@ kas = interp1(abs(ff2_s2),k1,SW_frequency);
 Lc2 = pi/abs(ks-kas);  % [nm]
 
 i1=1;
-for Lw=100:1:3000
+for Lw=100:0.1:3000
 
     pow_par1(i1) = cos(pi*Lw/(2*Lc1))^2;
     
@@ -118,7 +120,7 @@ for Lw=100:1:3000
 end
 
 
-Lw=100:1:3000;
+Lw=100:0.1:3000;
 hold on
 plot(Lw,pow_par1,'LineWidth',1.5)
 plot(Lw,pow_par2,'LineWidth',1.5)

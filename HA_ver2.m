@@ -7,8 +7,9 @@ in_B = phase_shifter_ver2(in_B,pi/2);
 
 
 % out_S = amplifier_ver2(out_S,2.02); 
-out_S = regenerator_ver2(out_S);
+out_S = regenerator_S_ver2(out_S);
 out_C(1) = out_C(1)/sqrt(2); % damping  
+out_C = regenerator_C_ver2(out_C);
 
 end
 

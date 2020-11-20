@@ -43,7 +43,7 @@ Ky=k;           %the effective wave number describing SW mode across the width d
 
 %%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 dkx=1e-3;
-kmax=0.04;
+kmax=0.025;
 kmin=0.001;
 i1=1;
 limitation=0.74;

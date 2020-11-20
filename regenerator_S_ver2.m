@@ -1,7 +1,9 @@
-function [out_signal] = regenerator_ver2(in_signal)
+function [out_signal] = regenerator_S_ver2(in_signal)
 
-% This function describes the behavior of the regenerator (DC+amplifier).
-% This block regenerates the correct SW amplitude. 
+% This function describes the behavior of the regenerator (DC+amplifier)
+% for the sum bit output.
+% This block regenerates the correct SW amplitude according to the logic
+% value.
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
@@ -9,10 +11,11 @@ function [out_signal] = regenerator_ver2(in_signal)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain=2.016;     % gain of the VCMA amplifier
+% gain=2.0229;     % gain of the VCMA amplifier
+gain=2.02;
 h=30;           % thinckness  [nm]
 w=100;          % width  [nm]
-Lw=985;         % length of the coupling region  [nm]
+Lw=986;         % length of the coupling region  [nm]
 gap2=10;        % the gap between the second coupled waveguides [nm]
 d=w+gap2;       % [nm]
 B=0;            % external field [mT]

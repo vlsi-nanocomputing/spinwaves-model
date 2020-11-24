@@ -1,5 +1,5 @@
 function [X] = RCA_Nbit_ver2(A,B,carry,Nbit)
-
+% N-bit ripple carry adder
 X = zeros(Nbit+1,3);
 
 for j=0:Nbit-1

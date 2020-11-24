@@ -44,8 +44,9 @@ for j = 0:2^Nbit-1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% reference solution calculation %%%%%%%%%%%%%%%%%%%
+    cd ../ver1
     exact_output(4*i+j+1,:) = RCA_Nbit_ver1(A,B,C,Nbit);
-
+    cd ../ver2
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -88,7 +89,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%  error evaluation %%%%%%%%%%%%%%%%%%%%%%%%%%
-normalized_output = (output_sig./0.153).^2*100;
+normalized_output = normalization(output_sig);
 
 
 

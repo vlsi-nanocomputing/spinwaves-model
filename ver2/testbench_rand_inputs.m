@@ -4,14 +4,14 @@ clc
 
 
 Nbit = 8;
-N_data = 1; % number of simulations
+N_simulation = 1; % number of simulations
 
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
-A = zeros(N_data,Nbit);
-B = zeros(N_data,Nbit);
-C = zeros(N_data,1);
+A = zeros(N_simulation,Nbit);
+B = zeros(N_simulation,Nbit);
+C = zeros(N_simulation,1);
 
-for i = 1:N_data
+for i = 1:N_simulation
     A_dec = randi([0,2^Nbit-1],1,1);
     B_dec = randi([0,2^Nbit-1],1,1);
 
@@ -75,7 +75,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% error report %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if correct == 0
     m = 1;
-    for n=1:N_data % search of the errors
+    for n=1:N_simulation % search of the errors
         if exact_output(n,:) == output_bin(n,:) 
             % there is some problem with ~=
         else

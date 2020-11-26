@@ -3,8 +3,8 @@ clear all
 clc
 
 
-Nbit = 8;
-N_simulation = 1; % number of simulations
+Nbit = 4;
+N_simulation = 50; % number of simulations
 
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
 A = zeros(N_simulation,Nbit);
@@ -37,7 +37,8 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Data-Path %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %     output = RCA_Nbit_ver2(in_A,in_B,in_C,Nbit);
-    output = carry_skip_adder_ver2(in_A,in_B,in_C,Nbit);
+%     output = carry_skip_adder_ver2(in_A,in_B,in_C,Nbit);
+	output = CLA_4bit_ver2(in_A,in_B,in_C);
 
     % in order to evaluate the error of result bits, in this point we keep
     % the amplitudes, and at the "max error evaluation" section we will
@@ -63,10 +64,10 @@ end
 
 correct = 0;
 if output_bin == exact_output  % comparison
-    display("the simulation result is correct")
+    display('the simulation result is correct')
     correct = 1;
 else
-    display("the simulation result is not correct")
+    display('the simulation result is not correct')
 end                  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

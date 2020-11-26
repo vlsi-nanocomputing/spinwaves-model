@@ -10,7 +10,7 @@ for j=1:N
         case 1
             out_signal(j,1) = 0.153;
         otherwise
-            display("Error: check your digital inputs")
+            display('Error: check your digital inputs')
             out_signal(j,1) = inf;
     end
 end

@@ -13,7 +13,7 @@ switch in_power
         out_S = 0;
         out_C = 0;
     otherwise
-        disp("unpredicted case, check your DC2 input!")
+        disp('unpredicted case, check your DC2 input!')
         out_S = -10;
         out_C = -10;
 end

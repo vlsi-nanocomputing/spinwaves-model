@@ -39,6 +39,6 @@ if rem(Nbit,4) == 0
     end
     X(1,:) = carry;
 else
-    display("please check your Nbit")
+    display('please check your Nbit')
 end
 

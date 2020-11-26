@@ -61,10 +61,10 @@ end
 
 correct = 0;
 if output_bin == exact_output  % comparison
-    display("the simulation result is correct")
+    display('the simulation result is correct')
     correct = 1;
 else
-    display("the simulation result is not correct")
+    display('the simulation result is not correct')
 end                  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,11 +1,14 @@
 function [X] = CLA_4bit_ver2(A,B,carry)
 
+cd common
+SW_parameters % script
+cd ..
 
-X = zeros(5,3);
-p_i = zeros(4,3);
-gi = zeros(4,3);
-ci = zeros(4,3);
-ai_xor_bi = zeros(4,3);
+X = zeros(5,N_inf);
+p_i = zeros(4,N_inf);
+gi = zeros(4,N_inf);
+ci = zeros(4,N_inf);
+ai_xor_bi = zeros(4,N_inf);
 
 
 

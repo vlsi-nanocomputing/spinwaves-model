@@ -1,6 +1,11 @@
 function [X] = RCA_Nbit_ver2(A,B,carry,Nbit)
 % N-bit ripple carry adder
-X = zeros(Nbit+1,3);
+
+cd common
+SW_parameters % script
+cd ..
+
+X = zeros(Nbit+1,N_inf);
 
 for j=0:Nbit-1
     [X(Nbit-j+1,:),carry] = FA_ver2( A(Nbit-j,:), B(Nbit-j,:), carry);

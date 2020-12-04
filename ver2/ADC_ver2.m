@@ -1,6 +1,8 @@
 function [out_value] = ADC_ver2(in_signal)
-SW_amplitude = 0.153;
 
+cd common
+SW_parameters
+cd ..
 
 
 N = size(in_signal);

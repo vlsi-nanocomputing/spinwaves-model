@@ -4,7 +4,7 @@ clc
 
 
 Nbit = 32;
-N_simulation = 50; % number of simulations
+N_simulation = 2; % number of simulations
 err_rep_file = 'RCA_32bit_50sim.txt';
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
 A = zeros(N_simulation,Nbit);
@@ -94,20 +94,20 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%  error evaluation and report  %%%%%%%%%%%%%%%%%%
 normalized_output = normalization(output_sig);
 
-f = fopen(err_rep_file,'w');
-for i= 1:N_simulation
-    for j = 1:Nbit+1
-        t = normalized_output(i,j);
-        if t >= 100
-            fprintf(f,'%3.4f  ',t);
-        elseif t >= 10
-            fprintf(f,'%3.4f   ',t);
-        else
-            fprintf(f,'%3.4f    ',t);
-        end
-    end
-    fprintf(f,'\n\n');
-end
-
+% f = fopen(err_rep_file,'w');
+% for i= 1:N_simulation
+%     for j = 1:Nbit+1
+%         t = normalized_output(i,j);
+%         if t >= 100
+%             fprintf(f,'%3.4f  ',t);
+%         elseif t >= 10
+%             fprintf(f,'%3.4f   ',t);
+%         else
+%             fprintf(f,'%3.4f    ',t);
+%         end
+%     end
+%     fprintf(f,'\n\n');
+% end
+% fclose(f);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

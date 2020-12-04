@@ -13,7 +13,7 @@ PORT
  );
 END RCA_nbit;
 
-ARCHITECTURE Behavior OF RCA_nbit IS
+ARCHITECTURE structural OF RCA_nbit IS
 
 COMPONENT full_adder IS
 PORT
@@ -41,4 +41,4 @@ S(N) <= carry(N);
 
 
 
-END Behavior;
+END structural;

@@ -13,7 +13,7 @@ PORT
  );
 END full_adder;
 
-ARCHITECTURE Behavior OF full_adder IS
+ARCHITECTURE structural OF full_adder IS
 
 COMPONENT half_adder IS
 PORT
@@ -40,4 +40,4 @@ PORT MAP(ha1_s, carry_in, S, ha2_c);
 C <= ha1_c OR ha2_c;
 
 
-END Behavior;
+END structural;

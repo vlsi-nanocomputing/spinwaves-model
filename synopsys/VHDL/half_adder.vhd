@@ -12,10 +12,10 @@ PORT
  );
 END half_adder;
 
-ARCHITECTURE Behavior OF half_adder IS
+ARCHITECTURE structural OF half_adder IS
 BEGIN
 
 	S <= A XOR B;
 	C <= A AND B;
 
-END Behavior;
+END structural;

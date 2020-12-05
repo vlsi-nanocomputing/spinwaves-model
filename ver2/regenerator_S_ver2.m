@@ -52,8 +52,15 @@ pow_par = cos(pi*Lw/(2*Lc))^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% outputs generation %%%%%%%%%%%%%%%%%%%%%%%%%%
-out_signal(2) = in_signal(2);
-out_signal(3) = in_signal(3);
+out_signal = in_signal; % to have the same frequency and phase
+
+% propagation delay
+cd common
+SW_parameters % script
+cd ..
+out_signal(4) = in_signal(4) + tpd_regS; 
+
+% power splitting and amplification
 out_signal(1) = in_signal(1) * sqrt(pow_par);
 out_signal = amplifier_ver2(out_signal,gain);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

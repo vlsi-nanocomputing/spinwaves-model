@@ -84,14 +84,14 @@ else
     end
 end
 
+% propagation delay
+cd common
+SW_parameters % script
+cd ..
+t_in = max(in_A(4), in_B(4));
+out(4) = t_in + tpd_DC1;
+out_I(4) = t_in + tpd_DC1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
 
 
 

@@ -4,7 +4,7 @@ clc
 
 
 Nbit = 32;
-N_simulation = 2; % number of simulations
+N_simulation = 1; % number of simulations
 err_rep_file = 'RCA_32bit_50sim.txt';
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
 A = zeros(N_simulation,Nbit);

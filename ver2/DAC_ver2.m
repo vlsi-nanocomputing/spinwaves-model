@@ -1,4 +1,5 @@
 function [out_signal] = DAC(in_value)
+% Spin-wave generator (antenna)
 
 cd common
 SW_parameters % script
@@ -20,7 +21,7 @@ for j=1:N
 end
 out_signal(:,2) = SW_frequency;
 out_signal(:,3) = 0;
-
+out_signal(:,4) = 0;
 
 end
 

@@ -6,5 +6,5 @@ cd common
 SW_parameters % script
 cd ..
 
-norm_powers = (in_signals/SW_amplitude).^2*100;
+norm_powers = (in_signals/SW_amplitude).^2*100;  %  (%)
 

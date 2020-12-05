@@ -6,7 +6,7 @@ cd common
 SW_parameters % script
 cd ..
 
-in_signal2 = [0, SW_frequency, pi/2];
+in_signal2 = phase_shifter_ver2(DAC_ver2(0),pi/2);
 gain1 = 1/0.500249501323049;
 gain2 = 1/(1-0.500249501323049);
 

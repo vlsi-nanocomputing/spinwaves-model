@@ -54,6 +54,12 @@ out_C(3) = in_signal(3);
 
 out_S(1) = in_signal(1) * sqrt(DC2_pow_par);
 out_C(1) = in_signal(1) * sqrt(1-DC2_pow_par);
+
+cd common
+SW_parameters % script
+cd ..
+out_S(4) = in_signal(4) + tpd_DC2;
+out_C(4) = in_signal(4) + tpd_DC2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end

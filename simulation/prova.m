@@ -1,6 +1,5 @@
 
 
-
 A = 0;
 B = 1;
 in_A = DAC_ver2(A);

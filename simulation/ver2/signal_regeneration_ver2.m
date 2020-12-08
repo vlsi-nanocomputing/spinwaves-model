@@ -11,10 +11,10 @@ clc
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% degrated_0 = 0.007288833634871;  % C
-% degrated_1 = 0.152018414027034;  % C
-degrated_0 = 0.024470404143517;  % S
-degrated_1 = 0.107753604321917;  % S 
+degrated_0 = 0.007288833634871;  % C
+degrated_1 = 0.152018414027034;  % C
+% degrated_0 = 0.024470404143517;  % S
+% degrated_1 = 0.107753604321917;  % S 
 h=30;                                    %thinckness (nm)
 w=100;                                    %width(nm)
 SW_frequency=2.282; % frequency of the SW, it is constant for all device [GHz]
@@ -48,7 +48,7 @@ k=1*pi/weff;
 Ky=k;                                    %the effective wave number describing SW mode across the width direction
 i1=1;
 
-dkx=1e-5;
+dkx=1e-4;
 kmax=0.04;
 kmin=0.001;
 
@@ -110,7 +110,7 @@ kas = interp1(abs(ff2_s2),k1,SW_frequency);
 Lc2 = pi/abs(ks-kas);  % [nm]
 
 i1=1;
-for Lw=100:0.1:3000
+for Lw=100:1:3000
 
     pow_par1(i1) = cos(pi*Lw/(2*Lc1))^2;
     
@@ -120,11 +120,11 @@ for Lw=100:0.1:3000
 end
 
 
-Lw=100:0.1:3000;
+Lw=100:1:3000;
 hold on
 plot(Lw,pow_par1,'LineWidth',1.5)
 plot(Lw,pow_par2,'LineWidth',1.5)
 hold off
 xlabel("Lw  [nm]")
 legend('logic 0','logic 1')
-% result: Lw_optimal = 985 nm
+% result: Lw_optimal = 9851111111111111111111111111 nm

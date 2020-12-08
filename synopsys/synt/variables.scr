@@ -1,6 +1,6 @@
 variable top_entity "RCA_nbit"
 variable period 3
-variable ext _3
+variable ext _32bit
 variable testbench "RCA_nbit"
 
 # output directory of syntesys file

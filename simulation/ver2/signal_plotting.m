@@ -4,6 +4,9 @@ N_signal = size(in_signal);
 N_signal = N_signal(1);
 t_max = max(in_signal(:,4)) + 3/in_signal(1,2); % ns
 
+cd common
+SW_parameters
+cd ..
 
 hold on
 for i=1:N_signal
@@ -20,14 +23,12 @@ for i=1:N_signal
     y2 = a0*sin(2*pi*f*(t2-tpd)+phase);
 
     t = [t1 t2];
-    y = [y1 y2];
+    y = [y1 y2]-(i-1)*2.2*SW_amplitude;  % offset to distinguish the different signals
 
     plot(t,y)
-    
-    
 end
 hold off
 xlabel('time [ns]','FontSize',20)
-
+axis([0, t_max, -2.2*SW_amplitude*N_signal+1.1*SW_amplitude, 1.1*SW_amplitude])
 
 end

@@ -4,9 +4,9 @@ clc
 
 tic
 
-Nbit = 48;
+Nbit = 32;
 N_simulation = 1; % number of simulations
-err_rep_file = 'CSA_48bit_senza_regC_566.txt';
+% err_rep_file = 'CSA_48bit_senza_regC_566.txt';
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
 A = zeros(N_simulation,Nbit);
 B = zeros(N_simulation,Nbit);
@@ -37,8 +37,8 @@ for i = 1:N_simulation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Data-Path %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%     output = RCA_Nbit_ver2(in_A,in_B,in_C,Nbit);
-     output = carry_skip_adder_ver2(in_A,in_B,in_C,Nbit);
+    output = RCA_Nbit_ver2(in_A,in_B,in_C,Nbit);
+%      output = carry_skip_adder_ver2(in_A,in_B,in_C,Nbit);
 %  	output = CLA_4bit_ver2(in_A,in_B,in_C);
 
     % in order to evaluate the error of result bits, in this point we keep
@@ -95,21 +95,21 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%  error evaluation and report  %%%%%%%%%%%%%%%%%%
 normalized_output = normalization(output_sig);
 
-f = fopen(err_rep_file,'w');
-for i= 1:N_simulation
-    for j = 1:Nbit+1
-        t = normalized_output(i,j);
-        if t >= 100
-            fprintf(f,'%3.4f  ',t);
-        elseif t >= 10
-            fprintf(f,'%3.4f   ',t);
-        else
-            fprintf(f,'%3.4f    ',t);
-        end
-    end
-    fprintf(f,'\n\n');
-end
-fclose(f);
+% f = fopen(err_rep_file,'w');
+% for i= 1:N_simulation
+%     for j = 1:Nbit+1
+%         t = normalized_output(i,j);
+%         if t >= 100
+%             fprintf(f,'%3.4f  ',t);
+%         elseif t >= 10
+%             fprintf(f,'%3.4f   ',t);
+%         else
+%             fprintf(f,'%3.4f    ',t);
+%         end
+%     end
+%     fprintf(f,'\n\n');
+% end
+% fclose(f);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 toc

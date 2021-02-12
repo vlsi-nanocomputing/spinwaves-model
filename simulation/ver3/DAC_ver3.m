@@ -1,4 +1,4 @@
-function [out_signal] = DAC(in_value)
+function [out_signal] = DAC_ver3(in_value)
 % Spin-wave generator (antenna)
 
 cd common

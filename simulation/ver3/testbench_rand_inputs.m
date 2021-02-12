@@ -29,9 +29,9 @@ for i = 1:N_simulation
 
 %%%%%%%%%%%%%%%%%%% digital-analog conversion %%%%%%%%%%%%%%%%%%%%%%%
 
-    in_A = DAC_ver2(A(i,:));
-    in_B = DAC_ver2(B(i,:));
-    in_C = DAC_ver2(C(i,:));
+    in_A = DAC_ver3(A(i,:));
+    in_B = DAC_ver3(B(i,:));
+    in_C = DAC_ver3(C(i,:));
 
     % in_D = DAC_ver2(D);
     % in_E = DAC_ver2(E);
@@ -40,7 +40,7 @@ for i = 1:N_simulation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Data-Path %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    output = RCA_Nbit_ver2(in_A,in_B,in_C,Nbit);
+    output = RCA_Nbit_ver3(in_A,in_B,in_C,Nbit);
 %      output = carry_skip_adder_ver2(in_A,in_B,in_C,Nbit);
 %  	output = CLA_4bit_ver2(in_A,in_B,in_C);
 
@@ -54,14 +54,14 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%% reference solution calculation %%%%%%%%%%%%%%%%%%%
     cd ../ver1
     exact_output(i,:) = RCA_Nbit_ver1(A(i,:),B(i,:),C(i,:),Nbit);
-    cd ../ver2
+    cd ../ver3
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% outputs comparison %%%%%%%%%%%%%%%%%%%%%%%
     % analog to digital conversion of the simulation solution
-    output_bin(i,:) = ADC_ver2(output);      
+    output_bin(i,:) = ADC_ver3(output);      
 
 end
 

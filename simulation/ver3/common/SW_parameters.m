@@ -2,11 +2,18 @@
 % this script contains all information about the spin-wave
 
 SW_frequency = 2.282;  % GHz
-SW_amplitude = 0.153;  % dimensionless
-% SW_amplitude = 6.933e-3;
+% SW_amplitude = 0.0781;  % dimensionless
+SW_amplitude = 0.0779;  % dimensionless
+%%%%%%%%%%%%%%%%%%%%%%%% 2mT=0.051016316539556;
+%%%%%%%%%%%%%%%%%%%%%%%% 4mT=0.102233737482546;
+
+
+
 x_freepath = 8.58e3;   % decay length [nm], calculated from 
                        % Single_dispersioncurve script 
-
+limitation1 = 0.53;
+limitation2 = 0.63;
+dx = 50; % nm
 
 N_inf = 4;  % number of information to define a spin-wave vector
             % example: [amplitude, frequency, phase, delay]

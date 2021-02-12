@@ -1,4 +1,4 @@
-function [output_power] = amplifier_ver1(input_power)
+function [output_power] = amplifier_ver1(input_power,gain)
 
 
 
@@ -8,7 +8,7 @@ function [output_power] = amplifier_ver1(input_power)
 % the amplifier is higher than 2. In these simplified models, the
 % waveguide is lossless, so the gain=2 that compensate only the energy
 % splitting
-output_power = input_power * 2;
+output_power = input_power * gain;
 
 end
 

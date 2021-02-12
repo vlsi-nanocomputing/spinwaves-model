@@ -1,29 +1,18 @@
-clear all
-close all
-clc
-% This script is used to find the length (Lw) of the regenerator design.
-% At the beginning, you need to set your degrated values. The goal is to
-% attenuate (using the nonlinearity of DC) the degrated '0' towards zero,
-% but keep the level of the '1'. At the end we can use a small amplifier
-% to amplify the '1'.
-
-
-
-
+% clear all
+% close all
+% clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% degrated_0 = 0.007288833634871;  % C10?
-% degrated_1 = 0.152018414027034;  % C11
-degrated_0 = 0.024470404143517;  % S11
-degrated_1 = 0.107753604321917;  % S10 
-S01 = 0.107668032544554; %
 h=30;                                    %thinckness (nm)
 w=100;                                    %width(nm)
 SW_frequency=2.282; % frequency of the SW, it is constant for all device [GHz]
-gap=10; % the gap between the second coupled waveguides [nm]
+L2=3000; %nm
+gap2=10; % the gap between the second coupled waveguides [nm]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% akx = 0.013831560061652
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-d=w+gap;
+d=w+gap2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Ms=1.4e5;                                 %Ms(A/m)
@@ -50,7 +39,7 @@ Ky=k;                                    %the effective wave number describing S
 i1=1;
 
 dkx=1e-4;
-kmax=0.04;
+kmax=0.025;
 kmin=0.001;
 
 
@@ -76,66 +65,67 @@ for kx=dkx:dkx:kmax
     
     
     % nonlinear shift coefficient Tkx calculation
-    Akx(i1) = Wh+Wm/2.*(2*(Le.^2).*(kx.^2+Ky.^2)+Fkxyy0(i1)+Fkxzz0(i1));  % [rad/ns]
-    Bkx(i1) = Wm/2.*(Fkxyy0(i1)-Fkxzz0(i1));  % [rad/ns]
-
-    f5=@(ky)(abs(2*sqrt(2./(1+sinc(k*w./pi))).*(ky.*cos(k.*w./2).*sin(ky.*w./2)-k.*(cos(ky.*w./2).*sin(k.*w./2)))./(ky.^2-k.^2))).^2./w.*(2*kx).^2./((2*kx).^2+ky.^2).*(1-(1-exp(-sqrt((2*kx).^2+ky.^2).*h))./(sqrt((2*kx).^2+ky.^2).*h))./(2*pi);
-    F2kxxx0(i1) = integral(f5,-limitation,limitation); 
-    
-    Tkx(i1) = (Wh-Akx(i1)+Bkx(i1).^2./(2*wm0(i1).^2).*( Wm.*(4*Le.^2.*(kx.^2+Ky.^2)+F2kxxx0(i1))+3*Wh))./(2*pi);  % [GHz]
-    
+%     Akx(i1) = Wh+Wm/2.*(2*(Le.^2).*(kx.^2+Ky.^2)+Fkxyy0(i1)+Fkxzz0(i1));  % [rad/ns]
+%     Bkx(i1) = Wm/2.*(Fkxyy0(i1)-Fkxzz0(i1));  % [rad/ns]
+% 
+%     f5=@(ky)(abs(2*sqrt(2./(1+sinc(k*w./pi))).*(ky.*cos(k.*w./2).*sin(ky.*w./2)-k.*(cos(ky.*w./2).*sin(k.*w./2)))./(ky.^2-k.^2))).^2./w.*(2*kx).^2./((2*kx).^2+ky.^2).*(1-(1-exp(-sqrt((2*kx).^2+ky.^2).*h))./(sqrt((2*kx).^2+ky.^2).*h))./(2*pi);
+%     F2kxxx0(i1) = integral(f5,-limitation,limitation); 
+%     
+%     DC2_Tkx(i1) = (Wh-Akx(i1)+Bkx(i1).^2./(2*wm0(i1).^2).*( Wm.*(4*Le.^2.*(kx.^2+Ky.^2)+F2kxxx0(i1))+3*Wh))./(2*pi);  % [GHz]
+%     
     i1=i1+1;
 end
     
 
 k1=dkx:dkx:kmax;
-ff0=wm0./(2*pi);
-ff1=wm1./(2*pi);
-ff2=wm2./(2*pi);
+DC2_ff0=wm0./(2*pi);
+DC2_ff1=wm1./(2*pi);
+DC2_ff2=wm2./(2*pi);
 
-
-akx1 = degrated_0;  % SW amplitude of the degraded '0'
-ff1_s1 = ff1+Tkx.*abs(akx1).^2;
-ff2_s1 = ff2+Tkx.*abs(akx1).^2;
-akx2 = degrated_1;  % SW amplitude of the degraded '1'
-ff1_s2 = ff1+Tkx.*abs(akx2).^2;
-ff2_s2 = ff2+Tkx.*abs(akx2).^2;
-akx3 = S01;
-ff1_s3 = ff1+Tkx.*abs(akx3).^2;
-ff2_s3 = ff2+Tkx.*abs(akx3).^2;
-
-ks = interp1(abs(ff1_s1),k1,SW_frequency);
-kas = interp1(abs(ff2_s1),k1,SW_frequency);
-Lc1 = pi/abs(ks-kas);  % [nm]
-
-ks = interp1(abs(ff1_s2),k1,SW_frequency);
-kas = interp1(abs(ff2_s2),k1,SW_frequency);
-Lc2 = pi/abs(ks-kas);  % [nm]
-
-ks = interp1(abs(ff1_s3),k1,SW_frequency);
-kas = interp1(abs(ff2_s3),k1,SW_frequency);
-Lc3 = pi/abs(ks-kas);  % [nm]
-
-i1=1;
-for Lw=100:1:3000
-
-    pow_par1(i1) = cos(pi*Lw/(2*Lc1))^2;
-    
-    pow_par2(i1) = cos(pi*Lw/(2*Lc2))^2;
-    
-    pow_par3(i1) = cos(pi*Lw/(2*Lc3))^2;
-    
-    i1=i1+1;
-end
-
-
-Lw=100:1:3000;
+% 
+% DC2_akx = 0.08053;
+% akx_vec = 2*0.0138e-3/sqrt(2);
+% DC2_ff1_s = DC2_ff1+DC2_Tkx.*abs(akx_vec).^2;
+% DC2_ff2_s = DC2_ff2+DC2_Tkx.*abs(akx_vec).^2;
+%  
+% % %  
+a1 = 0.0138e-3/sqrt(2);
+a2 = 2*0.0138e-3/sqrt(2);
+ff1_s_a1 = DC2_ff1+DC2_Tkx.*abs(a1).^2;
+ff2_s_a1 = DC2_ff2+DC2_Tkx.*abs(a1).^2;
+ff1_s_a2 = DC2_ff1+DC2_Tkx.*abs(a2).^2;
+ff2_s_a2 = DC2_ff2+DC2_Tkx.*abs(a2).^2;
+figure
 hold on
-plot(Lw,pow_par1,'LineWidth',1.5)
-plot(Lw,pow_par2,'LineWidth',1.5)
-plot(Lw,pow_par3,'LineWidth',1.5)
+plot(k1,ff1_s_a1)
+plot(k1,ff2_s_a1)
+plot(k1,ff1_s_a2)  % si sovrappone con ff1_s_a1 in quanto l'errore è dell'ordine del e-9
+plot(k1,ff2_s_a2)
 hold off
-xlabel('L_w_3  [nm]','FontSize',20)
-legend('S11','S10','S01')
-title('Normalized output power','FontSize',15)
-% result: Lw_optimal = 986 nm for regenerator S
+legend('ff1a1','ff2a1','ff1a2','ff2a2')
+
+
+
+points=size(DC2_ff1);
+ points=points(2);
+ figure
+ hold on
+%  plot(k1,DC2_ff0)
+ plot(k1,DC2_ff1,'LineWidth',2)
+ plot(k1,DC2_ff2,'LineWidth',2)
+%  plot(k1,DC2_ff1_s)
+%  plot(k1,DC2_ff2_s)
+ plot(k1,SW_frequency*ones(1,points),'LineWidth',2)
+ grid on
+% %  legend('DC2 symmetric mode [GHz]','Antisymmetric mode [GHz]','Shifted symmetric mode [GHz]','Shifted antisymmetric mode [GHz]','SW frequency (2.282 GHz)')
+ legend('Symmetric mode [GHz]','Antisymmetric mode [GHz]','SW frequency (2.282 GHz)')
+ hold off
+ xlabel('Wavenumber k [rad/nm]','FontSize',20)
+%  axis([0 0.025 1.8 2.4])
+
+ 
+DC2_ks = interp1(abs(DC2_ff1_s),k1,SW_frequency);
+DC2_kas = interp1(abs(DC2_ff2_s),k1,SW_frequency);
+DC2_Lc = pi/abs(DC2_ks-DC2_kas);  % [nm]
+DC2_pow_par = cos(pi*L2/(2*DC2_Lc))^2;
+

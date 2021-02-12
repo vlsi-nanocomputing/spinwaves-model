@@ -7,57 +7,143 @@ function [out,out_I] = DC1_ver3(in_A,in_B)
 % 2) phase(B) - phase(A) = pi/2
 % 3) the input and output variables are vectors, and they are composed in
 %    the following way:
-%    [amplitude(dimensionless), frequency [GHz], phase [rad]]
+%    [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
-
-
+cd common
+    SW_parameters
+cd ..
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=30;           % thinckness  [nm]
 w=100;          % width  [nm]
 L1=370;         % length of the coupling region  [nm]
 L_DC1=L1;       % length of the DC1 [nm], we currently use the same value of L1
 gap1=50;        % the gap between the coupled waveguides  [nm]
-d=w+gap1;       % [nm]
+% d=w+gap1;       % [nm]
 B=0;            % external field [mT]
+L_region1=585/4;  % [nm]
+L_region3=585/4;  % [nm]
+gap_region1=150; % 100+50 [nm]
+gap_region3=150;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
+ak_A = in_A(1);
+ak_B = in_B(1);
 dkx=1e-3;
 kmax=0.025;
-limitation=8;
+k1=dkx:dkx:kmax;
+delta_phase = 0;
 
-DC1_design = [h, w, d, B];
-cd common
-[wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation, DC1_design);
-cd ..
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%% DC1 operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-k1=dkx:dkx:kmax;
+                     %%%%%%%%%%%% region 1 %%%%%%%%%%%%
+dl = dx/2;
+dgap = -dl*sin(20*2*pi/360)*2;
+%gap: from 550nm(100+450) to 150nm(100+50)
+N_cycle = ceil(L_region1/dl);
+for i1=1:1:N_cycle
+    if i1 == N_cycle
+       dl = L_region1 - (N_cycle-1)*dl;
+       d = w + gap1;
+    else
+       d = w + gap_region1 + i1*dgap;
+    end
+    
+    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_B = ak_B*exp(-dl/x_freepath);
+    DC1_design = [h, w, d, B];
+    cd common
+    [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation1, DC1_design);
+    cd ..
+    
+    DC1_ff1=wm1./(2*pi);
+    DC1_ff2=wm2./(2*pi);
+    
+    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ks = interp1(abs(DC1_ff1_s),k1,SW_frequency);  % rad/nm
+    DC1_kas = interp1(abs(DC1_ff2_s),k1,SW_frequency); % rad/nm
+    delta_k = abs(DC1_ks-DC1_kas); % rad/nm
+    delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
+end
+
+
+            %%%%%%%%%%%%% region 2 %%%%%%%%%%%%%%  
+d = w+gap1; 
+DC1_design = [h, w, d, B];
+cd common
+[wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation1, DC1_design);
+cd ..
 DC1_ff1=wm1./(2*pi);
 DC1_ff2=wm2./(2*pi);
 
-% nonlinear shift due to the input power
-DC1_akx = in_A(1);
-DC1_ff1_s = DC1_ff1 + DC1_Tkx.*abs(DC1_akx).^2;
-DC1_ff2_s = DC1_ff2 + DC1_Tkx.*abs(DC1_akx).^2;
+dl = dx;
+N_cycle = ceil(L1/dl);
+for i1=1:1:N_cycle
+    if i1 == N_cycle 
+        dl = L1 - (N_cycle-1)*dl;
+    end
+    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_B = ak_B*exp(-dl/x_freepath);
+    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ks = interp1(abs(DC1_ff1_s),k1,SW_frequency);  % rad/nm
+    DC1_kas = interp1(abs(DC1_ff2_s),k1,SW_frequency); % rad/nm
+    delta_k = abs(DC1_ks-DC1_kas); % rad/nm
+    delta_phase = delta_phase + delta_k*dl; 
+end
 
-DC1_ks = interp1(real(DC1_ff1),k1,in_A(2));   % [rad/nm]
-DC1_kas = interp1(real(DC1_ff2),k1,in_A(2));  % [rad/nm]
-DC1_Lc = pi/abs(DC1_ks-DC1_kas);         % [nm]
-DC1_pow_par = cos(pi*L1/(2*DC1_Lc))^2;  %  [%]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+             %%%%%%%%%%%%%%%%%%% region 3 %%%%%%%%%%%%%%%%%
+dl = dx/2;
+dgap = dl*sin(20*2*pi/360)*2;
+%gap: from 150nm(100+50) to 550nm(450+100)
+N_cycle = ceil(L_region3/dl);
+for i1=1:1:N_cycle
+    if i1 == N_cycle
+        dl = L_region3 - (N_cycle-1)*dl;
+        d = d + dl*sin(20*2*pi/360)*2;
+    else
+        d = w + gap1 + i1*dgap;
+    end
+    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_B = ak_B*exp(-dl/x_freepath);
+    DC1_design = [h, w, d, B];
+    cd common
+    [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation1, DC1_design);
+    cd ..
+    
+    DC1_ff1=wm1./(2*pi);
+    DC1_ff2=wm2./(2*pi);
+    
+    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ks = interp1(abs(DC1_ff1_s),k1,SW_frequency);  % rad/nm
+    DC1_kas = interp1(abs(DC1_ff2_s),k1,SW_frequency); % rad/nm
+    delta_k = abs(DC1_ks-DC1_kas); % rad/nm
+    delta_phase = delta_phase + delta_k*dl; 
+end
+
+
+
+Lc_avg = pi*L1/delta_phase;
+DC1_pow_par = cos(pi*L1/(2*Lc_avg))^2;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% outputs generation %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % the single signals (in terms of amplitude) at the 2 outputs of the DC 
 % the number 1 and 2 indicate the first and second (out I) outputs,
 % respectively
-in_A1_akx = in_A(1)*sqrt(DC1_pow_par);
-in_A2_axk = in_A(1)*sqrt(1-DC1_pow_par);
-in_B1_akx = in_B(1)*sqrt(1-DC1_pow_par);
-in_B2_axk = in_B(1)*sqrt(DC1_pow_par);
+in_A1_akx = ak_A*sqrt(DC1_pow_par);
+in_A2_axk = ak_A*sqrt(1-DC1_pow_par);
+in_B1_akx = ak_B*sqrt(1-DC1_pow_par);
+in_B2_axk = ak_B*sqrt(DC1_pow_par);
 
 
 if in_A(2) ~= in_B(2)
@@ -93,15 +179,7 @@ t_in = max(in_A(4), in_B(4));
 out(4) = t_in + tpd_DC1;
 out_I(4) = t_in + tpd_DC1;
 
-% amplitude reduction due to the damping
-out(1) = out(1) * exp(-L_DC1/x_freepath);
-out_I(1) = out_I(1) * exp(-L_DC1/x_freepath);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-
-
-
 end
-

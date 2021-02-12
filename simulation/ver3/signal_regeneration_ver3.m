@@ -11,11 +11,24 @@ clc
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% degrated_0 = 0.007288833634871;  % C10?
-% degrated_1 = 0.152018414027034;  % C11
-degrated_0 = 0.024470404143517;  % S11
-degrated_1 = 0.107753604321917;  % S10 
-S01 = 0.107668032544554; %
+% S_10 = 0.032112169168809*3; % output 'S'
+% S_01 = 0.032656480491817*3;
+% S_11 = 0.010824493934444*3;
+
+% dopo 1548nm
+% S_10 = 0.075895597436326; % output 'S'
+% S_01 = 0.078135590777412;
+% S_11 = 8.970318279303576e-05;
+
+% dopo 1107nm
+S_10 = 0.066943203430362*sqrt(2); % output 'S'
+S_01 = 0.069520336562717*sqrt(2);
+S_11 = (4.754422686032752e-05)*sqrt(2);
+
+
+% S_10 = 0.003107657797394; % C
+% S_01 = 0.002429280181317;
+% S_11 = 0.064074398667652;
 h=30;                                    %thinckness (nm)
 w=100;                                    %width(nm)
 SW_frequency=2.282; % frequency of the SW, it is constant for all device [GHz]
@@ -49,13 +62,13 @@ k=1*pi/weff;
 Ky=k;                                    %the effective wave number describing SW mode across the width direction
 i1=1;
 
-dkx=1e-4;
+dkx=1e-3;
 kmax=0.04;
 kmin=0.001;
 
 
 
-limitation=0.74;
+limitation=0.63;
 
 for kx=dkx:dkx:kmax                       
 
@@ -89,53 +102,72 @@ end
     
 
 k1=dkx:dkx:kmax;
-ff0=wm0./(2*pi);
 ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
 
-akx1 = degrated_0;  % SW amplitude of the degraded '0'
-ff1_s1 = ff1+Tkx.*abs(akx1).^2;
-ff2_s1 = ff2+Tkx.*abs(akx1).^2;
-akx2 = degrated_1;  % SW amplitude of the degraded '1'
-ff1_s2 = ff1+Tkx.*abs(akx2).^2;
-ff2_s2 = ff2+Tkx.*abs(akx2).^2;
-akx3 = S01;
-ff1_s3 = ff1+Tkx.*abs(akx3).^2;
-ff2_s3 = ff2+Tkx.*abs(akx3).^2;
 
-ks = interp1(abs(ff1_s1),k1,SW_frequency);
-kas = interp1(abs(ff2_s1),k1,SW_frequency);
-Lc1 = pi/abs(ks-kas);  % [nm]
+delta_ph10=0;
+delta_ph01=0;
+delta_ph11=0;
+x_freepath = 8.58e3;
+dl=1;
+Lw=1:1:903;
 
-ks = interp1(abs(ff1_s2),k1,SW_frequency);
-kas = interp1(abs(ff2_s2),k1,SW_frequency);
-Lc2 = pi/abs(ks-kas);  % [nm]
+for i1=1:1:903
+    S_10 = S_10*exp(-dl/x_freepath);
+    S_01 = S_01*exp(-dl/x_freepath);
+    S_11 = S_11*exp(-dl/x_freepath);
 
-ks = interp1(abs(ff1_s3),k1,SW_frequency);
-kas = interp1(abs(ff2_s3),k1,SW_frequency);
-Lc3 = pi/abs(ks-kas);  % [nm]
-
-i1=1;
-for Lw=100:1:3000
-
-    pow_par1(i1) = cos(pi*Lw/(2*Lc1))^2;
+    ff1_s10 = ff1+Tkx.*abs(S_10).^2;
+    ff2_s10 = ff2+Tkx.*abs(S_10).^2;
     
-    pow_par2(i1) = cos(pi*Lw/(2*Lc2))^2;
+    ff1_s01 = ff1+Tkx.*abs(S_01).^2;
+    ff2_s01 = ff2+Tkx.*abs(S_01).^2;
     
-    pow_par3(i1) = cos(pi*Lw/(2*Lc3))^2;
+    ff1_s11 = ff1+Tkx.*abs(S_11).^2;
+    ff2_s11 = ff2+Tkx.*abs(S_11).^2;
     
-    i1=i1+1;
+    ks = interp1(abs(ff1_s10),k1,SW_frequency);
+    kas = interp1(abs(ff2_s10),k1,SW_frequency);
+    delta_k = abs(ks-kas);
+    delta_ph10 = delta_ph10 + delta_k*dl;
+    
+    ks = interp1(abs(ff1_s01),k1,SW_frequency);
+    kas = interp1(abs(ff2_s01),k1,SW_frequency);
+    delta_k = abs(ks-kas);
+    delta_ph01 = delta_ph01 + delta_k*dl;
+    
+    ks = interp1(abs(ff1_s11),k1,SW_frequency);
+    kas = interp1(abs(ff2_s11),k1,SW_frequency);
+    delta_k = abs(ks-kas);
+    delta_ph11 = delta_ph11 + delta_k*dl;
+
+    
+    pow_par10(i1) = cos(delta_ph10/2)^2;
+    pow_par01(i1) = cos(delta_ph01/2)^2;
+    pow_par11(i1) = cos(delta_ph11/2)^2;
+    
 end
 
 
-Lw=100:1:3000;
+out10 = S_10*sqrt((pow_par10(end)));
+out01 = S_01*sqrt((pow_par01(end)));
+out11 = S_11*sqrt((pow_par11(end)));
+% normalization([out10,out01,out11])
+
+x = linspace(0,1,1000);
+y = x*(S_10/S_01)^2;
+figure
+plot(x,y)
+
+figure
 hold on
-plot(Lw,pow_par1,'LineWidth',1.5)
-plot(Lw,pow_par2,'LineWidth',1.5)
-plot(Lw,pow_par3,'LineWidth',1.5)
+plot(Lw,pow_par10,'LineWidth',1.5)
+plot(Lw,pow_par01,'LineWidth',1.5)
+plot(Lw,pow_par11,'LineWidth',1.5)
 hold off
 xlabel('L_w_3  [nm]','FontSize',20)
-legend('S11','S10','S01')
+legend('10','01','11')
+% clegend('10','01')
 title('Normalized output power','FontSize',15)
-% result: Lw_optimal = 986 nm for regenerator S

@@ -7,8 +7,8 @@ SW_parameters % script
 cd ..
 
 in_signal2 = phase_shifter_ver3(DAC_ver3(0),pi/2);
-gain1 = 1/0.4924;
-gain2 = 1/(1-0.4924);
+gain1 = 2.37;
+gain2 = 2.3;
 
 [out_signal1, out_signal2] = DC1_ver3(in_signal, in_signal2);
 

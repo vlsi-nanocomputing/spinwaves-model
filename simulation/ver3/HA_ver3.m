@@ -6,8 +6,6 @@ in_B = phase_shifter_ver3(in_B,pi/2);
 [out_S,out_C] = DC2_ver3(DC1_out);
 
 % % 
-% out_S = amplifier_ver3(out_S,7.5); 
-% out_C = amplifier_ver3(out_C,1.87);
 out_S = regenerator_S_ver3(out_S);
 out_C = regenerator_C_ver3(out_C);
 

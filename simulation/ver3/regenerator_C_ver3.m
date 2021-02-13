@@ -43,15 +43,19 @@ ff2=wm2./(2*pi);
 
 
 delta_phase = 0;
-dx = L4/65;
-for i1=dx:dx:L4
-    DC4_akx = DC4_akx*exp(-dx/x_freepath);
+dl=dx/2;
+N_cycle = ceil(L4/dl);
+for i1=1:N_cycle
+    if i1 == N_cycle
+        dl = L4 - (N_cycle-1)*dl;
+    end
+    DC4_akx = DC4_akx*exp(-dl/x_freepath);
     ff1_s = ff1+Tkx.*abs(DC4_akx).^2;
     ff2_s = ff2+Tkx.*abs(DC4_akx).^2;
     DC4_ks = interp1(abs(ff1_s),k1,SW_frequency);  % rad/nm
     DC4_kas = interp1(abs(ff2_s),k1,SW_frequency); % rad/nm
     delta_k = abs(DC4_ks-DC4_kas); % rad/nm
-    delta_phase = delta_phase + delta_k*dx; % [rad], phase shift accumulated until this sub-interval
+    delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
 end
 
 

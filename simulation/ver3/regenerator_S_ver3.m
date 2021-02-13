@@ -49,15 +49,19 @@ ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
 delta_phase = 0;
-dx = L3/80;
-for i1=dx:dx:L3
-    DC3_akx = DC3_akx*exp(-dx/x_freepath);
+dl=dx/2;
+N_cycle = ceil(L3/dl);
+for i1=1:N_cycle
+    if i1 == N_cycle
+        dl = L3 - (N_cycle-1)*dl;
+    end
+    DC3_akx = DC3_akx*exp(-dl/x_freepath);
     ff1_s = ff1+Tkx.*abs(DC3_akx).^2;
     ff2_s = ff2+Tkx.*abs(DC3_akx).^2;
     DC3_ks = interp1(abs(ff1_s),k1,SW_frequency);  % rad/nm
     DC3_kas = interp1(abs(ff2_s),k1,SW_frequency); % rad/nm
     delta_k = abs(DC3_ks-DC3_kas); % rad/nm
-    delta_phase = delta_phase + delta_k*dx; % [rad], phase shift accumulated until this sub-interval
+    delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
 end
 
 
@@ -67,16 +71,21 @@ DC4_akx = DC3_akx * sqrt(pow_par);
 DC4_akx = amplifier_ver3(DC4_akx,gain_interm);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DC4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 delta_phase = 0;
-dx = L4/50;
-for i1=dx:dx:L4
-    DC4_akx = DC4_akx*exp(-dx/x_freepath);
+dl=dx/2;
+N_cycle = ceil(L4/dl);
+for i1=1:N_cycle
+    if i1 == N_cycle
+        dl = L4 - (N_cycle-1)*dl;
+    end
+    DC4_akx = DC4_akx*exp(-dl/x_freepath);
     ff1_s = ff1+Tkx.*abs(DC4_akx).^2;
     ff2_s = ff2+Tkx.*abs(DC4_akx).^2;
     DC4_ks = interp1(abs(ff1_s),k1,SW_frequency);  % rad/nm
     DC4_kas = interp1(abs(ff2_s),k1,SW_frequency); % rad/nm
     delta_k = abs(DC4_ks-DC4_kas); % rad/nm
-    delta_phase = delta_phase + delta_k*dx; % [rad], phase shift accumulated until this sub-interval
+    delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
 end
 
 Lc_avg = pi*L4/delta_phase;  % [nm]

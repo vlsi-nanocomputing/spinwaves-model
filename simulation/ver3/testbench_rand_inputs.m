@@ -5,9 +5,10 @@ clc
 tic
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Nbit = 32;
-N_simulation = 1; % number of simulations
-% err_rep_file = 'CSA_48bit_senza_regC_566.txt';
+Nbit = 48;
+N_simulation = 20; % number of simulations
+err_rep_file = 'CSA_48bit_20sim.txt';
+% err_rep_file = 'RCA_32bit_50sim.txt';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,8 +41,8 @@ for i = 1:N_simulation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Data-Path %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    output = RCA_Nbit_ver3(in_A,in_B,in_C,Nbit);
-%      output = carry_skip_adder_ver2(in_A,in_B,in_C,Nbit);
+%     output = RCA_Nbit_ver3(in_A,in_B,in_C,Nbit);
+     output = carry_skip_adder_ver3(in_A,in_B,in_C,Nbit);
 %  	output = CLA_4bit_ver2(in_A,in_B,in_C);
 
     % in order to evaluate the error of result bits, in this point we keep
@@ -98,21 +99,36 @@ end
 %%%%%%%%%%%%%%%%%%%%%  accuracy evaluation and report  %%%%%%%%%%%%%%%%%
 normalized_output = normalization(output_sig);
 
-% f = fopen(err_rep_file,'w');
-% for i= 1:N_simulation
-%     for j = 1:Nbit+1
-%         t = normalized_output(i,j);
-%         if t >= 100
-%             fprintf(f,'%3.4f  ',t);
-%         elseif t >= 10
-%             fprintf(f,'%3.4f   ',t);
-%         else
-%             fprintf(f,'%3.4f    ',t);
-%         end
-%     end
-%     fprintf(f,'\n\n');
-% end
-% fclose(f);
+f = fopen(err_rep_file,'w');
+for i= 1:N_simulation
+    for j = 1:Nbit+1
+        t = normalized_output(i,j);
+        if t >= 100
+            fprintf(f,'%3.4f  ',t);
+        elseif t >= 10
+            fprintf(f,'%3.4f   ',t);
+        else
+            fprintf(f,'%3.4f    ',t);
+        end
+    end
+    fprintf(f,'\n\n');
+end
+fclose(f);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% result plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+figure
+hold on
+for i=1:N_simulation
+    scatter([1:1:Nbit+1], normalized_output(i,end:-1:1), 'filled')
+end
+axis([1, Nbit+1, -10, 110])
+xlabel('bit','FontSize',20)
+ylabel('Normalized power (%)','FontSize',20)
+plot([1:1:Nbit+1],99*ones(1,Nbit+1))
+plot([1:1:Nbit+1],101*ones(1,Nbit+1))
+plot([1:1:Nbit+1],1*ones(1,Nbit+1))
+plot([1:1:Nbit+1],-1*ones(1,Nbit+1))
+hold off
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 toc

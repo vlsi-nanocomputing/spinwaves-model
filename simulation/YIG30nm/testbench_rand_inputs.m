@@ -5,7 +5,7 @@ clc
 tic
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Nbit = 32;
+Nbit = 48;
 N_simulation = 1; % number of simulations
 % result_rep_file = 'CSA_48bit_20sim.txt';
 % result_rep_file = 'RCA_32bit_50sim.txt';
@@ -42,8 +42,8 @@ for i = 1:N_simulation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Data-Path %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    output = RCA_Nbit(in_A,in_B,in_C,Nbit);
-%      output = carry_skip_adder(in_A,in_B,in_C,Nbit);
+%     output = RCA_Nbit(in_A,in_B,in_C,Nbit);
+     output = carry_skip_adder(in_A,in_B,in_C,Nbit);
 %  	output = CLA_4bit_ver2(in_A,in_B,in_C);
 
     % in order to evaluate the error of result bits, in this point we keep
@@ -56,14 +56,14 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%% reference solution calculation %%%%%%%%%%%%%%%%%%%
     cd ../ver1
     exact_output(i,:) = RCA_Nbit_ver1(A(i,:),B(i,:),C(i,:),Nbit);
-    cd ../ver3
+    cd ../YIG30nm
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% outputs comparison %%%%%%%%%%%%%%%%%%%%%%%
     % analog to digital conversion of the simulation solution
-    output_bin(i,:) = ADC_ver3(output);      
+    output_bin(i,:) = ADC(output);      
 
 end
 

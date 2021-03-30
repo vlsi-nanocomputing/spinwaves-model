@@ -18,7 +18,7 @@ logic0_inf = -1;
 %%%%%%%%%%%%%%%%%%%%%%% Choosing of model category %%%%%%%%%%%%%%%%%%%
 model=0;
 while model ~= [1,2,3,4]
-model = input('Choose one model category from the following list:\n 1) YIG (100 nm) Behavioral Model \n 2) YIG (100 nm) Physical Model \n 3) YIG (30 nm) Physical Model \n 4) QUIT \n');
+    model = input('Choose one model category from the following list:\n 1) YIG (100 nm) Behavioral Model \n 2) YIG (100 nm) Physical Model \n 3) YIG (30 nm) Physical Model \n 4) QUIT \n');
 end
 if model~=4  % if model==4, the program terminates
 

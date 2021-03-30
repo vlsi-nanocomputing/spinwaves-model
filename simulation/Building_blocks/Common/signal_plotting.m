@@ -2,7 +2,7 @@ function [] = signal_plot(in_signal,model,varargin)
 
 N_signal = size(in_signal);
 N_signal = N_signal(1);
-t_max = max(in_signal(:,4)) + 3/in_signal(1,2); % ns
+t_max = max(in_signal(:,4)) + 10/in_signal(1,2); % ns
 
 SW_parameters
 
@@ -18,7 +18,7 @@ for i=1:N_signal
   
     t1 = linspace(0,tpd,2);
     y1 = 0*t1;
-    t2 = linspace(tpd,t_max,1000);
+    t2 = [tpd:0.005:t_max];
     y2 = a0*sin(2*pi*f*(t2-tpd)+phase);
 
     t = [t1 t2];

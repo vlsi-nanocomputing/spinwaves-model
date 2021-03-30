@@ -66,8 +66,8 @@ end
 if out_signal_plot_flag == 1
     i2 = Nbit+1;
     for i1 = 1:Nbit+1
-        opt_par{i1} = 'CSA\_out' + string(i2);
-        fprintf('\n %d-bit CSA: CSA_out%d = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',Nbit,i2,X(i1,4),X(i1,1),X(i1,2),X(i1,3),normalization(X(i1,1),model))
+        opt_par{i1} = 'CSA\_out' + string(i2-1);
+        fprintf('\n %d-bit CSA: CSA_out%d = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',Nbit,i2-1,X(i1,4),X(i1,1),X(i1,2),X(i1,3),normalization(X(i1,1),model))
         i2 = i2-1;
     end
     signal_plotting(X,model,opt_par{:});

@@ -1,13 +1,30 @@
 % Generic simulator
 clear all 
 
-%%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A_bin = [0,1;1,1]; % binary representation of the input A(from MSB to LSB)
-B_bin = [1,1;0,1]; % binary representation of the input B(from MSB to LSB)
-C_bin = [0;1]; % binary representation of the input C(from MSB to LSB)
-D_bin = [1 1;0 1]; % binary representation of the input D(from MSB to LSB)
+% A_bin, B_bin, C_bin and D_bin are binary inputs of the circuit. You can
+% set more than one simulation using multiple rows of the inputs: every row
+% is a std_logic_vector(MSB downto LSB) that will be used for a single
+% simulation
+% You can use these inputs to simulate the following circuits:
+%  1) AND(A,B)
+%  2) AND4(A,B,C,D)
+%  3) N-bit Carry_skip_adder(A,B,C), where the C is the carry_in
+%  4) FA(A,B,C), where the C is the carry_in
+%  5) HA(A,B)
+%  6) Mux2to1(A,B,C), where the C is the selector
+%  7) NOT(A)
+%  8) OR(A,B)
+%  9) N-bit RCA(A,B,C), where the C is the carry_in
+%  10) XOR(A,B)
 
-Nbit = 2;    % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
+
+%%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+A_bin = [0;1]; 
+B_bin = [1;1]; 
+C_bin = [1]; 
+D_bin = [0];
+
+Nbit = 2;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
 opt_parameters = {'out_signal_plot'}; % optional parameters, it can be empty
 titleFontSize = 25;   % title FontSize of the plots
 axisFontSize = 13;     % axes FontSize of the plots

@@ -2,10 +2,10 @@
 half_adder
 
 % Area
-A_FA = 3*A_HA;
+area_FA = 3*area_HA;
 
 % Energy consumption
-E_FA = 3*E_a_b + 3*E_amp_regS;
+energy_FA = 0.5*(3*energy_sw) + 3*energy_amp_regS + 2*energy_amp_regC;
 
 % Propagation delay
 tpd_FA_C = 2*tpd_HA_S + tpd_HA_C;

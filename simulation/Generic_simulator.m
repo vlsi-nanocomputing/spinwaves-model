@@ -2,16 +2,17 @@
 clear all 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A_bin = [0;1]; % binary representation of the input A(from MSB to LSB)
-B_bin = [1;1]; % binary representation of the input B(from MSB to LSB)
-C_bin = [1;0]; % binary representation of the input C(from MSB to LSB)
+A_bin = [0,1;1,1]; % binary representation of the input A(from MSB to LSB)
+B_bin = [1,1;0,1]; % binary representation of the input B(from MSB to LSB)
+C_bin = [0;1]; % binary representation of the input C(from MSB to LSB)
 D_bin = [1 1;0 1]; % binary representation of the input D(from MSB to LSB)
 
 Nbit = 2;    % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
-opt_parameters = {}; % optional parameters, it can be empty
+opt_parameters = {'out_signal_plot'}; % optional parameters, it can be empty
 titleFontSize = 25;   % title FontSize of the plots
-axisFontSize = 13;    % axes FontSize of the plots
+axisFontSize = 13;     % axes FontSize of the plots
 labelFontSize = 20;   % labels FontSize of the plots
+legendFontSize = 14;  % legend FontSize of the plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%% Choosing of model category %%%%%%%%%%%%%%%%%%%
@@ -54,6 +55,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% simulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 size_A = size(A_bin);
 N_simulation = size_A(1);
+analyzed_figures = 0;
 for ii = 1:N_simulation
     switch circuit
         case 1
@@ -65,12 +67,21 @@ for ii = 1:N_simulation
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
             AND_out = AND(A, B, model, opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 2
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -86,12 +97,21 @@ for ii = 1:N_simulation
             fprintf('%d',D_bin(ii,:))
             fprintf('"\n')
             AND4_out = AND4(A, B, C, D, model, opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 3
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -104,12 +124,21 @@ for ii = 1:N_simulation
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
             CSA_out = carry_skip_adder(A,B,C,Nbit,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 4
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -122,12 +151,21 @@ for ii = 1:N_simulation
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
             [FA_S,FA_C] = FA(A,B,C,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 5
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -137,12 +175,21 @@ for ii = 1:N_simulation
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
             [HA_S,HA_C] = HA(A, B, model, opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 6
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -155,24 +202,42 @@ for ii = 1:N_simulation
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
             MUX2TO1_out = mux2to1(A,B,C,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 7
             A = DAC(A_bin(ii,:),model);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('"\n')
             NOT_out = NOT(A,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 8
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -182,12 +247,21 @@ for ii = 1:N_simulation
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
             OR_out = OR(A,B,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 9
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -200,12 +274,21 @@ for ii = 1:N_simulation
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
             RCA_out = RCA_Nbit(A,B,C,Nbit,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
         case 10
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
@@ -215,12 +298,20 @@ for ii = 1:N_simulation
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
             XOR_out = XOR(A,B,model,opt_parameters{:})
-            title('Simulation ' + string(ii), 'FontSize', titleFontSize)
-            ax = gca;
-            ax.XAxis.FontSize = axisFontSize;
-            ax.YAxis.FontSize = axisFontSize;
-            ax.XLabel.FontSize = labelFontSize;
-            ax.YLabel.FontSize = labelFontSize;
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
     end
 end
 

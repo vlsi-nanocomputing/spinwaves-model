@@ -1,4 +1,5 @@
-This repository contains all the codes of the thesis "Design and Modelling of Magnonic Circuits"
+This repository contains all the codes of the thesis "Design and Modelling of Magnonic Circuits".
+
 In the following, a short description for each folder and file is reported.
 
 

@@ -1,21 +1,21 @@
 function [out_signal] = regenerator_C(in_signal,model,varargin)
 
 % This function describes the behavior of the regenerator (DC+amplifier)
-% fot the carry bit output.
-% This block regenerates the correct SW amplitude according to the logic
+% fot the output 'C'.
+% This block regenerates the output SW amplitude according to the logic
 % value.
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
-% [amplitude(dimensionless), frequency [GHz], phase [rad], delay]
+% [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=30;           % thinckness  [nm]
 w=100;          % width  [nm]
-Lw=566;
-gap=10;        % the gap between the second coupled waveguides [nm]
-limitation=limitation2;
+Lw=566;         % length of the coupling region
+gap=10;         % the gap between the second coupled waveguides [nm]
+limitation=limitation2; % for gap = 10 nm
 B=0;            % external field [mT]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -7,18 +7,18 @@ function [out_signal] = regenerator_C(in_signal,model,varargin)
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
-% [amplitude(dimensionless), frequency [GHz], phase [rad], delay]
+% [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_out = 3.6;   % 
-h=30;           % thinckness  [nm]
-w=100;          % width  [nm]
-Lw=1950;
-gap=10;        % the gap between the second coupled waveguides [nm]
-B=0;            % external field [mT]
-limitation = limitation2;
-DC4_akx = in_signal(1);
+gain_out = 3.6;     % output amplifier gain
+h=30;               % thinckness  [nm]
+w=100;              % width  [nm]
+Lw=1950;            % coupled length of the DC
+gap=10;             % the gap between the second coupled waveguides [nm]
+B=0;                % external field [mT]
+limitation = limitation2; 
+DC4_akx = in_signal(1); % amplitude of the input signal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -84,7 +84,7 @@ ff2=wm2./(2*pi);
 
 
 delta_phase = 0;
-dl=dx/2;
+dl=dx/2; % discretization resolution
 N_cycle = ceil(Lw/dl);
 for i1=1:N_cycle
     if i1 == N_cycle
@@ -100,7 +100,7 @@ for i1=1:N_cycle
 end
 
 
-Lc_avg = pi*Lw/delta_phase;  % [nm]
+Lc_avg = pi*Lw/delta_phase;  % [nm], average Lc
 pow_par = cos(pi*Lw/(2*Lc_avg))^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

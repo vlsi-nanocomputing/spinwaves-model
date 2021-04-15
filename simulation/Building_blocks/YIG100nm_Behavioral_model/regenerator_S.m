@@ -1,22 +1,22 @@
 function [out_signal] = regenerator_S(in_signal,model,varargin)
 
 % This function describes the behavior of the regenerator (DC+amplifier)
-% for the sum bit output.
-% This block regenerates the correct SW amplitude according to the logic
+% for the output 'S'.
+% This block regenerates the output SW amplitude according to the logic
 % value.
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
-% [amplitude(dimensionless), frequency [GHz], phase [rad]]
+% [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_out=2.02;      % gain of the VCMA amplifier
+gain_out=2.02;  % gain of the VCMA amplifier
 h=30;           % thinckness  [nm]
 w=100;          % width  [nm]
 Lw=986;         % length of the coupling region  [nm]
-gap=10;        % the gap between the second coupled waveguides [nm]
-limitation=limitation2;
+gap=10;         % the gap between the second coupled waveguides [nm]
+limitation=limitation2; % for gap=10
 B=0;            % external field [mT]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -65,7 +65,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 d=w+gap;       % [nm]
-DC_design = [h, w, d, B];
+DC_design = [h, w, d, B]; 
 [wm1, wm2, Tkx] = DC_equations(dkx, kmax, limitation, DC_design);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -85,7 +85,7 @@ ks = interp1(abs(ff1_s),k1,in_signal(2));
 kas = interp1(abs(ff2_s),k1,in_signal(2));
 Lc = pi/abs(ks-kas);  % [nm]
 
-pow_par = cos(pi*Lw/(2*Lc))^2;
+pow_par = cos(pi*Lw/(2*Lc))^2; 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% outputs generation %%%%%%%%%%%%%%%%%%%%%%%%%%

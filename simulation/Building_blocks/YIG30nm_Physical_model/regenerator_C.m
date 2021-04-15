@@ -1,24 +1,24 @@
 function [out_signal] = regenerator_C(in_signal,model,varargin)
 
 % This function describes the behavior of the regenerator (DC+amplifier)
-% fot the carry bit output.
+% for the carry bit output.
 % This block regenerates the correct SW amplitude according to the logic
 % value.
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
-% [amplitude(dimensionless), frequency [GHz], phase [rad], delay]
+% [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_out = 1.7;   % 
-h=10;           % thinckness  [nm]
-w=30;          % width  [nm]
-Lw=1450;
-gap=10;        % the gap between the second coupled waveguides [nm]
-B=0;            % external field [mT]
-limitation=limitation2;
-DC4_akx = in_signal(1);
+gain_out = 1.7;             % output amplifier gain
+h=10;                       % thinckness  [nm]
+w=30;                       % width  [nm]
+Lw=1450;                    % length of the DC coupled region
+gap=10;                     % the gap of the DC [nm]
+B=0;                        % external field [mT]
+limitation=limitation2;     % for gap = 10nm
+DC4_akx = in_signal(1);     % input signal amplitude 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -99,7 +99,7 @@ for i1=1:N_cycle
 end
 
 
-Lc_avg = pi*Lw/delta_phase;  % [nm]
+Lc_avg = pi*Lw/delta_phase;  % [nm], average Lc
 pow_par = cos(pi*Lw/(2*Lc_avg))^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

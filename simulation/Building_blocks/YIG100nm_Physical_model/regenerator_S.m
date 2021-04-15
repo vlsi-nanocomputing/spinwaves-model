@@ -1,25 +1,25 @@
 function [out_signal] = regenerator_S(in_signal,model,varargin)
 
-% This function describes the behavior of the regenerator (DC+amplifier)
+% This function describes the behavior of the regenerator (2DC+3amplifier)
 % for the sum bit output.
 % This block regenerates the correct SW amplitude according to the logic
 % value.
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
-% [amplitude(dimensionless), frequency [GHz], phase [rad]]
+% [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_in = 9;
-gain_interm = 2;
-gain_out = 1.25;
-h=30;           % thinckness  [nm]
-w=100;          % width  [nm]
-L3=1107;         % length of the coupling region  [nm]
-L4=903;
-gap=10;        % the gap between the second coupled waveguides [nm]
-B=0;            % external field [mT]
+gain_in = 9;        % input amplifier gain
+gain_interm = 2;    % intermediate amplifier gain
+gain_out = 1.25;    % output amplifier gain
+h=30;               % thinckness  [nm]
+w=100;              % width  [nm]
+L3=1107;            % length of the coupling region of the first DC [nm]
+L4=903;             % length of the coupling region of the second DC [nm]
+gap=10;             % the gap of the DCs [nm]
+B=0;                % external field [mT]
 limitation=limitation2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -83,7 +83,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%% input signal amplification %%%%%%%%%%%%%%%%%%%%%%%%%
 DC3_akx = amplifier(in_signal,gain_in);
-DC3_akx = DC3_akx(1);
+DC3_akx = DC3_akx(1); % amplitude of the amplified input signal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,14 +92,14 @@ DC_design = [h, w, d, B];
 [wm1, wm2, Tkx] = DC_equations(dkx, kmax, limitation, DC_design);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%% regenerator operation %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% first DC operation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 k1=dkx:dkx:kmax;
 ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
 delta_phase = 0;
-dl=dx/2;
+dl=dx/2; % discretization resolution
 N_cycle = ceil(L3/dl);
 for i1=1:N_cycle
     if i1 == N_cycle
@@ -115,12 +115,12 @@ for i1=1:N_cycle
 end
 
 
-Lc_avg = pi*L3/delta_phase;  % [nm]
-pow_par = cos(pi*L3/(2*Lc_avg))^2;
-DC4_akx = DC3_akx * sqrt(pow_par);
-DC4_akx = [DC4_akx, in_signal(2:4)];
-DC4_akx = amplifier(DC4_akx,gain_interm);
-DC4_akx = DC4_akx(1);
+Lc_avg = pi*L3/delta_phase;  % [nm], average Lc
+pow_par = cos(pi*L3/(2*Lc_avg))^2;  % power partition of the first DC
+DC4_akx = DC3_akx * sqrt(pow_par);  % signal amplitude at the first DC output
+DC4_akx = [DC4_akx, in_signal(2:4)];% I need a complete vector of the SW for the next amplifier function
+DC4_akx = amplifier(DC4_akx,gain_interm);% intermediate amplifier
+DC4_akx = DC4_akx(1); % amplitude
 %%%%% these parameters can be used in the "optional operations" section %%%
 delta_phase1 = delta_phase;
 Lc_avg1 = Lc_avg;
@@ -129,7 +129,7 @@ pow_par1 = pow_par;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DC4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% second DC operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 delta_phase = 0;
 dl=dx/2;
@@ -148,14 +148,14 @@ for i1=1:N_cycle
 end
 
 Lc_avg = pi*L4/delta_phase;  % [nm]
-pow_par = cos(pi*L4/(2*Lc_avg))^2;
+pow_par = cos(pi*L4/(2*Lc_avg))^2; % second DC power partition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% outputs generation %%%%%%%%%%%%%%%%%%%%%%%%%%
 out_signal = in_signal; % to have the same frequency and phase
 
 
-% power splitting and amplification
+% power splitting and output amplification
 out_signal(1) = DC4_akx * sqrt(pow_par);
 out_signal = amplifier(out_signal,gain_out);
 

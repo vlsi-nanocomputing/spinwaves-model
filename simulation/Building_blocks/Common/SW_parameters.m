@@ -18,8 +18,8 @@ switch model
         SW_amplitude = 0.0779;
         x_freepath = 8.58e3;   % decay length [nm], calculated from 
                                % Single_dispersioncurve script 
-        limitation1 = 0.53;
-        limitation2 = 0.63;
+        limitation1 = 0.53;    % for gap=50nm
+        limitation2 = 0.63;    % for gap=10nm
         duplicator_gain1 = 2.37;
         duplicator_gain2 = 2.3;
         gain_S = 5.5; % the amplifier gain at the DC2 out_S (without regS) 
@@ -48,7 +48,7 @@ switch model
 end
        
 
-dx = 50; % nm
-dkx=1e-3;
+dx = 50; % nm, discretization resolution to discretize DCs
+dkx=1e-3;  % to define vector kx = [dkx:dkx:kmax]
 kmax=0.025;
 

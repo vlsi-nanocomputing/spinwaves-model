@@ -13,7 +13,7 @@ H=B*796;        % external field  [A/m]
                 % H=B/u0, u0=4*pi*e-7  [H/m]
 
 damping=2e-4;   % damping
-dH0=0.2*796;    % inhomogeneous linewidth
+dH0=0.2*796;    % inhomogeneous linewidth, NB: this is the main contribution of losses
     
 Wm=r*Ms*1e-9;   % [GHz]
 Wh=r*H*1e-9;    % [GHz]

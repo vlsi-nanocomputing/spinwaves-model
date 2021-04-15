@@ -10,8 +10,11 @@ out_value = zeros(1,N);
 for j=1:N
     if in_signal(j,1) < SW_amplitude/sqrt(3)
         out_value(j) = 0;
-    else
+    elseif in_signal(j,1) > SW_amplitude/sqrt(3/2)
         out_value(j) = 1;
+    else
+        out_value(j) = 0.5;
+        display('ADC: forbidden state')
     end
 end
 

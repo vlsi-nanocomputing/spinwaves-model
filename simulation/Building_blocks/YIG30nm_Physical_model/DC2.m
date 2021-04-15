@@ -5,7 +5,7 @@ function [out_S,out_C] = DC2(in_signal,model,varargin)
 % The function has one constraint:
 % *) the input and output variables are vectors, and they are composed in
 %    the following way:
-%    [amplitude(dimensionless), frequency [GHz], phase [rad]]
+%    [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,8 +14,8 @@ w=30;           % width  [nm]
 L2=2460;        % length of the coupling region  [nm]
 gap2=10;        % the gap between the coupled waveguides  [nm]
 B=0;            % external field [mT]
-gap_region1=50; % [nm]
-gap_region3=70; % [nm]
+gap_region1=50; % [nm], the max gap of the region1 for the region1 discretization
+gap_region3=70; % [nm], the max gap of the region1 for the region3 discretization
 limitation = limitation2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -65,14 +65,14 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-L_region1 = (gap_region1 - gap2) / sin(20*2*pi/360);  % [nm]
-L_region3 = (gap_region3 - gap2) / sin(20*2*pi/360);  % [nm]
+L_region1 = (gap_region1 - gap2) / sin(20*2*pi/360);  % [nm], length of region1
+L_region3 = (gap_region3 - gap2) / sin(20*2*pi/360);  % [nm], length of region3
 k1=dkx:dkx:kmax;
 delta_phase = 0;
 DC2_akx = in_signal(1);
 
                      %%%%%%%%%%%% region 1 %%%%%%%%%%%%
-dl = dx/5;
+dl = dx/5; % discretization resolution
 dgap= -dl*sin(20*2*pi/360);
 %gap: from 80nm(30+10+40) to 40nm(30+10)
 N_cycle = ceil(L_region1/dl);

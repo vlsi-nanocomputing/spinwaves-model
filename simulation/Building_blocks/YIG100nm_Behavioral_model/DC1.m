@@ -7,7 +7,8 @@ function [out,out_I] = DC1(in_A,in_B,model,varargin)
 % 2) phase(B) - phase(A) = pi/2
 % 3) the input and output variables are vectors, and they are composed in
 %    the following way:
-%    [amplitude(dimensionless), frequency [GHz], phase [rad]]
+%    [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
+% 4) "model" variable must 1 for Behavioral model
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -15,7 +16,7 @@ h=30;           % thinckness  [nm]
 w=100;          % width  [nm]
 L1=370;         % length of the coupling region  [nm]
 gap1=50;        % the gap between the coupled waveguides  [nm]
-limitation=limitation1;
+limitation=limitation1; % for gap = 50 nm
 B=0;            % external field [mT]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

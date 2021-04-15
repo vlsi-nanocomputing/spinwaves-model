@@ -3,7 +3,7 @@ function [X] = carry_skip_adder(A,B,carry,Nbit,model,varargin)
 % Please use a N as a multiple of 4
 % NB: the function describes the behavioral simulation of the device 
 % (carry skip adder), the following structure is different with respect to
-% the VHDL structure.
+% the VHDL code structure.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -58,7 +58,7 @@ if rem(Nbit,4) == 0
     end
     X(1,:) = carry;
 else
-    display('please check your Nbit of the CSA')
+    display('please check your Nbit of the CSA, it must be a multiple of 4!')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

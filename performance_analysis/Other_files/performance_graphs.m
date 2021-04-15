@@ -26,6 +26,7 @@ Energy_CMOS_15nm = (static_power_CMOS_15nm .* tpd_CMOS_15nm + dynamic_power_CMOS
 
 addpath('..')
 addpath('../YIG')
+addpath('../Circuits')
 addpath('../YIG/YIG_100nm')
 model = 2;
 N = 1;
@@ -86,4 +87,6 @@ xlabel('N-bit','FontSize',20)
 ylabel('Propagation delay [ns]','FontSize',20)
 legend('YIG (100nm)','YIG (30nm)', 'CMOS (15nm)')
 
-
+ax = figures(3).CurrentAxes;
+ax.XAxis.FontSize = 15;
+ax.YAxis.FontSize = 15;

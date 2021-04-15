@@ -1,24 +1,24 @@
 function [out_signal] = regenerator_S(in_signal,model,varargin)
 
-% This function describes the behavior of the regenerator (DC+amplifier)
+% This function describes the behavior of the regenerator (2DC+2amplifier)
 % for the sum bit output.
 % This block regenerates the correct SW amplitude according to the logic
 % value.
 
 % The input and output variables are vectors, and they are composed in
 % the following way:
-% [amplitude(dimensionless), frequency [GHz], phase [rad]]
+% [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_in = 8;
-gain_interm = 2;
-h=10;           % thinckness  [nm]
-w=30;          % width  [nm]
-L3=900;         % length of the coupling region  [nm]
-L4=978;
-gap=10;        % the gap between the second coupled waveguides [nm]
-B=0;            % external field [mT]
+gain_in = 8;        % input amplifier gain
+gain_interm = 2;    % intermediate amplifier gain
+h=10;               % thinckness  [nm]
+w=30;               % width  [nm]
+L3=900;             % length of the first DC coupling region  [nm]
+L4=978;             % length of the second DC coupling region  [nm]
+gap=10;             % the gap between the second coupled waveguides [nm]
+B=0;                % external field [mT]
 limitation = limitation2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -88,7 +88,7 @@ DC_design = [h, w, d, B];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%% regenerator operation %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% first DC operation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 k1=dkx:dkx:kmax;
 ff1=wm1./(2*pi);
@@ -114,7 +114,7 @@ end
 Lc_avg = pi*L3/delta_phase;  % [nm]
 pow_par = cos(pi*L3/(2*Lc_avg))^2;
 DC4_akx = DC3_akx * sqrt(pow_par);
-DC4_akx = [DC4_akx, in_signal(2:4)];
+DC4_akx = [DC4_akx, in_signal(2:4)]; % I need the complete SW vector for the amplifier function
 DC4_akx = amplifier(DC4_akx,gain_interm);
 DC4_akx = DC4_akx(1);
 %%%%% these parameters can be used in the "optional operations" section %%%
@@ -124,7 +124,7 @@ pow_par1 = pow_par;
 %%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DC4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% second DC operation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 delta_phase = 0;
 dl=dx/2;
@@ -142,7 +142,7 @@ for i1=1:N_cycle
     delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
 end
 
-Lc_avg = pi*L4/delta_phase;  % [nm]
+Lc_avg = pi*L4/delta_phase;  % [nm], average Lc
 pow_par = cos(pi*L4/(2*Lc_avg))^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

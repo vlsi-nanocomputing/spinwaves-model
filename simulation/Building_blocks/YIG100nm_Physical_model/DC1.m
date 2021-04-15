@@ -16,9 +16,9 @@ w=100;          % width  [nm]
 L1=370;         % length of the coupling region  [nm]
 gap1=50;        % the gap between the coupled waveguides  [nm]
 B=0;            % external field [mT]
-gap_region1=150; % 100+50 [nm]
-gap_region3=150;
-limitation = limitation1;
+gap_region1=150; % 100(width)+50(gap) [nm]
+gap_region3=150; % the max gap of the region1 for the region3 discretization
+limitation = limitation1; % for gap=50nm
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -67,32 +67,31 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
-L_region1 = (gap_region1 - gap1) / (2*sin(20*2*pi/360));  % [nm]
-L_region3 = (gap_region3 - gap1) / (2*sin(20*2*pi/360));  % [nm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+L_region1 = (gap_region1 - gap1) / (2*sin(20*2*pi/360));  % [nm], length of region1
+L_region3 = (gap_region3 - gap1) / (2*sin(20*2*pi/360));  % [nm], length of region3
 
-ak_A = in_A(1);
-ak_B = in_B(1);
-k1=dkx:dkx:kmax;
-delta_phase = 0;
-
+ak_A = in_A(1);  % amplitude of the input A
+ak_B = in_B(1);  % amplitude of the input A
+k1=dkx:dkx:kmax; 
+delta_phase = 0; % phase accumulation due to the coupling
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%% DC1 operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                      %%%%%%%%%%%% region 1 %%%%%%%%%%%%
-dl = dx/2;
+dl = dx/2;  % L_region1 discretization resolution
 dgap = -dl*sin(20*2*pi/360)*2;
 %gap: from 550nm(100+450) to 150nm(100+50)
 N_cycle = ceil(L_region1/dl);
 for i1=1:1:N_cycle
-    if i1 == N_cycle
+    if i1 == N_cycle   % to evaluate the gap
        dl = L_region1 - (N_cycle-1)*dl;
        d = w + gap1;
     else
        d = w + gap_region1 + i1*dgap;
     end
     
-    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_A = ak_A*exp(-dl/x_freepath);  % losses
     ak_B = ak_B*exp(-dl/x_freepath);
     DC1_design = [h, w, d, B];
     [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation, DC1_design);
@@ -110,19 +109,19 @@ end
 
 
             %%%%%%%%%%%%% region 2 %%%%%%%%%%%%%%  
-d = w+gap1; 
+d = w+gap1; % constant gap
 DC1_design = [h, w, d, B];
 [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation, DC1_design);
 DC1_ff1=wm1./(2*pi);
 DC1_ff2=wm2./(2*pi);
 
-dl = dx;
+dl = dx; % % coupled region discretization resolution
 N_cycle = ceil(L1/dl);
 for i1=1:1:N_cycle
     if i1 == N_cycle 
         dl = L1 - (N_cycle-1)*dl;
     end
-    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_A = ak_A*exp(-dl/x_freepath);  % losses
     ak_B = ak_B*exp(-dl/x_freepath);
     DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
     DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
@@ -135,7 +134,7 @@ end
 
 
              %%%%%%%%%%%%%%%%%%% region 3 %%%%%%%%%%%%%%%%%
-dl = dx/2;
+dl = dx/2;  % L_region3 discretization resolution
 dgap = dl*sin(20*2*pi/360)*2;
 %gap: from 150nm(100+50) to 550nm(450+100)
 N_cycle = ceil(L_region3/dl);
@@ -146,7 +145,7 @@ for i1=1:1:N_cycle
     else
         d = w + gap1 + i1*dgap;
     end
-    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_A = ak_A*exp(-dl/x_freepath);  % losses
     ak_B = ak_B*exp(-dl/x_freepath);
     DC1_design = [h, w, d, B];
     [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation, DC1_design);
@@ -164,7 +163,7 @@ end
 
 
 
-Lc_avg = pi*L1/delta_phase;
+Lc_avg = pi*L1/delta_phase;  % average Lc
 DC1_pow_par = cos(pi*L1/(2*Lc_avg))^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

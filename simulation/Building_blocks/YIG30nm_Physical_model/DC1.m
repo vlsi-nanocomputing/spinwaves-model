@@ -12,12 +12,12 @@ function [out,out_I] = DC1(in_A,in_B,model,varargin)
 SW_parameters
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=10;           % thinckness  [nm]
-w=30;          % width  [nm]
+w=30;           % width  [nm]
 L1=260;         % length of the coupling region  [nm]
-gap1=20;        % the gap between the coupled waveguides  [nm]
+gap1=20;        % the gap of the coupling region  [nm]
 B=0;            % external field [mT]
-gap_region1=50; % [nm]
-gap_region3=50; % [nm]
+gap_region1=50; % [nm], the max gap of the region1 for the region1 discretization
+gap_region3=50; % [nm], the max gap of the region1 for the region3 discretization
 limitation = limitation1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -69,9 +69,9 @@ end
 
 
 
-%%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
-L_region1 = (gap_region1 - gap1) / (2*sin(20*2*pi/360));  % [nm]
-L_region3 = (gap_region3 - gap1) / (2*sin(20*2*pi/360));  % [nm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+L_region1 = (gap_region1 - gap1) / (2*sin(20*2*pi/360));  % [nm], length of region1
+L_region3 = (gap_region3 - gap1) / (2*sin(20*2*pi/360));  % [nm], length of region3
 ak_A = in_A(1);
 ak_B = in_B(1);
 k1=dkx:dkx:kmax;
@@ -81,7 +81,7 @@ delta_phase = 0;
 
 %%%%%%%%%%%%%%%%%%%%%%%% DC1 operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                      %%%%%%%%%%%% region 1 %%%%%%%%%%%%
-dl = dx/3;
+dl = dx/3; % discretization resolution
 dgap = -dl*sin(20*2*pi/360)*2;
 %gap: from 80nm(30+50) to 40nm(30+10)
 N_cycle = ceil(L_region1/dl);
@@ -93,7 +93,7 @@ for i1=1:1:N_cycle
        d = w + gap_region1 + i1*dgap;
     end
     
-    ak_A = ak_A*exp(-dl/x_freepath);
+    ak_A = ak_A*exp(-dl/x_freepath); % losses
     ak_B = ak_B*exp(-dl/x_freepath);
     DC1_design = [h, w, d, B];
     [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation, DC1_design);
@@ -164,7 +164,7 @@ for i1=1:1:N_cycle
     delta_phase = delta_phase + delta_k*dl; 
 end
 
-Lc_avg = pi*L1/delta_phase;
+Lc_avg = pi*L1/delta_phase; % average Lc
 DC1_pow_par = cos(pi*L1/(2*Lc_avg))^2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

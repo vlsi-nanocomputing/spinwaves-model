@@ -10,7 +10,7 @@
 #SynopsysInstall = get_unix_variable(SYNOPSYS);
 
 set search_path  { .       \
-	/home/mg.lowpower/do/libnangate }
+	/software/dk/nangate45/synopsys/ }
 
 
 # ================================================= #
@@ -44,6 +44,4 @@ set power_preserve_rtl_hier_names "true"
 set link_library  {NangateOpenCellLibrary_typical_ecsm.db}
 
 set target_library  {NangateOpenCellLibrary_typical_ecsm.db}
-
-
 

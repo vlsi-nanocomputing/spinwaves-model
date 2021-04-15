@@ -2,6 +2,11 @@
 clear all % do not remove
 tic
 
+% This interface script allows to simulate the RCA or the CSA 
+% To run the script you must set all the parameters of "simulation setting"
+% section.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Nbit = 2;  % parallelism of the adder. Note that if you choose the CSA, the Nbit must be a mulple of 4, that is a constraint of the CSA model
 N_simulation = 1; % number of simulations
@@ -60,7 +65,7 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%% digital-analog conversion %%%%%%%%%%%%%%%%%%%%%%%
-    in_A = DAC(A(i,:),model);
+    in_A = DAC(A(i,:),model);  % spin-wave = [amplitude, frequency, phase, delay]
     in_B = DAC(B(i,:),model);
     in_C = DAC(C(i,:),model);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,7 +145,7 @@ end
 % normalization of the output bits of every simulation
 normalized_output = normalization(output_sig,model); 
 
-if result_rep_flag == 1 % report of the simulation result
+if result_rep_flag == 1 % report of the simulation result, you can set this flag at the beginning
     f = fopen(result_rep_file,'w');
     for i= 1:N_simulation
         for j = 1:Nbit+1
@@ -168,7 +173,7 @@ end
 axis([1, Nbit+1, -10, 110])
 xlabel('bit','FontSize',20)
 ylabel('Normalized power (%)','FontSize',20)
-if plot_range_flag == 1
+if plot_range_flag == 1 % you can set this flag at the beginning
     plot([1:1:Nbit+1],logic1_sup*ones(1,Nbit+1))
     plot([1:1:Nbit+1],logic1_inf*ones(1,Nbit+1))
     plot([1:1:Nbit+1],logic0_sup*ones(1,Nbit+1))

@@ -5,7 +5,7 @@ function [out_S,out_C] = DC2(in_signal,model,varargin)
 % The function has one constraint:
 % *) the input and output variables are vectors, and they are composed in
 %    the following way:
-%    [amplitude(dimensionless), frequency [GHz], phase [rad]]
+%    [amplitude(dimensionless), frequency [GHz], phase [rad], delay[ns]]
 
 SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%

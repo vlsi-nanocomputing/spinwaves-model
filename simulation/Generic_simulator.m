@@ -1,10 +1,18 @@
 % Generic simulator
 clear all 
 
+% This interface script allows to simulate all the circuit of "Circuits"
+% folder
+% To run the script you must set all the parameters of "simulation setting"
+% section.
+
+
 % A_bin, B_bin, C_bin and D_bin are binary inputs of the circuit. You can
 % set more than one simulation using multiple rows of the inputs: every row
 % is a std_logic_vector(MSB downto LSB) that will be used for a single
-% simulation
+% simulation. In that case, the code runs a number of simulations
+% equal to the number of the input A (rows).
+
 % You can use these inputs to simulate the following circuits:
 %  1) AND(A,B)
 %  2) AND4(A,B,C,D)
@@ -19,13 +27,13 @@ clear all
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A_bin = [0;1]; 
-B_bin = [1;1]; 
+A_bin = [0;1;1]; 
+B_bin = [1;0;1]; 
 C_bin = [1]; 
 D_bin = [0];
 
 Nbit = 2;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
-opt_parameters = {'out_signal_plot'}; % optional parameters, it can be empty
+opt_parameters = {'HA_without_regS','HA_without_regC','out_signal_plot'}; % optional parameters, it can be empty
 titleFontSize = 25;   % title FontSize of the plots
 axisFontSize = 13;     % axes FontSize of the plots
 labelFontSize = 20;   % labels FontSize of the plots
@@ -53,7 +61,7 @@ addpath('Circuits')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% Choosing of the simulation circuit %%%%%%%%%%%%%%%%
-circuit=0;
+circuit=0;  % initialization
 while circuit ~= [1,2,3,4,5,6,7,8,9,10]
     fprintf('\nChoose one simulation circuit from the following list:');
     fprintf('\n  1) AND(A,B)');

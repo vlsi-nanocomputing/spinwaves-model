@@ -18,3 +18,6 @@ This folder contains the FA implementation using YIG technologies (100nm and 30n
 
 ## Other_files
 This folder contains a script, performance_graphs.m. It could be useful to plot the perfomance comparison graphs.
+
+
+### For more detailed description, please refer to '../guide.pdf'

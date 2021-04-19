@@ -1,13 +1,5 @@
-% YIG 30nm
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%% Spin-wave parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%
-SW_frequency = 2.282;  % GHz
-SW_amplitude = 0.093;  % dimensionless
-
-N_inf = 4;  % number of information to define a spin-wave vector
-            % example: [amplitude, frequency, phase, delay]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% YIG 30 nm technological parameters
+% It is the lowest level
 
 %%%%%%%%%%%%%%%%%%%%%%%%% design parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=10;           % thinckness  [nm]

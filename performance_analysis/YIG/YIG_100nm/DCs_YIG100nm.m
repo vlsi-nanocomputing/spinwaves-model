@@ -1,11 +1,5 @@
-
-%%%%%%%%%%%%%%%%%%%%%%%%% Spin-wave parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%
-SW_frequency = 2.282;  % GHz
-SW_amplitude = 0.0779;  % dimensionless
-
-N_inf = 4;  % number of information to define a spin-wave vector
-            % example: [amplitude, frequency, phase, delay]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% YIG 100 nm technological parameters
+% It is the lowest level
 
 %%%%%%%%%%%%%%%%%%%%%%%%% design parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=30;           % thinckness  [nm]

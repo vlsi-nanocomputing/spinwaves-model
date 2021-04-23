@@ -2,7 +2,6 @@ function [XOR_out] = XOR(in_A,in_B,model,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
 out_signal_plot_flag = 0;% =1 to plot and to display the output signals
-xor_without_regs_flag = 0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
@@ -24,7 +23,11 @@ while ii <= nargin-3   % -3 because the first 3 parameters are the required ones
             out_signal_plot_flag = 1;
             
         case 'XOR_without_regS'
-            xor_without_regs_flag = 1;
+            if max(size(HA_varargin)) == 0
+                HA_varargin{1} = 'HA_without_regS';
+            else
+                HA_varargin{end+1} = 'HA_without_regS';
+            end
             
         otherwise
             error('Unsupported parameter: %s', string(varargin(1)))
@@ -37,11 +40,7 @@ end
 in_B = phase_shifter(in_B,pi/2);
 [DC1_out,DC1_out_I] = DC1(in_A,in_B,model);
 [out_S,out_C] = DC2(DC1_out,model);
-if xor_without_regs_flag == 1
-    XOR_out = out_S;
-else
-    XOR_out = regenerator_S(out_S,model);
-end
+XOR_out = regenerator_S(out_S,model);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

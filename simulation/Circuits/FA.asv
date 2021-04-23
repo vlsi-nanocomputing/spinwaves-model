@@ -23,11 +23,6 @@ while ii <= nargin-4   % -4 because the first 4 parameters are the required ones
     switch string(varargin{ii})
         case 'out_signal_plot'
             out_signal_plot_flag = 1;
-            if max(size(HA_varargin)) == 0
-                HA_varargin{1} = 'out_signal_plot';
-            else
-                HA_varargin{end+1} = 'out_signal_plot';
-            end
             
         case 'HA_without_regS'
             if max(size(HA_varargin)) == 0
@@ -57,11 +52,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% FA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [S1,C1] = HA(A,B,model,HA_varargin{:});
 [S,C2] = HA(S1,carry_in,model,HA_varargin{:});
-if xor_without_regs_flag == 1
-    C = XOR(C1,C2,model, 'XOR_without_regS');
-else
-    C = XOR(C1,C2,model);
-end
+if
+C = XOR(C1,C2,model);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

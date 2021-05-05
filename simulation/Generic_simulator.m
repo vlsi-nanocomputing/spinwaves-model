@@ -27,13 +27,13 @@ clear all
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A_bin = [0;1;1;0;1;1]; 
-B_bin = [1;0;1;1;0;1]; 
-C_bin = [1;1;1;0;0;0]; 
+A_bin = [0;0;0;1;1;1;1]; 
+B_bin = [0;1;1;0;0;1;1]; 
+C_bin = [1;0;1;0;1;0;1]; 
 D_bin = [0];
 
 Nbit = 2;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
-opt_parameters = {'out_signal_plot','HA_without_regS','HA_without_regC','XOR_without_regS'}; % optional parameters, it can be empty
+opt_parameters = {'out_signal_plot'};%,'HA_without_regS','HA_without_regC','XOR_without_regS'}; % optional parameters, it can be empty
 titleFontSize = 25;   % title FontSize of the plots
 axisFontSize = 13;    % axes FontSize of the plots
 labelFontSize = 20;   % labels FontSize of the plots
@@ -183,7 +183,7 @@ for ii = 1:N_simulation
                 ax = figures(j).CurrentAxes;
                 ax.Title.String = 'Simulation ' + string(ii);
                 ax.Title.FontSize = titleFontSize;
-                ax.Legend.FontSize = legendFontSize;
+                %ax.Legend.FontSize = legendFontSize;
                 ax.XAxis.FontSize = axisFontSize;
                 ax.YAxis.FontSize = axisFontSize;
                 ax.XLabel.FontSize = labelFontSize;

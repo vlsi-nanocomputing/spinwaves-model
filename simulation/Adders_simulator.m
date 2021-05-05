@@ -168,17 +168,18 @@ end
 figure
 hold on
 for i=1:N_simulation
-    scatter([1:1:Nbit+1], normalized_output(i,end:-1:1), 'filled')
+    scatter([1:1:Nbit+1], normalized_output(i,end:-1:1), 600, 'filled')
 end
 axis([1, Nbit+1, -10, 110])
-xlabel('bit','FontSize',20)
-ylabel('Normalized power (%)','FontSize',20)
+xlabel('bit','FontSize',75)
+ylabel('Normalized power (%)','FontSize',75)
 if plot_range_flag == 1 % you can set this flag at the beginning
     plot([1:1:Nbit+1],logic1_sup*ones(1,Nbit+1))
     plot([1:1:Nbit+1],logic1_inf*ones(1,Nbit+1))
     plot([1:1:Nbit+1],logic0_sup*ones(1,Nbit+1))
     plot([1:1:Nbit+1],logic0_inf*ones(1,Nbit+1))
 end
+set(gca,'fontsize',60)
 hold off
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

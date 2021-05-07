@@ -1,17 +1,6 @@
 function [tpd_DC] = DC_delay_calculation(lengths,model)
 
-
-switch model % choosing of vgr according to the technology
-    case 1  % YIG100nm behavioral model
-        vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
-        vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
-    case 2 % YIG100nm physical model
-        vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
-        vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
-    case 3 % YIG30nm physical model
-        vgr_sing = 205.7;    % group velocity of single waveguide [m/s]
-        vgr_coup = 137;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
-end
+SW_parameters % script
 
 % type of DC
 DC_type = size(lengths);

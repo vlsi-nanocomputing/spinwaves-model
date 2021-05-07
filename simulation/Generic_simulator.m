@@ -23,17 +23,19 @@ clear all
 %  7) NOT(A)
 %  8) OR(A,B)
 %  9) N-bit RCA(A,B,C), where the C is the carry_in
-%  10) XOR(A,B)
+%  10) waveguide(A,Lw), it is the magnonic "wire" for interconnections
+%  11) XOR(A,B)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A_bin = [0;1;1]; 
-B_bin = [1;0;1]; 
+A_bin = [1]; 
+B_bin = [0]; 
 C_bin = [1]; 
 D_bin = [0];
 
+Lw = 7000;   % it is the length of "waveguide" block, [nm]
 Nbit = 2;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
-opt_parameters = {'out_signal_plot'}; % optional parameters, it can be empty
+opt_parameters = {'out_signal_plot','dispersion_curves'}; % optional parameters, it can be empty
 titleFontSize = 25;   % title FontSize of the plots
 axisFontSize = 13;    % axes FontSize of the plots
 labelFontSize = 20;   % labels FontSize of the plots
@@ -74,7 +76,8 @@ while circuit ~= [1,2,3,4,5,6,7,8,9,10]
     fprintf('\n  7) NOT(A)');
     fprintf('\n  8) OR(A,B)');
     fprintf('\n  9) %d-bit RCA(A,B,C=Carry_in)',Nbit);
-    circuit = input('\n  10) XOR(A,B) \n');
+    fprintf('\n  10) waveguide(A,Lw)');
+    circuit = input('\n  11) XOR(A,B) \n');
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -316,6 +319,26 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 10
+            A = DAC(A_bin(ii,:),model);
+            fprintf('Simulation %d:  A = "',ii)
+            fprintf('%d"\n',A_bin(ii,:))
+            waveguide_out = waveguide(A, Lw, model, opt_parameters{:});
+            figures = findobj(0,'Type','Figure');
+            New_figures = 0;
+            for j=1:max(size(figures))-analyzed_figures % for each plot
+                ax = figures(j).CurrentAxes;
+                ax.Title.String = 'Simulation ' + string(ii);
+                ax.Title.FontSize = titleFontSize;
+                ax.Legend.FontSize = legendFontSize;
+                ax.XAxis.FontSize = axisFontSize;
+                ax.YAxis.FontSize = axisFontSize;
+                ax.XLabel.FontSize = labelFontSize;
+                ax.YLabel.FontSize = labelFontSize;
+                New_figures = New_figures + 1;
+            end
+            analyzed_figures = analyzed_figures + New_figures;
+            
+        case 11
             A = DAC(A_bin(ii,:),model);
             B = DAC(B_bin(ii,:),model);
             fprintf('Simulation %d:  A = "',ii)

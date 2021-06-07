@@ -2,7 +2,6 @@ function [S,C] = FA(A,B,carry_in,model,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
 out_signal_plot_flag = 0;% =1 to plot and to display the output signals
-xor_without_regs_flag = 0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
@@ -43,9 +42,6 @@ while ii <= nargin-4   % -4 because the first 4 parameters are the required ones
                 HA_varargin{end+1} = 'HA_without_regC';
             end
             
-        case 'XOR_without_regS'
-            xor_without_regs_flag = 1;
-            
         otherwise
             error('Unsupported parameter: %s', string(varargin(1)))
     end
@@ -55,13 +51,17 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% FA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fprintf("HA1");
 [S1,C1] = HA(A,B,model,HA_varargin{:});
+fprintf("HA2");
 [S,C2] = HA(S1,carry_in,model,HA_varargin{:});
-if xor_without_regs_flag == 1
-    C = XOR(C1,C2,model, 'XOR_without_regS');
-else
-    C = XOR(C1,C2,model);
-end
+fprintf("HA3");
+[C,~] = HA(C1,C2,model,HA_varargin{:});
+% if xor_without_regs_flag == 1
+%     C = XOR(C2,C2,model, 'XOR_without_regS');
+% else
+%     C = XOR(C1,C2,model);
+% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

@@ -7,14 +7,46 @@ out_signal_plot_flag = 0;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-if nargin == 6 % out_signal_plot
-    if string(varargin{1}) == 'out_signal_plot'
-        out_signal_plot_flag = 1;
-    else
-        error('Unsupported parameter: %s', string(varargin(1)))
+% if nargin == 6 % out_signal_plot
+%     if string(varargin{1}) == 'out_signal_plot'
+%         out_signal_plot_flag = 1;
+%     else
+%         error('Unsupported parameter: %s', string(varargin(1)))
+%     end
+% elseif nargin > 6
+%     error('Too many input arguments.')
+% end
+
+RCA_varargin = {};
+ii=1;
+while ii <= nargin-5   % -5 because the first 5 parameters are the required ones
+        switch string(varargin{ii})
+        case 'out_signal_plot'
+            out_signal_plot_flag = 1;
+            if max(size(RCA_varargin)) == 0
+                RCA_varargin{1} = 'out_signal_plot';
+            else
+                RCA_varargin{end+1} = 'out_signal_plot';
+            end
+            
+        case 'HA_without_regS'
+            if max(size(RCA_varargin)) == 0
+                RCA_varargin{1} = 'HA_without_regS';
+            else
+                RCA_varargin{end+1} = 'HA_without_regS';
+            end
+                
+        case 'HA_without_regC'
+            if max(size(RCA_varargin)) == 0
+                RCA_varargin{1} = 'HA_without_regC';
+            else
+                RCA_varargin{end+1} = 'HA_without_regC';
+            end
+            
+        otherwise
+            error('Unsupported parameter: %s', string(varargin(1)))
     end
-elseif nargin > 6
-    error('Too many input arguments.')
+    ii = ii + 1;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,7 +56,7 @@ SW_parameters % script
 X = zeros(Nbit+1,N_inf);
 
 for j=0:Nbit-1
-    [X(Nbit-j+1,:),carry] = FA( A(Nbit-j,:), B(Nbit-j,:), carry, model);
+    [X(Nbit-j+1,:),carry] = FA( A(Nbit-j,:), B(Nbit-j,:), carry, model, RCA_varargin{:});
 end
 X(1,:) = carry; % MSB or final carry_out of the RCA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

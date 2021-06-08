@@ -27,9 +27,9 @@ clear all
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-A_bin = [1,1];%[0;0;0;1;1;1;1]; 
-B_bin = [0,1];%[0;1;1;0;0;1;1]; 
-C_bin = [1];%[1;0;1;0;1;0;1]; 
+A_bin = [0;0;0;1;1;1;1]; 
+B_bin = [0;1;1;0;0;1;1]; 
+C_bin = [1;0;1;0;1;0;1]; 
 D_bin = [0];
 
 Nbit = 2;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
@@ -167,9 +167,9 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 4
-            A = [0.0779, 2.2820, 0, 0]%DAC(A_bin(ii,:),model);
-            B = [0.0, 2.2820, 0, 0];%DAC(B_bin(ii,:),model);
-            C = [5.779403e-03, 2.2820, 0, 0];%DAC(C_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model);
+            B = DAC(B_bin(ii,:),model);
+            C = DAC(C_bin(ii,:),model);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
@@ -195,7 +195,7 @@ for ii = 1:N_simulation
             
         case 5
             A = DAC(A_bin(ii,:),model);
-            B = [0.00158, 2.282, 0, 0];%DAC(B_bin(ii,:),model);
+            B = DAC(B_bin(ii,:),model);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')

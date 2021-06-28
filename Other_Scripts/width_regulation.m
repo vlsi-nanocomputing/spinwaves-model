@@ -4,12 +4,12 @@ clc
 %%%% input:     setting section
 %%%% output:    width of waveguide, group velocity
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% setting section %%%%%%%%%%%%%%%%%%%%%%%%%%%
-h=10;                % thinckness (nm)
-w=30;                % initial width(nm)
-delta_k = -6.09e-3;  % (rad/nm), variation with respect to the k(w): positive or negative
-SW_frequency = 2.39; % GHz
-width_min = 10;      % nm
-width_max = 50;      % nm
+h=30;                % thinckness (nm)
+w=100;                % initial width(nm)
+delta_k = -7*9.9331e-05;  % (rad/nm), variation with respect to the k(w): positive or negative
+SW_frequency = 2.282; % GHz
+width_min = 80;      % nm
+width_max = 110;      % nm
 % the program searches the width value in the range from width_min to width_max
 resolution=1;        % resolution to find new width [nm]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -115,6 +115,6 @@ for w = width_min : resolution : width_max
 end
 
 if flag == 0
-    fprintf('Starting from the waveguide with w = %d nm, it is not possible to find a width to have a delta_k = %d rad/nm in the range [%dnm, %dnm]', init_w,delta_k,width_min,width_max)
+    fprintf('Starting from the waveguide with w = %d nm, it is not possible to find a width to have a delta_k = %d rad/nm in the range [%dnm, %dnm] \n', init_w,delta_k,width_min,width_max)
 end
 

@@ -5,8 +5,11 @@ switch model
     case 1  % YIG100nm behavioral model
         SW_frequency = 2.282;
         SW_amplitude = 0.153;
+        vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
+        vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
         limitation1 = 8;
         limitation2 = 0.74;
+        limitation_sing_waveg = 10; % for single waveguide
         duplicator_gain1 = 1/0.5002; 
         duplicator_gain2 = 1/(1-0.5002);
         gain_S = 2; % the amplifier gain at the DC2 out_S (without regS) 
@@ -16,10 +19,13 @@ switch model
     case 2 % YIG100nm physical model
         SW_frequency = 2.282;
         SW_amplitude = 0.0779;
+        vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
+        vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
         x_freepath = 8.58e3;   % decay length [nm], calculated from 
                                % Single_dispersioncurve script 
         limitation1 = 0.53;    % for gap=50nm
         limitation2 = 0.63;    % for gap=10nm
+        limitation_sing_waveg = 10; % for single waveguide
         duplicator_gain1 = 2.37;
         duplicator_gain2 = 2.3;
         gain_S = 5.5; % the amplifier gain at the DC2 out_S (without regS) 
@@ -29,10 +35,13 @@ switch model
     case 3 % YIG30nm physical model
         SW_frequency = 2.29;  % GHz
         SW_amplitude = 0.093;  % dimensionless
+        vgr_sing = 205.7;    % group velocity of single waveguide [m/s]
+        vgr_coup = 137;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
         x_freepath = 9.07e3;   % decay length [nm], calculated from 
                                % Single_dispersioncurve script 
         limitation1 = 10;
         limitation2 = 10;
+        limitation_sing_waveg = 10; % for single waveguide
         duplicator_gain1 = 2.25;
         duplicator_gain2 = 2.07;
         gain_S = 4.2; % the amplifier gain at the DC2 out_S (without regS) 

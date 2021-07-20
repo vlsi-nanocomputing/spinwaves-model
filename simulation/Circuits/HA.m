@@ -1,4 +1,4 @@
-function [out_S,out_C] = HA(in_A,in_B,model,varargin)
+function [out_S,out_C] = HA(in_A,in_B,model,plot_info,varargin)
 
 in_B = phase_shifter(in_B,pi/2);
 
@@ -8,14 +8,14 @@ DC1_opt_param_flag = 0; % =1 there are some optional parameters for the DC1
 DC2_opt_param_flag = 0; % =1 there are some optional parameters for the DC2
 regS_opt_param_flag = 0; % =1 there are some optional parameters for the regS
 regC_opt_param_flag = 0; % =1 there are some optional parameters for the regC
-out_signal_plot_flag = 0;% =1 to plot the out_S and the out_C
+out_signal_plot_flag = 1;% =1 to plot the out_S and the out_C
 HA_without_regS_flag = 0; % =1 to replace the regS by an amplifier
 HA_without_regC_flag = 0; % =1 to replace the regC by an amplifier
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
 ii=1;
-while ii <= nargin-3   % -3 because the first 3 parameters are the required ones
+while ii <= nargin-4   % -3 because the first 3 parameters are the required ones
     switch string(varargin{ii})
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameters of the DC1
         case 'DC1_Lc_avg'
@@ -525,11 +525,6 @@ while ii <= nargin-3   % -3 because the first 3 parameters are the required ones
                 ii = ii+1;
             end
             
-            
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HA outputs plotting
-
-        case 'out_signal_plot'
-            out_signal_plot_flag = 1;         
         case 'HA_without_regS'
             HA_without_regS_flag = 1;           
         case 'HA_without_regC'
@@ -538,8 +533,24 @@ while ii <= nargin-3   % -3 because the first 3 parameters are the required ones
         otherwise
             error('Unsupported parameter: %s', string(varargin(ii)))
     end
-    ii = ii + 1;
+    ii = ii + 1;    
 end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HA outputs plotting
+DC1_plot = 'no_plot';
+DC2_plot = 'no_plot';
+regS_plot = 'no_plot';
+regC_plot = 'no_plot';
+
+if plot_info == "plot_all"
+    DC1_plot = 'plot_all';
+    DC2_plot = 'plot_all';
+    regS_plot = 'plot_all';
+    regC_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -548,25 +559,25 @@ end
 
 % DC1 instantiation
 if DC1_opt_param_flag == 0
-    [DC1_out,DC1_out_I] = DC1(in_A,in_B,model);
+    [DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_plot);
 else
-    [DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_varargin{:});
+    [DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_plot,DC1_varargin{:});
 end
 
 % DC2 instantiation
 if DC2_opt_param_flag == 0
-    [out_S,out_C] = DC2(DC1_out,model);
+    [out_S,out_C] = DC2(DC1_out,model,DC2_plot);
 else
-    [out_S,out_C] = DC2(DC1_out,model,DC2_varargin{:});
+    [out_S,out_C] = DC2(DC1_out,model,DC2_plot,DC2_varargin{:});
 end
 
 SW_parameters
 % regS instantiation
 if HA_without_regS_flag == 0
     if regS_opt_param_flag == 0
-        out_S = regenerator_S(out_S,model);
+        out_S = regenerator_S(out_S,model,regS_plot);
     else
-        out_S = regenerator_S(out_S,model,regS_varargin{:});
+        out_S = regenerator_S(out_S,model,regS_plot,regS_varargin{:});
     end
 else    
     out_S = amplifier(out_S,gain_S);
@@ -575,9 +586,9 @@ end
 % regC instantiation
 if HA_without_regC_flag == 0
     if regC_opt_param_flag == 0
-        out_C = regenerator_C(out_C,model);
+        out_C = regenerator_C(out_C,model,regC_plot);
     else
-        out_C = regenerator_C(out_C,model,regC_varargin{:});
+        out_C = regenerator_C(out_C,model,regC_plot,regC_varargin{:});
     end
 else
     out_C = amplifier(out_C,gain_C);

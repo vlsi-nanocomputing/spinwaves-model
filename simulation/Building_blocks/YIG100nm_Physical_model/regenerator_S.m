@@ -1,4 +1,4 @@
-function [out_signal] = regenerator_S(in_signal,model,varargin)
+function [out_signal] = regenerator_S(in_signal,model,plot_info,varargin)
 
 % This function describes the behavior of the regenerator (2DC+3amplifier)
 % for the sum bit output.
@@ -27,19 +27,17 @@ limitation=limitation2;
 % default values
 Lc_avg_flag = 0; % =1 Display: delta_phase, Lc_avg and pow_par
 disp_curves_flag = 0; % =1 Plot: dispersion curve. Display: Lc and pow_par
-out_signal_plot_flag = 0; % =1 Plot: output signal
+out_signal_plot_flag = 1; % =1 Plot: output signal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
 ii=1;
-while ii <= nargin-2   % -2 because the first 2 parameters are the required ones
+while ii <= nargin-3   % -2 because the first 2 parameters are the required ones
     switch string(varargin{ii})
         case 'Lc_avg'
             Lc_avg_flag = 1;
         case 'dispersion_curves'
             disp_curves_flag = 1;
-        case 'out_signal_plot'
-            out_signal_plot_flag = 1;
         case 'thickness'
             h = varargin{ii+1};
             ii = ii+1;
@@ -80,7 +78,9 @@ while ii <= nargin-2   % -2 because the first 2 parameters are the required ones
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+if plot_info == "no_plot"
+    out_signal_plot_flag = 0;
+end
 %%%%%%%%%%%%%%%%%%%%% input signal amplification %%%%%%%%%%%%%%%%%%%%%%%%%
 DC3_akx = amplifier(in_signal,gain_in);
 DC3_akx = DC3_akx(1); % amplitude of the amplified input signal

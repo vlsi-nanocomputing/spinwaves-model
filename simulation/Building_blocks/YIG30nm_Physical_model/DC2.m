@@ -1,4 +1,4 @@
-function [out_S,out_C] = DC2(in_signal,model,varargin)
+function [out_S,out_C] = DC2(in_signal,model,plot_info,varargin)
 
 % This function describes the behavior of the ideal DC2 (without damping).
 % It receives a signal, and gives 2 output signals(out_S,out_C).
@@ -23,19 +23,17 @@ limitation = limitation2;
 % default values
 Lc_avg_flag = 0; % =1 Display: delta_phase, Lc_avg and pow_par
 disp_curves_flag = 0; % =1 Plot: dispersion curve. Display: Lc and pow_par
-out_signal_plot_flag = 0; % =1 Plot: output signals
+out_signal_plot_flag = 1; % =1 Plot: output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
 ii=1;
-while ii <= nargin-2   % -2 because the first 2 parameters are the required ones
+while ii <= nargin-3   % -2 because the first 2 parameters are the required ones
     switch string(varargin{ii})
         case 'Lc_avg'
             Lc_avg_flag = 1;
         case 'dispersion_curves'
             disp_curves_flag = 1;
-        case 'out_signal_plot'
-            out_signal_plot_flag = 1;
         case 'thickness'
             h = varargin{ii+1};
             ii = ii+1;
@@ -63,7 +61,9 @@ while ii <= nargin-2   % -2 because the first 2 parameters are the required ones
     ii = ii + 1;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+if plot_info == "no_plot"
+    out_signal_plot_flag = 0;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 L_region1 = (gap_region1 - gap2) / sin(20*2*pi/360);  % [nm], length of region1
 L_region3 = (gap_region3 - gap2) / sin(20*2*pi/360);  % [nm], length of region3

@@ -2,21 +2,7 @@
 % this script contains all information about the spin-wave
 
 switch model 
-    case 1  % YIG100nm behavioral model
-        SW_frequency = 2.282;
-        SW_amplitude = 0.153;
-        vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
-        vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
-        limitation1 = 8;
-        limitation2 = 0.74;
-        limitation_sing_waveg = 10; % for single waveguide
-        duplicator_gain1 = 1/0.5002; 
-        duplicator_gain2 = 1/(1-0.5002);
-        gain_S = 2; % the amplifier gain at the DC2 out_S (without regS) 
-        gain_C = 1; % the amplifier gain at the DC2 out_C (without regC)
-        N_inf = 4;  % number of information to define a spin-wave vector
-            % example: [amplitude, frequency, phase, delay]
-    case 2 % YIG100nm physical model
+    case 'YIG 100nm'  % YIG100nm behavioral model
         SW_frequency = 2.282;
         SW_amplitude = 0.0779;
         vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
@@ -32,7 +18,7 @@ switch model
         gain_C = 1.5; % the amplifier gain at the DC2 out_C (without regC)
         N_inf = 4;  % number of information to define a spin-wave vector
             % example: [amplitude, frequency, phase, delay]
-    case 3 % YIG30nm physical model
+    case 'YIG 30nm' % YIG30nm physical model
         SW_frequency = 2.29;  % GHz
         SW_amplitude = 0.093;  % dimensionless
         vgr_sing = 205.7;    % group velocity of single waveguide [m/s]
@@ -49,11 +35,7 @@ switch model
         N_inf = 4;  % number of information to define a spin-wave vector
             % example: [amplitude, frequency, phase, delay]
     otherwise % Logical model
-        duplicator_gain1 = 2; 
-        duplicator_gain2 = 2;
-        gain_S = 4; % the amplifier gain at the DC2 out_S (without regS) 
-        gain_C = 1; % the amplifier gain at the DC2 out_C (without regC)
-        N_inf = 1;  % number of information to define a spin-wave vector
+        fprintf('Error, unvalid model selected')
 end
        
 

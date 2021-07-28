@@ -1,26 +1,35 @@
-function [AND_out] = AND(in_A,in_B,model,varargin)
+function [AND_out] = AND(in_A,in_B,model,plot_info,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
-out_signal_plot_flag = 0;% =1 to plot and to display the output signals
+out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-if nargin == 4 % out_signal_plot
-    if string(varargin{1}) == 'out_signal_plot'
-        out_signal_plot_flag = 1;
-    else
-        error('Unsupported parameter: %s', string(varargin(1)))
-    end
-elseif nargin > 4
-    error('Too many input arguments.')
-end
+[DC1_varargin,DC2_varargin,regS_varargin, regC_varargin, DC_without_regS_flag,DC_without_regC_flag] = decodeDCParameters(varargin{:});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+DC1_plot = 'no_plot';
+DC2_plot = 'no_plot';
+regS_plot = 'no_plot';
+regC_plot = 'no_plot';
 
+if plot_info == "plot_all"
+    DC1_plot = 'plot_all';
+    DC2_plot = 'plot_all';
+    regS_plot = 'plot_all';
+    regC_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% AND %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 in_B = phase_shifter(in_B,pi/2);
-[DC1_out,DC1_out_I] = DC1(in_A,in_B,model);
-[out_S, AND_out] = DC2(DC1_out,model);
-AND_out = regenerator_C(AND_out,model);
+[DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_plot,DC1_varargin{:});
+[out_S, AND_out] = DC2(DC1_out,model,DC2_plot,DC2_varargin{:});
+% regC instantiation
+if DC_without_regC_flag == 0
+    AND_out = regenerator_C(AND_out,model,regC_plot,regC_varargin{:});
+else
+    AND_out = amplifier(out_C,gain_C);
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

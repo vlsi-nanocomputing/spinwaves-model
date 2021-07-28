@@ -97,7 +97,7 @@ for ii = 1:N_simulation
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            AND_out = AND(A, B, model, opt_parameters{:})
+            AND_out = AND(A, B, model, plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -205,7 +205,7 @@ for ii = 1:N_simulation
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            [HA_S,HA_C] = HA(A, B, model, opt_parameters{:})
+            [HA_S,HA_C] = HA(A, B, model,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot

@@ -1,34 +1,15 @@
 function [OR_out] = OR(in_A,in_B,model,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
-out_signal_plot_flag = 0;% =1 to plot and to display the output signals
+out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-HA_varargin = {};
-ii=1;
-while ii <= nargin-3   % -3 because the first 3 parameters are the required ones
-    switch string(varargin{ii})
-        case 'out_signal_plot'
-            out_signal_plot_flag = 1;
-            
-        case 'HA_without_regS'
-            if max(size(HA_varargin)) == 0
-                HA_varargin{1} = 'HA_without_regS';
-            else
-                HA_varargin{end+1} = 'HA_without_regS';
-            end
-                
-        case 'HA_without_regC'
-            if max(size(HA_varargin)) == 0
-                HA_varargin{1} = 'HA_without_regC';
-            else
-                HA_varargin{end+1} = 'HA_without_regC';
-            end
-            
-        otherwise
-            error('Unsupported parameter: %s', string(varargin(1)))
-    end
-    ii = ii + 1;
+HA_varargin = varargin;
+HA_plot = 'no_plot';
+if plot_info == "plot_all"
+    HA_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

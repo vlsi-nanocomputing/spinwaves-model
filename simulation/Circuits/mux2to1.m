@@ -4,26 +4,23 @@ function [mux2to1_out] = mux2to1(in_0,in_1,sel,model,varargin)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
-out_signal_plot_flag = 0;% =1 to plot and to display the output signals
+out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-if nargin == 5 % out_signal_plot
-    if string(varargin{1}) == 'out_signal_plot'
-        out_signal_plot_flag = 1;
-    else
-        error('Unsupported parameter: %s', string(varargin(1)))
-    end
-elseif nargin > 5
-    error('Too many input arguments.')
+mux_plot = 'no_plot';
+if plot_info == "plot_all"
+    mux_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mux2to1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[sel1,sel2] = duplicator(sel,model);
-out1 = AND(in_0,NOT(sel1,model),model);
-out2 = AND(in_1,sel2,model);
-mux2to1_out = OR(out1,out2,model);
+[sel1,sel2] = duplicator(sel,model,mux_plot,varargin{:});
+out1 = AND(in_0,NOT(sel1,model),model,mux_plot,varargin{:});
+out2 = AND(in_1,sel2,model,mux_plot,varargin{:});
+mux2to1_out = OR(out1,out2,model,mux_plot,varargin{:});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

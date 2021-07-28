@@ -1,28 +1,24 @@
 function [output] = NOT(input,model,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
-out_signal_plot_flag = 0;% =1 to plot and to display the output signals
+out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-if nargin == 3 % out_signal_plot
-    if string(varargin{1}) == 'out_signal_plot'
-        out_signal_plot_flag = 1;
-    else
-        error('Unsupported parameter: %s', string(varargin(1)))
-    end
-elseif nargin > 3
-    error('Too many input arguments.')
+HA_plot = 'no_plot';
+if plot_info == "plot_all"
+    HA_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % It is an HA with one input fixed at the 1 
 fixed_input = 1;
-if model ~= 0
-    fixed_input = DAC(fixed_input,model);
-end
-[output,C] = HA(input,fixed_input,model);
+fixed_input = DAC(fixed_input,model);
+
+[output,C] = HA(input,fixed_input,model,HA_plot,varargin{:});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%
 if out_signal_plot_flag == 1

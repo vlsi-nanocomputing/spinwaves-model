@@ -28,15 +28,20 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-A_bin = [0;1]; 
-B_bin = [0;1]; 
+%%vectors
+A_bin = [0,0,0,0;1,0,0,0]; 
+B_bin = [0,1,0,0;1,0,0,0]; 
 C_bin = [1;0]; 
+
+%%bit
+% A_bin = [0;1]; 
+% B_bin = [1;1]; 
+% C_bin = [1;0]; 
 
 D_bin = [0];
 
 Lw = 7000;   % it is the length of "waveguide" block, [nm]
-Nbit = 2;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
+Nbit = 4;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
 
 %opt_parameters = {'HA_without_regS'};%'HA_without_regS','HA_without_regC','out_signal_plot'}; % optional parameters, it can be empty
 
@@ -127,7 +132,7 @@ for ii = 1:N_simulation
             fprintf('", D = "')
             fprintf('%d',D_bin(ii,:))
             fprintf('"\n')
-            AND4_out = AND4(A, B, C, D, model, opt_parameters{:})
+            AND4_out = AND4(A, B, C, D, model, plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -154,7 +159,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            CSA_out = carry_skip_adder(A,B,C,Nbit,model,opt_parameters{:})
+            CSA_out = carry_skip_adder(A, B, C, Nbit, model, plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -232,7 +237,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            MUX2TO1_out = mux2to1(A,B,C,model,opt_parameters{:})
+            MUX2TO1_out = mux2to1(A,B,C,model,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -253,7 +258,7 @@ for ii = 1:N_simulation
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('"\n')
-            NOT_out = NOT(A,model,opt_parameters{:})
+            NOT_out = NOT(A,model,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -277,7 +282,7 @@ for ii = 1:N_simulation
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            OR_out = OR(A,B,model,opt_parameters{:})
+            OR_out = OR(A,B,model,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -304,7 +309,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            RCA_out = RCA_Nbit(A,B,C,Nbit,model,opt_parameters{:})
+            RCA_out = RCA_Nbit(A,B,C,Nbit,model,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -348,7 +353,7 @@ for ii = 1:N_simulation
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            XOR_out = XOR(A,B,model,opt_parameters{:})
+            XOR_out = XOR(A,B,model,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot

@@ -1,46 +1,40 @@
-function [XOR_out] = XOR(in_A,in_B,model,varargin)
+function [XOR_out] = XOR(in_A,in_B,model,plot_info, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
-out_signal_plot_flag = 0;% =1 to plot and to display the output signals
-xor_without_regs_flag = 0;
+%%%%%% default values
+out_signal_plot_flag = 1;% =1 to plot the out_S and the out_C
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-% if nargin == 4 % out_signal_plot
-%     if string(varargin{1}) == 'out_signal_plot'
-%         out_signal_plot_flag = 1;
-%     else
-%         error('Unsupported parameter: %s', string(varargin(1)))
-%     end
-% elseif nargin > 4
-%     error('Too many input arguments.')
-% end
+[DC1_varargin,DC2_varargin,regS_varargin, regC_varargin, DC_without_regS_flag,DC_without_regC_flag] = decodeDCParameters(varargin{:});
 
-HA_varargin = {};
-ii=1;
-while ii <= nargin-3   % -3 because the first 3 parameters are the required ones
-    switch string(varargin{ii})
-        case 'out_signal_plot'
-            out_signal_plot_flag = 1;
-            
-        case 'XOR_without_regS'
-            xor_without_regs_flag = 1;
-            
-        otherwise
-            error('Unsupported parameter: %s', string(varargin(1)))
-    end
-    ii = ii + 1;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HA outputs plotting
+DC1_plot = 'no_plot';
+DC2_plot = 'no_plot';
+regS_plot = 'no_plot';
+regC_plot = 'no_plot';
+
+if plot_info == "plot_all"
+    DC1_plot = 'plot_all';
+    DC2_plot = 'plot_all';
+    regS_plot = 'plot_all';
+    regC_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% XOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 in_B = phase_shifter(in_B,pi/2);
-[DC1_out,DC1_out_I] = DC1(in_A,in_B,model);
-[out_S,out_C] = DC2(DC1_out,model);
-if xor_without_regs_flag == 1
-    XOR_out = out_S;
-else
-    XOR_out = regenerator_S(out_S,model);
+[DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_plot,DC1_varargin{:});
+[out_S,~] = DC2(DC1_out,model,DC2_plot,DC2_varargin{:});
+
+% regS instantiation
+if DC_without_regS_flag == 0
+    XOR_out = regenerator_S(out_S,model,regS_plot,regS_varargin{:});
+else    
+    XOR_out = amplifier(out_S,gain_S); %out_S;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -48,7 +42,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%
 if out_signal_plot_flag == 1
     signal_plotting(XOR_out,model,'XOR out');
-    fprintf('\n AND: XOR_out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',XOR_out(4),XOR_out(1),XOR_out(2),XOR_out(3),normalization(XOR_out(1),model))
+    fprintf('\n XOR: XOR_out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',XOR_out(4),XOR_out(1),XOR_out(2),XOR_out(3),normalization(XOR_out(1),model))
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

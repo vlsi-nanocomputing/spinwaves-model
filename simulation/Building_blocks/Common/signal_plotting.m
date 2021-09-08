@@ -1,4 +1,4 @@
-function [] = signal_plot(in_signal,model,varargin)
+function [] = signal_plotting(in_signal,model,varargin)
 
 N_signal = size(in_signal);
 N_signal = N_signal(1);

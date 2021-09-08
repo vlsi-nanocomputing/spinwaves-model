@@ -1,4 +1,4 @@
-function [X] = carry_skip_adder(A,B,carry,Nbit,model,varargin)
+function [X] = carry_skip_adder(A,B,carry,Nbit,model, plot_info, varargin)
 % N-bit carry skip adder
 % Please use a N as a multiple of 4
 % NB: the function describes the behavioral simulation of the device 
@@ -7,22 +7,17 @@ function [X] = carry_skip_adder(A,B,carry,Nbit,model,varargin)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
-out_signal_plot_flag = 0;% =1 to plot and to display the output signals
+out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-if nargin == 6 % out_signal_plot
-    if string(varargin{1}) == 'out_signal_plot'
-        out_signal_plot_flag = 1;
-    else
-        error('Unsupported parameter: %s', string(varargin(1)))
-    end
-elseif nargin > 6
-    error('Too many input arguments.')
-end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sub_plot = 'no_plot';
 
-
+if plot_info == "plot_all"
+    sub_plot = 'plot_all';
+elseif plot_info == "no_plot"
+    out_signal_plot_flag = 0;
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CSA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 SW_parameters % script
 N_block = Nbit/4;
@@ -34,27 +29,27 @@ A2 = zeros(Nbit,N_inf);
 B1 = zeros(Nbit,N_inf);
 B2 = zeros(Nbit,N_inf);
 for i=1:Nbit
-    [A1(i,:),A2(i,:)] = duplicator(A(i,:),model);
-    [B1(i,:),B2(i,:)] = duplicator(B(i,:),model);
+    [A1(i,:),A2(i,:)] = duplicator(A(i,:),model,sub_plot, varargin{:});
+    [B1(i,:),B2(i,:)] = duplicator(B(i,:),model,sub_plot, varargin{:});
 end
 
 %%%%%%%%%%%%%%%%%%%%%%% propagate calculation %%%%%%%%%%%%%%%%%%%%%%%%%
 p = zeros(Nbit,N_inf); % propagates of every (ai,bi)
 for i=1:Nbit
-    p(i,:) = XOR( A1(i,:), B1(i,:) ,model );
+    p(i,:) = XOR( A1(i,:), B1(i,:) ,model,sub_plot, varargin{:} );
 end
 P_block = zeros(N_block,N_inf); % propagate of every block
 for i=1:N_block
-    P_block(i,:) = AND4( p((i-1)*4+1,:), p((i-1)*4+2,:), p((i-1)*4+3,:), p((i-1)*4+4,:), model );
+    P_block(i,:) = AND4( p((i-1)*4+1,:), p((i-1)*4+2,:), p((i-1)*4+3,:), p((i-1)*4+4,:), model,sub_plot, varargin{:} );
 end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% 4-bit RCA of every block %%%%%%%%%%%%%%%%%%%%%
 if rem(Nbit,4) == 0
     for i=N_block:-1:1 % for every block
-        RCA_out = RCA_Nbit( A2((i-1)*4+1:(i-1)*4+4, :), B2((i-1)*4+1:(i-1)*4+4, :), carry, 4 ,model); % 4 is the number of FA of every RCA group
+        RCA_out = RCA_Nbit( A2((i-1)*4+1:(i-1)*4+4, :), B2((i-1)*4+1:(i-1)*4+4, :), carry, 4 ,model,sub_plot, varargin{:}); % 4 is the number of FA of every RCA group
         X( (i-1)*4+2:(i-1)*4+5, :) = RCA_out(2:end, :);
-        carry = mux2to1(RCA_out(1,:), carry, P_block(i,:) ,model);
+        carry = mux2to1(RCA_out(1,:), carry, P_block(i,:) ,model,sub_plot, varargin{:});
     end
     X(1,:) = carry;
 else

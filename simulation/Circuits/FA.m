@@ -5,17 +5,6 @@ out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% optional parameters reception %%%%%%%%%%%%%%%%%%%%%%%
-% if nargin == 5 % out_signal_plot
-%     if string(varargin{1}) == 'out_signal_plot'
-%         out_signal_plot_flag = 1;
-%     else
-%         error('Unsupported parameter: %s', string(varargin(1)))
-%     end
-% elseif nargin > 5
-%     error('Too many input arguments.')
-% end
-%plot= no_plot, plot_all, plot_top
-
 HA_varargin = varargin;
 HA_plot = 'no_plot';
 if plot_info == "plot_all"
@@ -39,11 +28,6 @@ if plot_info == "plot_all"
     fprintf("HA3");
 end
 [C,~] = HA(C1,C2,model,HA_plot,HA_varargin{:});
-% if xor_without_regs_flag == 1
-%     C = XOR(C2,C2,model, 'XOR_without_regS');
-% else
-%     C = XOR(C1,C2,model);
-% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

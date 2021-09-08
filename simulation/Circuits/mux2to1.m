@@ -1,4 +1,4 @@
-function [mux2to1_out] = mux2to1(in_0,in_1,sel,model,varargin)
+function [mux2to1_out] = mux2to1(in_0,in_1,sel,model,plot_info, varargin)
 % the multiplexer is implemented using the boolean function: 
 % f = XS'+YS, with X and Y the inputs, and S the sel 
 
@@ -18,7 +18,8 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% mux2to1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [sel1,sel2] = duplicator(sel,model,mux_plot,varargin{:});
-out1 = AND(in_0,NOT(sel1,model),model,mux_plot,varargin{:});
+sel1_neg = NOT(sel1,model,mux_plot,varargin{:});
+out1 = AND(in_0,sel1_neg,model,mux_plot,varargin{:});
 out2 = AND(in_1,sel2,model,mux_plot,varargin{:});
 mux2to1_out = OR(out1,out2,model,mux_plot,varargin{:});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

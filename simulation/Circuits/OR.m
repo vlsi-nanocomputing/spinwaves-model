@@ -1,4 +1,4 @@
-function [OR_out] = OR(in_A,in_B,model,varargin)
+function [OR_out] = OR(in_A,in_B,model,plot_info, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
 out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,9 +14,8 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[S,C] = HA(in_A,in_B,model,HA_varargin{:});
-[S,C] = HA(S,C,model,HA_varargin{:});
-OR_out = S;
+[S,C] = HA(in_A,in_B,model,HA_plot, HA_varargin{:});
+[OR_out,~] = HA(S,C,model,HA_plot, HA_varargin{:});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

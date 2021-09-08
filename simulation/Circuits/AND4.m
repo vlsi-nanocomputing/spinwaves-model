@@ -1,4 +1,4 @@
-function [AND4_out] = AND4(A,B,C,D,model,varargin)
+function [AND4_out] = AND4(A,B,C,D,model,plot_info,varargin)
 % AND port with 4 inputs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%

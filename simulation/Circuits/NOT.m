@@ -1,4 +1,4 @@
-function [output] = NOT(input,model,varargin)
+function [output] = NOT(input,model,plot_info, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
 out_signal_plot_flag = 1;% =1 to plot and to display the output signals
@@ -18,7 +18,7 @@ end
 fixed_input = 1;
 fixed_input = DAC(fixed_input,model);
 
-[output,C] = HA(input,fixed_input,model,HA_plot,varargin{:});
+[output,~] = HA(input,fixed_input,model,HA_plot,varargin{:});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%
 if out_signal_plot_flag == 1

@@ -9,13 +9,11 @@ out_signal_plot_flag = 1;% =1 to plot and to display the output signals
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 DC1_plot = 'no_plot';
 DC2_plot = 'no_plot';
-regS_plot = 'no_plot';
 regC_plot = 'no_plot';
 
 if plot_info == "plot_all"
     DC1_plot = 'plot_all';
     DC2_plot = 'plot_all';
-    regS_plot = 'plot_all';
     regC_plot = 'plot_all';
 elseif plot_info == "no_plot"
     out_signal_plot_flag = 0;

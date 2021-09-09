@@ -65,18 +65,18 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%% digital-analog conversion %%%%%%%%%%%%%%%%%%%%%%%
-    in_A = DAC(A(i,:),model);  % spin-wave = [amplitude, frequency, phase, delay]
-    in_B = DAC(B(i,:),model);
-    in_C = DAC(C(i,:),model);
+    in_A = DAC(A(i,:),model_parameters);  % spin-wave = [amplitude, frequency, phase, delay]
+    in_B = DAC(B(i,:),model_parameters);
+    in_C = DAC(C(i,:),model_parameters);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Simulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% you can choose one adder from the following list:
 
     if adder == 1
-        output = RCA_Nbit(in_A,in_B,in_C,Nbit,model);
+        output = RCA_Nbit(in_A,in_B,in_C,Nbit,model_parameters);
     elseif adder == 2
-        output = carry_skip_adder(in_A, in_B, in_C, Nbit, model);
+        output = carry_skip_adder(in_A, in_B, in_C, Nbit,model_parameters);
     end
     
     % in order to evaluate the error of result bits, in this point we store
@@ -89,7 +89,7 @@ for i = 1:N_simulation
     model_t = model;
     model = 0; % logical model
     addpath('Building_blocks/YIG100nm_Logical_model')% model category change
-    exact_output(i,:) = RCA_Nbit(A(i,:)',B(i,:)',C(i,:),Nbit,model);
+    exact_output(i,:) = RCA_Nbit(A(i,:)',B(i,:)',C(i,:),Nbit,model_parameters);
     addpath(model_path)
     model = model_t;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -97,7 +97,7 @@ for i = 1:N_simulation
 
 %%%%%%%%%%%%%%%%%%%%% outputs analog-digital conversion %%%%%%%%%%%%%%%%%
     % analog to digital conversion of the simulation solution
-    output_bin(i,:) = ADC(output,model);      
+    output_bin(i,:) = ADC(output,model_parameters);      
 end % for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -143,7 +143,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%  accuracy evaluation and storing  %%%%%%%%%%%%%%%%%
 % normalization of the output bits of every simulation
-normalized_output = normalization(output_sig,model); 
+normalized_output = normalization(output_sig,model_parameters); 
 
 if result_rep_flag == 1 % report of the simulation result, you can set this flag at the beginning
     f = fopen(result_rep_file,'w');

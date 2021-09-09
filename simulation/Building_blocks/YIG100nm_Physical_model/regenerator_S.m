@@ -1,4 +1,4 @@
-function [out_signal] = regenerator_S(in_signal,model,plot_info,varargin)
+function [out_signal] = regenerator_S(in_signal,model_parameters,plot_info,varargin)
 
 % This function describes the behavior of the regenerator (2DC+3amplifier)
 % for the sum bit output.
@@ -9,7 +9,7 @@ function [out_signal] = regenerator_S(in_signal,model,plot_info,varargin)
 % the following way:
 % [amplitude(dimensionless), frequency [GHz], phase [rad], delay [ns]]
 
-SW_parameters % script
+%SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 gain_in = 9;        % input amplifier gain
 gain_interm = 2;    % intermediate amplifier gain
@@ -20,7 +20,7 @@ L3=1107;            % length of the coupling region of the first DC [nm]
 L4=903;             % length of the coupling region of the second DC [nm]
 gap=10;             % the gap of the DCs [nm]
 B=0;                % external field [mT]
-limitation=limitation2;
+limitation=model_parameters.limitation2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -89,27 +89,27 @@ DC3_akx = DC3_akx(1); % amplitude of the amplified input signal
 %%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 d=w+gap;       % [nm]
 DC_design = [h, w, d, B];
-[wm1, wm2, Tkx] = DC_equations(dkx, kmax, limitation, DC_design);
+[wm1, wm2, Tkx] = DC_equations(model_parameters.dkx, model_parameters.kmax, limitation, DC_design);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%% first DC operation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-k1=dkx:dkx:kmax;
+k1=model_parameters.dkx:model_parameters.dkx:model_parameters.kmax;
 ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
 delta_phase = 0;
-dl=dx/2; % discretization resolution
+dl=model_parameters.dx/2; % discretization resolution
 N_cycle = ceil(L3/dl);
 for i1=1:N_cycle
     if i1 == N_cycle
         dl = L3 - (N_cycle-1)*dl;
     end
-    DC3_akx = DC3_akx*exp(-dl/x_freepath);
+    DC3_akx = DC3_akx*exp(-dl/model_parameters.x_freepath);
     ff1_s = ff1+Tkx.*abs(DC3_akx).^2;
     ff2_s = ff2+Tkx.*abs(DC3_akx).^2;
-    DC3_ks = interp1(abs(ff1_s),k1,SW_frequency);  % rad/nm
-    DC3_kas = interp1(abs(ff2_s),k1,SW_frequency); % rad/nm
+    DC3_ks = interp1(abs(ff1_s),k1,model_parameters.SW_frequency);  % rad/nm
+    DC3_kas = interp1(abs(ff2_s),k1,model_parameters.SW_frequency); % rad/nm
     delta_k = abs(DC3_ks-DC3_kas); % rad/nm
     delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
 end
@@ -132,17 +132,17 @@ pow_par1 = pow_par;
 %%%%%%%%%%%%%%%%%%%% second DC operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 delta_phase = 0;
-dl=dx/2;
+dl=model_parameters.dx/2;
 N_cycle = ceil(L4/dl);
 for i1=1:N_cycle
     if i1 == N_cycle
         dl = L4 - (N_cycle-1)*dl;
     end
-    DC4_akx = DC4_akx*exp(-dl/x_freepath);
+    DC4_akx = DC4_akx*exp(-dl/model_parameters.x_freepath);
     ff1_s = ff1+Tkx.*abs(DC4_akx).^2;
     ff2_s = ff2+Tkx.*abs(DC4_akx).^2;
-    DC4_ks = interp1(abs(ff1_s),k1,SW_frequency);  % rad/nm
-    DC4_kas = interp1(abs(ff2_s),k1,SW_frequency); % rad/nm
+    DC4_ks = interp1(abs(ff1_s),k1,model_parameters.SW_frequency);  % rad/nm
+    DC4_kas = interp1(abs(ff2_s),k1,model_parameters.SW_frequency); % rad/nm
     delta_k = abs(DC4_ks-DC4_kas); % rad/nm
     delta_phase = delta_phase + delta_k*dl; % [rad], phase shift accumulated until this sub-interval
 end
@@ -162,7 +162,7 @@ out_signal = amplifier(out_signal,gain_out);
 
 
 % propagation delay
-out_signal(4) = in_signal(4) + DC_delay_calculation(L3+L4,model); 
+out_signal(4) = in_signal(4) + DC_delay_calculation(L3+L4,model_parameters); 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operations %%%%%%%%%%%%%%%%%%%%%%%
@@ -177,7 +177,7 @@ end
 if disp_curves_flag == 1
     d = w+gap; 
     DC_design = [h, w, d, B];
-    [wm1, wm2, DC_Tkx] = DC_equations(dkx, kmax, limitation, DC_design);
+    [wm1, wm2, DC_Tkx] = DC_equations(model_parameters.dkx, model_parameters.kmax, limitation, DC_design);
     DC_ff1=wm1./(2*pi);
     DC_ff2=wm2./(2*pi);
     
@@ -195,8 +195,8 @@ if disp_curves_flag == 1
     axis([0 0.025 1.8 2.4])
     title('Dispersion curves of the regenarator ''S'' (for both the DCs)','FontSize',15)
     
-    DC_ks = interp1(abs(DC_ff1),k1,SW_frequency);
-    DC_kas = interp1(abs(DC_ff2),k1,SW_frequency);
+    DC_ks = interp1(abs(DC_ff1),k1,model_parameters.SW_frequency);
+    DC_kas = interp1(abs(DC_ff2),k1,model_parameters.SW_frequency);
     DC_Lc = pi/abs(DC_ks-DC_kas);  % [nm]
     fprintf('\n RegS: the Lc of the plot (dispersion curves) is %dnm \n',DC_Lc)
     DC_pow_par = cos(pi*L3/(2*DC_Lc))^2;
@@ -207,8 +207,8 @@ end
     
 
 if out_signal_plot_flag == 1
-    signal_plotting(out_signal,model,'Regenerator ''S'' output')
-    fprintf('\n RegS: out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',out_signal(4),out_signal(1),out_signal(2),out_signal(3),normalization(out_signal(1),model))
+    signal_plotting(out_signal,model_parameters,'Regenerator ''S'' output')
+    fprintf('\n RegS: out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',out_signal(4),out_signal(1),out_signal(2),out_signal(3),normalization(out_signal(1),model_parameters))
 end
 
 end

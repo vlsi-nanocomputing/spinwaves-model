@@ -1,7 +1,7 @@
 function [X] = CLA_4bit_ver2(A,B,carry)
 
 cd common
-SW_parameters % script
+%SW_parameters % script
 cd ..
 
 X = zeros(5,N_inf);

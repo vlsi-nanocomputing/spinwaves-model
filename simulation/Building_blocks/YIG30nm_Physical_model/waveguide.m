@@ -1,7 +1,7 @@
-function [out_signal] = waveguide(in_signal,Lw,model,varargin)
+function [out_signal] = waveguide(in_signal,Lw,model_parameters,varargin)
 
 
-SW_parameters % script
+%SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%
 h=10;           % thickness  [nm]
 w=30;          % width  [nm]
@@ -89,8 +89,8 @@ out_signal(4) = in_signal(4) + Lw/vgr_sing;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%
 if out_signal_plot_flag == 1
-    signal_plotting(out_signal,model,'waveguide out');
-    fprintf('\n waveguide: out_signal = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d rad, normalized power = %d%% \n',out_signal(4),out_signal(1),out_signal(2),out_signal(3),normalization(out_signal(1),model))
+    signal_plotting(out_signal,model_parameters,'waveguide out');
+    fprintf('\n waveguide: out_signal = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d rad, normalized power = %d%% \n',out_signal(4),out_signal(1),out_signal(2),out_signal(3),normalization(out_signal(1),model_parameters))
 end
 
 if disp_curves_flag == 1

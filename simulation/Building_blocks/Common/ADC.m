@@ -1,7 +1,7 @@
-function [out_value] = ADC(in_signal,model)
+function [out_value] = ADC(in_signal,model_parameters)
 
 
-SW_parameters
+%SW_parameters
 
 N = size(in_signal);
 N = N(1);

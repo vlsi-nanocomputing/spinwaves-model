@@ -29,14 +29,14 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%vectors
-A_bin = [0,0,0,0;1,0,0,0]; 
-B_bin = [0,1,0,0;1,0,0,0]; 
-C_bin = [1;0]; 
+% A_bin = [0,0,0,0;1,0,0,0]; 
+% B_bin = [0,1,0,0;1,0,0,0]; 
+% C_bin = [1;0]; 
 
 %%bit
-% A_bin = [0;1]; 
-% B_bin = [1;1]; 
-% C_bin = [1;0]; 
+A_bin = [0;1]; 
+B_bin = [1;1]; 
+C_bin = [1;0]; 
 
 D_bin = [0];
 
@@ -68,6 +68,8 @@ end
 addpath(model_path)
 addpath('simulation/Building_blocks/Common')
 addpath('simulation/Circuits')
+
+SW_parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% Choosing of the simulation circuit %%%%%%%%%%%%%%%%
@@ -95,21 +97,21 @@ analyzed_figures = 0;
 for ii = 1:N_simulation
     switch circuit
         case 'AND(A,B)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            AND_out = AND(A, B, model, plot_info, opt_parameters{:})
+            AND_out = AND(A, B,model_parameters, plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
                 ax = figures(j).CurrentAxes;
                 ax.Title.String = 'Simulation ' + string(ii);
                 ax.Title.FontSize = titleFontSize;
-                ax.Legend.FontSize = legendFontSize;
+                %ax.Legend.FontSize = legendFontSize;
                 ax.XAxis.FontSize = axisFontSize;
                 ax.YAxis.FontSize = axisFontSize;
                 ax.XLabel.FontSize = labelFontSize;
@@ -119,10 +121,10 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'AND4(A,B,C,D)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
-            C = DAC(C_bin(ii,:),model);
-            D = DAC(D_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
+            C = DAC(C_bin(ii,:),model_parameters);
+            D = DAC(D_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
@@ -132,7 +134,7 @@ for ii = 1:N_simulation
             fprintf('", D = "')
             fprintf('%d',D_bin(ii,:))
             fprintf('"\n')
-            AND4_out = AND4(A, B, C, D, model, plot_info, opt_parameters{:})
+            AND4_out = AND4(A, B, C, D,model_parameters, plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -149,9 +151,9 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'N-bit Carry_skip_adder(A,B,C=Carry_in)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
-            C = DAC(C_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
+            C = DAC(C_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
@@ -159,7 +161,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            CSA_out = carry_skip_adder(A, B, C, Nbit, model, plot_info, opt_parameters{:})
+            CSA_out = carry_skip_adder(A, B, C, Nbit,model_parameters, plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -176,9 +178,9 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'FA(A,B,C)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
-            C = DAC(C_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
+            C = DAC(C_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
@@ -186,7 +188,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            [FA_S,FA_C] = FA(A,B,C,model,plot_info,opt_parameters{:})
+            [FA_S,FA_C] = FA(A,B,C,model_parameters,plot_info,opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -203,14 +205,14 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'HA(A,B)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            [HA_S,HA_C] = HA(A, B, model,plot_info, opt_parameters{:})
+            [HA_S,HA_C] = HA(A, B,model_parameters,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -227,9 +229,9 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'Mux2to1(A,B,C=sel)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
-            C = DAC(C_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
+            C = DAC(C_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
@@ -237,7 +239,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            MUX2TO1_out = mux2to1(A,B,C,model,plot_info, opt_parameters{:})
+            MUX2TO1_out = mux2to1(A,B,C,model_parameters,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -254,11 +256,11 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'NOT(A)'
-            A = DAC(A_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('"\n')
-            NOT_out = NOT(A,model,plot_info, opt_parameters{:})
+            NOT_out = NOT(A,model_parameters,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -275,14 +277,14 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'OR(A,B)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            OR_out = OR(A,B,model,plot_info, opt_parameters{:})
+            OR_out = OR(A,B,model_parameters,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -299,9 +301,9 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'N-bit RCA(A,B,C=Carry_in)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
-            C = DAC(C_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
+            C = DAC(C_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
@@ -309,7 +311,7 @@ for ii = 1:N_simulation
             fprintf('", C = "')
             fprintf('%d',C_bin(ii,:))
             fprintf('"\n')
-            RCA_out = RCA_Nbit(A,B,C,Nbit,model,plot_info, opt_parameters{:})
+            RCA_out = RCA_Nbit(A,B,C,Nbit,model_parameters,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -326,10 +328,10 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'waveguide(A,Lw)'
-            A = DAC(A_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d"\n',A_bin(ii,:))
-            waveguide_out = waveguide(A, Lw, model, opt_parameters{:});
+            waveguide_out = waveguide(A, Lw,model_parameters, opt_parameters{:});
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot
@@ -346,14 +348,14 @@ for ii = 1:N_simulation
             analyzed_figures = analyzed_figures + New_figures;
             
         case 'XOR(A,B)'
-            A = DAC(A_bin(ii,:),model);
-            B = DAC(B_bin(ii,:),model);
+            A = DAC(A_bin(ii,:),model_parameters);
+            B = DAC(B_bin(ii,:),model_parameters);
             fprintf('Simulation %d:  A = "',ii)
             fprintf('%d',A_bin(ii,:))
             fprintf('", B = "')
             fprintf('%d',B_bin(ii,:))
             fprintf('"\n')
-            XOR_out = XOR(A,B,model,plot_info, opt_parameters{:})
+            XOR_out = XOR(A,B,model_parameters,plot_info, opt_parameters{:})
             figures = findobj(0,'Type','Figure');
             New_figures = 0;
             for j=1:max(size(figures))-analyzed_figures % for each plot

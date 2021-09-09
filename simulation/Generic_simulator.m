@@ -38,7 +38,7 @@ A_bin = [0;1];
 B_bin = [1;1]; 
 C_bin = [1;0]; 
 
-D_bin = [0];
+D_bin = [0;1];
 
 Lw = 7000;   % it is the length of "waveguide" block, [nm]
 Nbit = 4;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model

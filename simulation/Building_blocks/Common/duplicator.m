@@ -27,8 +27,8 @@ end
 
 [out_signal1, out_signal2] = DC1(in_signal, in_signal2,model_parameters,DC1_plot,DC1_varargin{:});
 
-out_signal1 = amplifier(out_signal1,duplicator_gain1);
-out_signal2 = amplifier(out_signal2,duplicator_gain2);
+out_signal1 = amplifier(out_signal1,model_parameters.duplicator_gain1);
+out_signal2 = amplifier(out_signal2,model_parameters.duplicator_gain2);
 out_signal2 = phase_shifter(out_signal2,pi/2);
 
 

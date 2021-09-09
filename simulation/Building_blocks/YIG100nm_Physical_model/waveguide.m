@@ -8,7 +8,7 @@ w=100;          % width  [nm]
 B=0;            % external field [mT]
 limitation = model_parameters.limitation_sing_waveg; % for single waveguide
 akx = in_signal(1);
-SW_frequency = in_signal(2); %%VERIFY
+%SW_frequency = in_signal(2); %%VERIFY
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -60,7 +60,7 @@ k1=model_parameters.dkx:model_parameters.dkx:model_parameters.kmax;
 ff0=wm0./(2*pi);
 
 delta_phase = 0;
-dl=dx/2; % discretization resolution
+dl=model_parameters.dx/2; % discretization resolution
 N_cycle = ceil(Lw/dl);
 for i1=1:N_cycle  % for each sub-interval
     if i1 == N_cycle

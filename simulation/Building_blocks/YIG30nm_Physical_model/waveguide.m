@@ -6,9 +6,9 @@ function [out_signal] = waveguide(in_signal,Lw,model_parameters,varargin)
 h=10;           % thickness  [nm]
 w=30;          % width  [nm]
 B=0;            % external field [mT]
-limitation = limitation_sing_waveg; % for single waveguide
+limitation = model_parameters.limitation_sing_waveg; % for single waveguide
 akx = in_signal(1);
-SW_frequency = in_signal(2);
+%SW_frequency = in_signal(2); %VERIFY
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
@@ -52,23 +52,23 @@ end
 
 %%%%%%%%%%%%%%%%%%%%% equations implementation %%%%%%%%%%%%%%%%%%%%%%%%%%%
 waveguide_design = [h, w, B];
-[wm0, Tkx] = waveguide_equations(dkx, kmax, limitation, waveguide_design);
+[wm0, Tkx] = waveguide_equations(model_parameters.dkx, model_parameters.kmax, limitation, waveguide_design);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% waveguide behavior %%%%%%%%%%%%%%%%%%%%%%%%
-k1=dkx:dkx:kmax;
+k1=model_parameters.dkx:model_parameters.dkx:model_parameters.kmax;
 ff0=wm0./(2*pi);
 
 delta_phase = 0;
-dl=dx/2; % discretization resolution
+dl=model_parameters.dx/2; % discretization resolution
 N_cycle = ceil(Lw/dl);
 for i1=1:N_cycle  % for each sub-interval
     if i1 == N_cycle
         dl = Lw - (N_cycle-1)*dl;
     end
-    akx = akx*exp(-dl/x_freepath); % losses
+    akx = akx*exp(-dl/model_parameters.x_freepath); % losses
     ff0_s = ff0+Tkx.*abs(akx).^2;
-    k0 = interp1(abs(ff0_s),k1,SW_frequency);  % wavenumber of the SW
+    k0 = interp1(abs(ff0_s),k1,model_parameters.SW_frequency);  % wavenumber of the SW
     delta_phase = delta_phase + k0*dl; % [rad], phase shift accumulated until this sub-interval
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,13 +78,13 @@ end
 out_signal(1) = akx;
 
 % frequency
-out_signal(2) = SW_frequency;
+out_signal(2) = model_parameters.SW_frequency;
 
 % phase
 out_signal(3) = mod(in_signal(3) + delta_phase, pi);
 
 % propagation delay
-out_signal(4) = in_signal(4) + Lw/vgr_sing;
+out_signal(4) = in_signal(4) + Lw/model_parameters.vgr_sing;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%

@@ -41,14 +41,14 @@ end
 if DC_without_regS_flag == 0
     out_S = regenerator_S(out_S,model_parameters,regS_plot,regS_varargin{:});
 else    
-    out_S = amplifier(out_S,gain_S);
+    out_S = amplifier(out_S,model_parameters.gain_S);
 end
 
 % regC instantiation
 if DC_without_regC_flag == 0
     out_C = regenerator_C(out_C,model_parameters,regC_plot,regC_varargin{:});
 else
-    out_C = amplifier(out_C,gain_C);
+    out_C = amplifier(out_C,model_parameters.gain_C);
 end
 
 if out_signal_plot_flag == 1

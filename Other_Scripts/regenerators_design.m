@@ -16,14 +16,17 @@ line_width = 3;       % LineWidth of the lines
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% setting section %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_in = 9/5.5; % input amplifier gain
-model = 2; % =1 for YIG100nm Behavioral model, =2 for YIG100nm Physical model, =3 for YIG30nm Physical model
-length_max = 1600; % max length of the DC [nm]
+gain_in = 2; % input amplifier gain
+model = 'YIG 100nm'; % =1 for YIG100nm Behavioral model, =2 for YIG100nm Physical model, =3 for YIG30nm Physical model
+length_max = 903; % max length of the DC [nm]
 resolution = 1; % discretization resolution [nm]
 % amplitude of the output S or C for every input combination (10,01,11)
-A_10 = 7.503140e-02;%0.031993494723368;
-A_01 = 7.633576e-02;%0.032549676365182;
-A_11 = 2.295072e-02;%0.009786218005401;
+A_10 = 6.638372e-02;%7.503140e-02;%0.031993494723368;
+A_01 = 6.901338e-02;%7.633576e-02;%0.032549676365182;
+A_11 = 7.922338e-04;%2.295072e-02;%0.009786218005401;
+%A_10 = 7.503140e-02;%0.031993494723368;
+%A_01 = 7.633576e-02;%0.032549676365182;
+%A_11 = 2.295072e-02;%0.009786218005401;
 
 % input amplifier
 A_10 = A_10 * sqrt(gain_in);
@@ -43,12 +46,12 @@ addpath('../simulation/Building_blocks/Common')
 d=w+gap;
 SW_parameters
 DC_design = [h, w, d, B];
-limitation = limitation2;
-[wm1, wm2, Tkx] = DC_equations(dkx, kmax, limitation, DC_design);
+limitation = model_parameters.limitation2;
+[wm1, wm2, Tkx] = DC_equations(model_parameters.dkx, model_parameters.kmax, limitation, DC_design);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% design operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-k1=dkx:dkx:kmax;
+k1=model_parameters.dkx:model_parameters.dkx:model_parameters.kmax;
 ff1=wm1./(2*pi);
 ff2=wm2./(2*pi);
 
@@ -59,13 +62,10 @@ delta_ph11=0;
 dl=resolution;
 Lw=1:1:length_max;
 
-if model==1
-    x_freepath = inf;
-end
 for i1=1:1:length_max
-    A_10 = A_10*exp(-dl/x_freepath);
-    A_01 = A_01*exp(-dl/x_freepath);
-    A_11 = A_11*exp(-dl/x_freepath);
+    A_10 = A_10*exp(-dl/model_parameters.x_freepath);
+    A_01 = A_01*exp(-dl/model_parameters.x_freepath);
+    A_11 = A_11*exp(-dl/model_parameters.x_freepath);
 
     ff1_s10 = ff1+Tkx.*abs(A_10).^2;
     ff2_s10 = ff2+Tkx.*abs(A_10).^2;
@@ -76,18 +76,18 @@ for i1=1:1:length_max
     ff1_s11 = ff1+Tkx.*abs(A_11).^2;
     ff2_s11 = ff2+Tkx.*abs(A_11).^2;
     
-    ks = interp1(abs(ff1_s10),k1,SW_frequency);
-    kas = interp1(abs(ff2_s10),k1,SW_frequency);
+    ks = interp1(abs(ff1_s10),k1,model_parameters.SW_frequency);
+    kas = interp1(abs(ff2_s10),k1,model_parameters.SW_frequency);
     delta_k = abs(ks-kas);
     delta_ph10 = delta_ph10 + delta_k*dl;
     
-    ks = interp1(abs(ff1_s01),k1,SW_frequency);
-    kas = interp1(abs(ff2_s01),k1,SW_frequency);
+    ks = interp1(abs(ff1_s01),k1,model_parameters.SW_frequency);
+    kas = interp1(abs(ff2_s01),k1,model_parameters.SW_frequency);
     delta_k = abs(ks-kas);
     delta_ph01 = delta_ph01 + delta_k*dl;
     
-    ks = interp1(abs(ff1_s11),k1,SW_frequency);
-    kas = interp1(abs(ff2_s11),k1,SW_frequency);
+    ks = interp1(abs(ff1_s11),k1,model_parameters.SW_frequency);
+    kas = interp1(abs(ff2_s11),k1,model_parameters.SW_frequency);
     delta_k = abs(ks-kas);
     delta_ph11 = delta_ph11 + delta_k*dl;
 
@@ -103,9 +103,9 @@ out10 = A_10*sqrt((pow_par10(end)));
 out01 = A_01*sqrt((pow_par01(end)));
 out11 = A_11*sqrt((pow_par11(end)));
 fprintf('for the L_DC = length_max, you can obtain the following output signal amplitudes: \n')
-fprintf('A=1, B=0: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out10,normalization(out10,model))
-fprintf('A=0, B=1: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out01,normalization(out01,model))
-fprintf('A=1, B=1: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out11,normalization(out11,model))
+fprintf('A=1, B=0: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out10,normalization(out10,model_parameters))
+fprintf('A=0, B=1: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out01,normalization(out01,model_parameters))
+fprintf('A=1, B=1: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out11,normalization(out11,model_parameters))
 
 
 x = linspace(0,1,1000);

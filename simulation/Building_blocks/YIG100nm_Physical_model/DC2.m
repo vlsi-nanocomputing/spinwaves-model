@@ -198,7 +198,7 @@ if disp_curves_flag == 1
     hold on
     plot(k1,real(DC2_ff1))
     plot(k1,real(DC2_ff2))
-    plot(k1,SW_frequency*ones(1,N))
+    plot(k1,model_parameters.SW_frequency*ones(1,N))
     hold off
     grid on
     xlabel('Wavenumber k [rad/nm]','FontSize',20)

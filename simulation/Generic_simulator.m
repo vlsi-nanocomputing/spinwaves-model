@@ -34,8 +34,8 @@
 % C_bin = [1;0]; 
 
 %%bit
-A_bin = [0;1]; 
-B_bin = [1;1]; 
+A_bin = [1;0;1]; 
+B_bin = [0;1;1]; 
 C_bin = [1;0]; 
 
 D_bin = [0;1];
@@ -219,7 +219,7 @@ for ii = 1:N_simulation
                 ax = figures(j).CurrentAxes;
                 ax.Title.String = 'Simulation ' + string(ii);
                 ax.Title.FontSize = titleFontSize;
-                ax.Legend.FontSize = legendFontSize;
+                %ax.Legend.FontSize = legendFontSize;
                 ax.XAxis.FontSize = axisFontSize;
                 ax.YAxis.FontSize = axisFontSize;
                 ax.XLabel.FontSize = labelFontSize;

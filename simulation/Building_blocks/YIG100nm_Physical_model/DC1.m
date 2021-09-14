@@ -223,7 +223,7 @@ end
 if disp_curves_flag == 1
     d = w+gap1; 
     DC1_design = [h, w, d, B];
-    [wm1, wm2, DC1_Tkx] = DC_equations(dkx, kmax, limitation, DC1_design);
+    [wm1, wm2, DC1_Tkx] = DC_equations(model_parameters.dkx, model_parameters.kmax, limitation, DC1_design);
     DC1_ff1=wm1./(2*pi);
     DC1_ff2=wm2./(2*pi);
     
@@ -233,7 +233,7 @@ if disp_curves_flag == 1
     hold on
     plot(k1,real(DC1_ff1))
     plot(k1,real(DC1_ff2))
-    plot(k1,SW_frequency*ones(1,N))
+    plot(k1,model_parameters.SW_frequency*ones(1,N))
     hold off
     grid on
     xlabel('Wavenumber k [rad/nm]','FontSize',20)
@@ -241,8 +241,8 @@ if disp_curves_flag == 1
     axis([0 0.025 1.8 2.4])
     title('Dispersion curves of the DC1','FontSize',20)
     
-    DC1_ks = interp1(abs(DC1_ff1),k1,SW_frequency);
-    DC1_kas = interp1(abs(DC1_ff2),k1,SW_frequency);
+    DC1_ks = interp1(abs(DC1_ff1),k1,model_parameters.SW_frequency);
+    DC1_kas = interp1(abs(DC1_ff2),k1,model_parameters.SW_frequency);
     DC1_Lc = pi/abs(DC1_ks-DC1_kas);  % [nm]
     DC1_pow_par = cos(pi*L1/(2*DC1_Lc))^2;
     fprintf('\n DC1: the Lc of the plot (dispersion curves) is %dnm \n',DC1_Lc)

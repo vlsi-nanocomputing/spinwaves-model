@@ -7,26 +7,26 @@ clc
 % but keep the level of the '1'. At the end we can use a small amplifier
 % to amplify the '1'.
 
-titleFontSize = 45;   % title FontSize of the plots
-axisFontSize = 25;    % axes FontSize of the plots
-labelFontSize = 25;   % labels FontSize of the plots
-legendFontSize = 25;  % legend FontSize of the plots
-line_width = 3;       % LineWidth of the lines 
+titleFontSize = 60;   % title FontSize of the plots
+axisFontSize = 60;    % axes FontSize of the plots
+labelFontSize = 65;   % labels FontSize of the plots
+legendFontSize = 65;  % legend FontSize of the plots
+line_width = 5;       % LineWidth of the lines 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% setting section %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_in = 2;%9/5.5; % input amplifier gain
+gain_in = 1/1.5;%9/5.5; % input amplifier gain
 model = 'YIG 100nm'; % =1 for YIG100nm Behavioral model, =2 for YIG100nm Physical model, =3 for YIG30nm Physical model
-length_max = 306; % max length of the DC [nm]
+length_max = 1513; % max length of the DC [nm]
 resolution = 1; % discretization resolution [nm]
 % amplitude of the output S or C for every input combination (10,01,11)
-A_10 = 6.228145e-02;%0.031993494723368;
-A_01 = 6.045905e-02;%0.032549676365182;
-A_11 = 3.007010e-05;%0.009786218005401;
-% A_10 = 7.707561e-02;%0.031993494723368;
-% A_01 = 7.622571e-02;%0.032549676365182;
-% A_11 = 3.572360e-02;%0.009786218005401;
+% A_10 = 6.228145e-02;%0.031993494723368;
+% A_01 = 6.045905e-02;%0.032549676365182;
+% A_11 = 3.007010e-05;%0.009786218005401;
+A_10 = 2.416911e-04;%7.707561e-02;%0.031993494723368;
+A_01 = 8.832202e-04;%7.622571e-02;%0.032549676365182;
+A_11 = 7.779518e-02;%3.572360e-02;%0.009786218005401;
 
 % input amplifier
 A_10 = A_10 * sqrt(gain_in);
@@ -119,10 +119,13 @@ hold on
 plot(Lw,pow_par10,'LineWidth',line_width)
 plot(Lw,pow_par01,'LineWidth',line_width)
 plot(Lw,pow_par11,'LineWidth',line_width)
+get(gca,'fontname')  % shows you what you are using.
+set(gca,'fontname','arial')  % Set it to times
+grid on
 hold off
 xlabel('L_w  [nm]','FontSize',labelFontSize)
 lgd = legend('A=1,B=0','A=0,B=1','A=1,B=1');
 lgd.FontSize = legendFontSize;
 set(gca,'FontSize',axisFontSize)
 % clegend('10','01')
-title('Normalized output power (%)','FontSize',titleFontSize)
+%title('Normalized output power (%)','FontSize',titleFontSize)

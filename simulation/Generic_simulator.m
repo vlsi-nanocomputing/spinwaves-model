@@ -60,7 +60,6 @@ line_width = 2;       % LineWidth of the lines
 % while model~=1 && model~=2 && model~=3 && model~=4 
 %     model = input('Choose one model category from the following list:\n 1) YIG (100 nm) Physical Model \n 2) YIG (30 nm) Physical Model \n 3) QUIT \n');
 % end
-if model~=3
 
 switch model 
     case 'YIG 100nm'
@@ -380,6 +379,3 @@ lines = findobj('type','line');
 for i=1:1:max(size(lines))
     lines(i).LineWidth = line_width;
 end
-
-
-end % if model~=4

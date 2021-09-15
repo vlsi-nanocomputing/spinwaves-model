@@ -18,7 +18,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RCA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %SW_parameters % script
-X = zeros(Nbit+1,N_inf);
+X = zeros(Nbit+1,model_parameters.N_inf);
 
 for j=0:Nbit-1
     [X(Nbit-j+1,:),carry] = FA( A(Nbit-j,:), B(Nbit-j,:), carry,model_parameters,FA_plot, varargin{:});

@@ -207,7 +207,8 @@ end
 
 
 % propagation delay
-L_sing = 2*(5*h)/tan(20*2*pi/360);  % the length of the zone outside the coupled region
+%L_sing = 2*(5*h)/tan(20*2*pi/360);  % the length of the zone outside the coupled region
+L_sing = L_region1 + L_region3;
 t_in = max(in_A(4), in_B(4));
 out(4) = t_in + DC_delay_calculation([L1, L_sing],model_parameters);
 out_I(4) = out(4);

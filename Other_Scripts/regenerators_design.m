@@ -18,15 +18,15 @@ line_width = 5;       % LineWidth of the lines
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% setting section %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 gain_in = 1/1.5;%9/5.5; % input amplifier gain
 model = 'YIG 100nm'; % =1 for YIG100nm Behavioral model, =2 for YIG100nm Physical model, =3 for YIG30nm Physical model
-length_max = 1513; % max length of the DC [nm]
+length_max = 1600; % max length of the DC [nm]
 resolution = 1; % discretization resolution [nm]
 % amplitude of the output S or C for every input combination (10,01,11)
 % A_10 = 6.228145e-02;%0.031993494723368;
 % A_01 = 6.045905e-02;%0.032549676365182;
 % A_11 = 3.007010e-05;%0.009786218005401;
-A_10 = 2.416911e-04;%7.707561e-02;%0.031993494723368;
-A_01 = 8.832202e-04;%7.622571e-02;%0.032549676365182;
-A_11 = 7.779518e-02;%3.572360e-02;%0.009786218005401;
+A_10 = 7.707561e-02;%0.031993494723368;  2.416911e-04;%
+A_01 = 7.622571e-02;%0.032549676365182; 8.832202e-04;%
+A_11 = 3.572360e-02;%0.009786218005401;   7.779518e-02;%
 
 % input amplifier
 A_10 = A_10 * sqrt(gain_in);

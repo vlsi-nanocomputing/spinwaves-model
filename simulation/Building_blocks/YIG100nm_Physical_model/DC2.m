@@ -170,7 +170,8 @@ out_C(1) = DC2_akx * sqrt(1-DC2_pow_par);
 
 
 % propagation delay
-L_sing = 2*(5*h)/tan(20*2*pi/360);  % the length of the zone outside the coupled region (length_region1 + length_region3)
+%L_sing = 2*(5*h)/tan(20*2*pi/360);  % the length of the zone outside the coupled region (length_region1 + length_region3)
+L_sing = L_region1 + L_region3;
 out_S(4) = in_signal(4) + DC_delay_calculation([L2, L_sing],model_parameters);
 out_C(4) = out_S(4);
 

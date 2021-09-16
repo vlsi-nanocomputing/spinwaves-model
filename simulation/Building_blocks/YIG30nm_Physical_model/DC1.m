@@ -68,8 +68,8 @@ if plot_info == "no_plot"
     out_signal_plot_flag = 0;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-L_region1 = (gap_region1 - gap1) / (2*sin(20*2*pi/360));  % [nm], length of region1
-L_region3 = (gap_region3 - gap1) / (2*sin(20*2*pi/360));  % [nm], length of region3
+L_region1 = (gap_region1 - gap1) / (2*tan(20*2*pi/360));  % [nm], length of region1
+L_region3 = (gap_region3 - gap1) / (2*tan(20*2*pi/360));  % [nm], length of region3
 ak_A = in_A(1);
 ak_B = in_B(1);
 k1=model_parameters.dkx:model_parameters.dkx:model_parameters.kmax;
@@ -80,7 +80,7 @@ delta_phase = 0;
 %%%%%%%%%%%%%%%%%%%%%%%% DC1 operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                      %%%%%%%%%%%% region 1 %%%%%%%%%%%%
 dl = model_parameters.dx/3; % discretization resolution
-dgap = -dl*sin(20*2*pi/360)*2;
+dgap = -dl*tan(20*2*pi/360)*2;
 %gap: from 80nm(30+50) to 40nm(30+10)
 N_cycle = ceil(L_region1/dl);
 for i1=1:1:N_cycle
@@ -136,13 +136,13 @@ end
 
              %%%%%%%%%%%%%%%%%%% region 3 %%%%%%%%%%%%%%%%%
 dl = model_parameters.dx/3;
-dgap = dl*sin(20*2*pi/360)*2;
+dgap = dl*tan(20*2*pi/360)*2;
 %gap: from 80nm(30+50) to 40nm(30+10)
 N_cycle = ceil(L_region3/dl);
 for i1=1:1:N_cycle
     if i1 == N_cycle
         dl = L_region3 - (N_cycle-1)*dl;
-        d = d + dl*sin(20*2*pi/360)*2;
+        d = d + dl*tan(20*2*pi/360)*2;
     else
         d = w + gap1 + i1*dgap;
     end
@@ -204,7 +204,7 @@ else
 end
 
 % propagation delay
-L_sing = 2*(5*h)/sin(0.3491);  % the length of the zone outside the coupled region
+L_sing = L_region1 + L_region3;  % the length of the zone outside the coupled region
 t_in = max(in_A(4), in_B(4));
 out(4) = t_in + DC_delay_calculation([L1, L_sing],model_parameters);
 out_I(4) = out(4);
@@ -212,9 +212,13 @@ out_I(4) = out(4);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operations %%%%%%%%%%%%%%%%%%%%%%%
 if Lc_avg_flag == 1
+    power_split = 0;
+    if out_I(1) ~= 0    
+        power_split = out(1)^2/(out(1)^2+out_I(1)^2);
+    end
     fprintf('\n DC1: the accumulated phase between two modes along the directional coupler 1 is %d rad \n',delta_phase)
     fprintf('\n DC1: the average coupling length Lc_avg of the directional coupler 1 is %dnm \n',Lc_avg)
-    fprintf('\n DC1: with Lc_avg = %dnm, Pout1/(Pout1+Pout2) = %d%% \n',Lc_avg,DC1_pow_par*100)
+    fprintf('\n DC1: with Lc_avg = %dnm, Pout1/(Pout1+Pout2) = %d%% \n',Lc_avg,power_split*100)
 end
 
 if disp_curves_flag == 1

@@ -212,7 +212,10 @@ out_I(4) = out(4);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operations %%%%%%%%%%%%%%%%%%%%%%%
 if Lc_avg_flag == 1
-    power_split = out(1)^2/(out(1)^2+out_I(1)^2);
+    power_split = 0;
+    if out_I(1) ~= 0    
+        power_split = out(1)^2/(out(1)^2+out_I(1)^2);
+    end
     fprintf('\n DC1: the accumulated phase between two modes along the directional coupler 1 is %d rad \n',delta_phase)
     fprintf('\n DC1: the average coupling length Lc_avg of the directional coupler 1 is %dnm \n',Lc_avg)
     fprintf('\n DC1: with Lc_avg = %dnm, Pout1/(Pout1+Pout2) = %d%% \n',Lc_avg,power_split*100)

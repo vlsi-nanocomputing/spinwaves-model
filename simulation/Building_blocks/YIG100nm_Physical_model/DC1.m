@@ -16,8 +16,8 @@ w=100;          % width  [nm]
 L1=370;         % length of the coupling region  [nm]
 gap1=50;        % the gap between the coupled waveguides  [nm]
 B=0;            % external field [mT]
-gap_region1=150; % 100(width)+50(gap) [nm]
-gap_region3=150; % the max gap of the region1 for the region3 discretization
+gap_region1=450; % 100(width)+50(gap) [nm]
+gap_region3=450; % the max gap of the region1 for the region3 discretization
 limitation = model_parameters.limitation1; % for gap=50nm
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

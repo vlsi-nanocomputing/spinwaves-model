@@ -72,5 +72,5 @@ xlabel('Wavenumber k (rad/nm^{-1})')
 ylabel(ax2(1),'Lifetime (ns)')
 ylabel(ax2(2),'Decay length (um)')
 
-
+interp1(k1(1:N_length),distance(1:N_length), interp1(ff, k1, 2.282))
 

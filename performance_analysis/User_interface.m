@@ -1,6 +1,6 @@
 % User interface
 
-model=0;
+model=2;
 while model~=1 && model~=2 && model~=3 && model~=4 
     model = input('Choose one technology from the following list:\n 1) CMOS (45nm) \n 2) YIG (100nm) \n 3) YIG (30nm) \n 4) QUIT \n');
 end

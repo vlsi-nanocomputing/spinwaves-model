@@ -1,4 +1,4 @@
-function [AND_out] = AND(in_A,in_B,model,plot_info,varargin)
+function [AND_out] = AND(in_A,in_B,model_parameters,plot_info,varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
 out_signal_plot_flag = 1;% =1 to plot and to display the output signals
@@ -20,11 +20,11 @@ elseif plot_info == "no_plot"
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% AND %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 in_B = phase_shifter(in_B,pi/2);
-[DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_plot,DC1_varargin{:});
-[out_S, AND_out] = DC2(DC1_out,model,DC2_plot,DC2_varargin{:});
+[DC1_out,DC1_out_I] = DC1(in_A,in_B,model_parameters,DC1_plot,DC1_varargin{:});
+[out_S, AND_out] = DC2(DC1_out,model_parameters,DC2_plot,DC2_varargin{:});
 % regC instantiation
 if DC_without_regC_flag == 0
-    AND_out = regenerator_C(AND_out,model,regC_plot,regC_varargin{:});
+    AND_out = regenerator_C(AND_out,model_parameters,regC_plot,regC_varargin{:});
 else
     AND_out = amplifier(out_C,gain_C);
 end
@@ -32,8 +32,8 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%
 if out_signal_plot_flag == 1
-    signal_plotting(AND_out,model,'AND out');
-    fprintf('\n AND: AND_out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',AND_out(4),AND_out(1),AND_out(2),AND_out(3),normalization(AND_out(1),model))
+    signal_plotting(AND_out,model_parameters,'AND out');
+    fprintf('\n AND: AND_out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',AND_out(4),AND_out(1),AND_out(2),AND_out(3),normalization(AND_out(1),model_parameters))
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

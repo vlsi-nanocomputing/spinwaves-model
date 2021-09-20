@@ -8,8 +8,8 @@ tic
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Nbit = 2;  % parallelism of the adder. Note that if you choose the CSA, the Nbit must be a mulple of 4, that is a constraint of the CSA model
-N_simulation = 1; % number of simulations
+Nbit = 32;  % parallelism of the adder. Note that if you choose the CSA, the Nbit must be a mulple of 4, that is a constraint of the CSA model
+N_simulation = 50; % number of simulations
 result_rep_file = 'RCA_8bit_5sim.txt'; % result report file_name 
 result_rep_flag = 0; % =1 to write the output powers (in terms of normalized power) in "the result_rep_file".txt
 err_search_flag = 0; % =1 to search and to display the combinations that generated wrong outputs
@@ -21,23 +21,20 @@ logic0_inf = -1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%% Choosing of model category %%%%%%%%%%%%%%%%%%%
-model=0;
-while model ~= [1,2,3,4]
-    model = input('Choose one model category from the following list:\n 1) YIG (100 nm) Behavioral Model \n 2) YIG (100 nm) Physical Model \n 3) YIG (30 nm) Physical Model \n 4) QUIT \n');
-end
-if model~=4  % if model==4, the program terminates
+model='YIG 100nm';
 
-switch model % to get the correct folder for building blocks
-    case 1
-        model_path = 'Building_blocks/YIG100nm_Behavioral_model';
-    case 2
-        model_path = 'Building_blocks/YIG100nm_Physical_model';
-    case 3
-        model_path = 'Building_blocks/YIG30nm_Physical_model';
+switch model 
+    case 'YIG 100nm'
+        model_path = 'simulation/Building_blocks/YIG100nm_Physical_model';
+    case 'YIG 30nm'
+        model_path = 'simulation/Building_blocks/YIG30nm_Physical_model';  
 end
+
 addpath(model_path)
 addpath('Building_blocks/Common')
 addpath('Circuits')
+
+SW_parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% Choosing of the simulation adder %%%%%%%%%%%%%%%%
@@ -65,18 +62,18 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%% digital-analog conversion %%%%%%%%%%%%%%%%%%%%%%%
-    in_A = DAC(A(i,:),model);  % spin-wave = [amplitude, frequency, phase, delay]
-    in_B = DAC(B(i,:),model);
-    in_C = DAC(C(i,:),model);
+    in_A = DAC(A(i,:),model_parameters);  % spin-wave = [amplitude, frequency, phase, delay]
+    in_B = DAC(B(i,:),model_parameters);
+    in_C = DAC(C(i,:),model_parameters);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% Simulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% you can choose one adder from the following list:
 
     if adder == 1
-        output = RCA_Nbit(in_A,in_B,in_C,Nbit,model);
+        output = RCA_Nbit(in_A,in_B,in_C,Nbit,model_parameters,'no_plot');
     elseif adder == 2
-        output = carry_skip_adder(in_A, in_B, in_C, Nbit, model);
+        output = carry_skip_adder(in_A, in_B, in_C, Nbit,model_parameters,'no_plot');
     end
     
     % in order to evaluate the error of result bits, in this point we store
@@ -86,18 +83,21 @@ for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% reference solution calculation %%%%%%%%%%%%%%%%%%%
-    model_t = model;
-    model = 0; % logical model
-    addpath('Building_blocks/YIG100nm_Logical_model')% model category change
-    exact_output(i,:) = RCA_Nbit(A(i,:)',B(i,:)',C(i,:),Nbit,model);
-    addpath(model_path)
-    model = model_t;
+%     model_t = model;
+%     model = 0; % logical model
+%     addpath('Building_blocks/YIG100nm_Logical_model')% model category change
+%     exact_output(i,:) = RCA_Nbit(A(i,:)',B(i,:)',C(i,:),Nbit,model_parameters);
+%     addpath(model_path)
+%     model = model_t;
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        exact_output(i,:) = dec_to_bin(A_dec+B_dec+C(i),Nbit+1);
+        
 
 
 %%%%%%%%%%%%%%%%%%%%% outputs analog-digital conversion %%%%%%%%%%%%%%%%%
     % analog to digital conversion of the simulation solution
-    output_bin(i,:) = ADC(output,model);      
+    output_bin(i,:) = ADC(output,model_parameters);      
 end % for i = 1:N_simulation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -143,7 +143,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%  accuracy evaluation and storing  %%%%%%%%%%%%%%%%%
 % normalization of the output bits of every simulation
-normalized_output = normalization(output_sig,model); 
+normalized_output = normalization(output_sig,model_parameters); 
 
 if result_rep_flag == 1 % report of the simulation result, you can set this flag at the beginning
     f = fopen(result_rep_file,'w');
@@ -183,5 +183,4 @@ set(gca,'fontsize',60)
 hold off
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-end
 toc

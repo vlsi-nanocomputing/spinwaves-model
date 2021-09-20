@@ -1,4 +1,4 @@
-function [XOR_out] = XOR(in_A,in_B,model,plot_info, varargin)
+function [XOR_out] = XOR(in_A,in_B,model_parameters,plot_info, varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% optional parameter flags %%%%%%%%%%%%%%%%%%%%%
 %%%%%% default values
@@ -27,12 +27,12 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% XOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 in_B = phase_shifter(in_B,pi/2);
-[DC1_out,DC1_out_I] = DC1(in_A,in_B,model,DC1_plot,DC1_varargin{:});
-[out_S,~] = DC2(DC1_out,model,DC2_plot,DC2_varargin{:});
+[DC1_out,DC1_out_I] = DC1(in_A,in_B,model_parameters,DC1_plot,DC1_varargin{:});
+[out_S,~] = DC2(DC1_out,model_parameters,DC2_plot,DC2_varargin{:});
 
 % regS instantiation
 if DC_without_regS_flag == 0
-    XOR_out = regenerator_S(out_S,model,regS_plot,regS_varargin{:});
+    XOR_out = regenerator_S(out_S,model_parameters,regS_plot,regS_varargin{:});
 else    
     XOR_out = amplifier(out_S,gain_S); %out_S;
 end
@@ -41,8 +41,8 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% optional operation %%%%%%%%%%%%%%%%%%%%%%%%
 if out_signal_plot_flag == 1
-    signal_plotting(XOR_out,model,'XOR out');
-    fprintf('\n XOR: XOR_out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',XOR_out(4),XOR_out(1),XOR_out(2),XOR_out(3),normalization(XOR_out(1),model))
+    signal_plotting(XOR_out,model_parameters,'XOR out');
+    fprintf('\n XOR: XOR_out = u(t-t0) a sin(2 \x03c0 f t + \x03c6), where t0 = %d ns, a = %d, f = %d GHz and \x03c6 = %d, normalized power = %d%% \n',XOR_out(4),XOR_out(1),XOR_out(2),XOR_out(3),normalization(XOR_out(1),model_parameters))
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

@@ -1,10 +1,10 @@
-function [] = signal_plotting(in_signal,model,varargin)
+function [] = signal_plotting(in_signal,model_parameters,varargin)
 
 N_signal = size(in_signal);
 N_signal = N_signal(1);
 t_max = max(in_signal(:,4)) + 10/in_signal(1,2); % ns
 
-SW_parameters
+%SW_parameters
 
 figure
 hold on
@@ -22,14 +22,14 @@ for i=1:N_signal
     y2 = a0*sin(2*pi*f*(t2-tpd)+phase);
 
     t = [t1 t2];
-    y = [y1 y2]-(i-1)*2.2*SW_amplitude;  % offset to distinguish the different signals
+    y = [y1 y2]-(i-1)*2.2*model_parameters.SW_amplitude;  % offset to distinguish the different signals
 
     plot(t,y)
 end
 hold off
 xlabel('time [ns]','FontSize',20)
 grid on
-axis([0, t_max, -2.2*SW_amplitude*N_signal+1.1*SW_amplitude, 1.1*SW_amplitude])
+axis([0, t_max, -2.2*model_parameters.SW_amplitude*N_signal+1.1*model_parameters.SW_amplitude, 1.1*model_parameters.SW_amplitude])
 if nargin > 2  % optional legend
     legend(varargin{1:end})
 end

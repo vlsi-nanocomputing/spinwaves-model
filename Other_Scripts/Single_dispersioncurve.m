@@ -11,10 +11,12 @@ r=2.21e5;                                 %gyromagnetic ratio(m/(s.A))
 
 j=1;
 
+freq=2.282;%2.96;                                 % frequency (GHz)
+
 H=0*79.6;                              %external field(A/m)
 
 damping=2e-4;                          %damping
-dH0=0*796;                           %inhomogeneous linewidth
+dH0=0.03*796;                           %inhomogeneous linewidth
     
 Wm=r*Ms*1e-9;                             %unit(GHz)
 Wh=r*H*1e-9;                              %unit(GHz)
@@ -27,7 +29,7 @@ Ky=k;                                    %the effective wave number describing S
 i1=1;
 
 dkx=1e-5;
-kmax=0.02;
+kmax=0.04;
 
 limiation=10;
 
@@ -72,5 +74,5 @@ xlabel('Wavenumber k (rad/nm^{-1})')
 ylabel(ax2(1),'Lifetime (ns)')
 ylabel(ax2(2),'Decay length (um)')
 
-
+interp1(k1(1:N_length),distance(1:N_length), interp1(ff, k1, freq))
 

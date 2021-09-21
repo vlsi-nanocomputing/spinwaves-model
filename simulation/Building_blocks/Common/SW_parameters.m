@@ -7,15 +7,15 @@ switch model
         model_parameters.SW_amplitude = 0.0779;
         model_parameters.vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
         model_parameters.vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
-        model_parameters.x_freepath = 8.58e3;   % decay length [nm], calculated from 
+        model_parameters.x_freepath = 13.9e3;%8.58e3;   % decay length [nm], calculated from 
                                % Single_dispersioncurve script 
         model_parameters.limitation1 = 0.53;    % for gap=50nm
         model_parameters.limitation2 = 0.63;    % for gap=10nm
         model_parameters.limitation_sing_waveg = 10; % for single waveguide
         model_parameters.duplicator_gain1 = 2.37;
         model_parameters.duplicator_gain2 = 2.3;
-        model_parameters.gain_S = 5.5; % the amplifier gain at the DC2 out_S (without regS) 
-        model_parameters.gain_C = 1.5; % the amplifier gain at the DC2 out_C (without regC)
+        model_parameters.gain_S = 4.2; % the amplifier gain at the DC2 out_S (without regS) 
+        model_parameters.gain_C = 1.3; % the amplifier gain at the DC2 out_C (without regC)
         model_parameters.N_inf = 4;  % number of information to define a spin-wave vector
             % example: [amplitude, frequency, phase, delay]
     case 'YIG 30nm' % YIG30nm physical model

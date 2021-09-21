@@ -16,17 +16,20 @@ line_width = 5;       % LineWidth of the lines
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% setting section %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_in = 1/1.5;%9/5.5; % input amplifier gain
+gain_in = 1/1.3;%9/4.2; % input amplifier gain
 model = 'YIG 100nm'; % =1 for YIG100nm Behavioral model, =2 for YIG100nm Physical model, =3 for YIG30nm Physical model
-length_max = 1600; % max length of the DC [nm]
+length_max = 1516; % max length of the DC [nm]
 resolution = 1; % discretization resolution [nm]
 % amplitude of the output S or C for every input combination (10,01,11)
 % A_10 = 6.228145e-02;%0.031993494723368;
 % A_01 = 6.045905e-02;%0.032549676365182;
 % A_11 = 3.007010e-05;%0.009786218005401;
-A_10 = 7.707561e-02;%0.031993494723368;  2.416911e-04;%
-A_01 = 7.622571e-02;%0.032549676365182; 8.832202e-04;%
-A_11 = 3.572360e-02;%0.009786218005401;   7.779518e-02;%
+A_10 = 2.130217e-03;%0.031993494723368;  2.416911e-04;%
+A_01 = 2.845638e-04;%0.032549676365182; 8.832202e-04;%
+A_11 = 8.057632e-02;%0.009786218005401;   7.779518e-02;%
+% A_10 = 7.191374e-02;%0.031993494723368;  2.416911e-04;%
+% A_01 = 8.000682e-02;%0.032549676365182; 8.832202e-04;%
+% A_11 = 2.197420e-05;%0.009786218005401;   7.779518e-02;%
 
 % input amplifier
 A_10 = A_10 * sqrt(gain_in);
@@ -107,6 +110,11 @@ fprintf('A=1, B=0: output signal amplitude = %d, the normalized power with respe
 fprintf('A=0, B=1: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out01,normalization(out01,model_parameters))
 fprintf('A=1, B=1: output signal amplitude = %d, the normalized power with respect to the logic ''1'' is %d%% \n',out11,normalization(out11,model_parameters))
 
+vector = abs(A_01*sqrt((pow_par01(:)))-A_10*sqrt((pow_par10(:))));
+[m, i] = min(vector)
+(0.0779/out10)^2
+(0.0779/out01)^2
+(0.0779/out11)^2
 
 x = linspace(0,1,1000);
 y = x*(A_10/A_01)^2;

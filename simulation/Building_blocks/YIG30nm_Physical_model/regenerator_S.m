@@ -11,12 +11,13 @@ function [out_signal] = regenerator_S(in_signal,model_parameters,plot_info,varar
 
 %SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_in = 8;        % input amplifier gain
-gain_interm = 2;    % intermediate amplifier gain
+gain_in = 8;%6;        % input amplifier gain
+gain_interm = 2;%2;    % intermediate amplifier gain
+gain_out = 2;    % output amplifier gain
 h=10;               % thinckness  [nm]
 w=30;               % width  [nm]
-L3=900;             % length of the first DC coupling region  [nm]
-L4=978;             % length of the second DC coupling region  [nm]
+L3=925;             % length of the first DC coupling region  [nm]
+L4=516;             % length of the second DC coupling region  [nm]
 gap=10;             % the gap between the second coupled waveguides [nm]
 B=0;                % external field [mT]
 limitation = model_parameters.limitation2;
@@ -151,7 +152,8 @@ out_signal = in_signal; % to have the same frequency and phase
 
 
 % power splitting and amplification
-out_signal(1) = DC4_akx * sqrt(1-pow_par);
+out_signal(1) = DC4_akx * sqrt(pow_par);
+out_signal = amplifier(out_signal,gain_out);
 
 % propagation delay
 out_signal(4) = in_signal(4) + DC_delay_calculation(L3+L4,model_parameters); 

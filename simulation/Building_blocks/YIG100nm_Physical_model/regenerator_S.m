@@ -12,8 +12,8 @@ function [out_signal] = regenerator_S(in_signal,model_parameters,plot_info,varar
 %SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 gain_in = 9;        % input amplifier gain
-gain_interm = 1.5;%2;    % intermediate amplifier gain
-gain_out = 3.8;%6.5;    % output amplifier gain
+gain_interm = 1.5;  % intermediate amplifier gain
+gain_out = 3.8;     % output amplifier gain
 h=30;               % thinckness  [nm]
 w=100;              % width  [nm]
 L3=1163;            % length of the coupling region of the first DC [nm]

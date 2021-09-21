@@ -1,8 +1,9 @@
 % half-adder(HA)
-if model == 2
-    DCs_YIG100nm
-else
-    DCs_YIG30nm
+switch model
+    case 'YIG 100nm'
+        DCs_YIG100nm
+    case 'YIG 30nm'
+        DCs_YIG30nm
 end
 
 % Area

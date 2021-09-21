@@ -1,5 +1,5 @@
 % Adders simulator
-clear all % do not remove
+% clear all % do not remove
 tic
 
 % This interface script allows to simulate the RCA or the CSA 
@@ -8,8 +8,8 @@ tic
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Nbit = 32;  % parallelism of the adder. Note that if you choose the CSA, the Nbit must be a mulple of 4, that is a constraint of the CSA model
-N_simulation = 50; % number of simulations
+% Nbit = 32;  % parallelism of the adder. Note that if you choose the CSA, the Nbit must be a mulple of 4, that is a constraint of the CSA model
+% N_simulation = 50; % number of simulations
 result_rep_file = 'RCA_8bit_5sim.txt'; % result report file_name 
 result_rep_flag = 0; % =1 to write the output powers (in terms of normalized power) in "the result_rep_file".txt
 err_search_flag = 0; % =1 to search and to display the combinations that generated wrong outputs
@@ -21,7 +21,7 @@ logic0_inf = -1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%% Choosing of model category %%%%%%%%%%%%%%%%%%%
-model='YIG 100nm';
+% model='YIG 100nm';
 
 switch model 
     case 'YIG 100nm'
@@ -38,10 +38,10 @@ SW_parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%% Choosing of the simulation adder %%%%%%%%%%%%%%%%
-adder=0;
-while adder ~= [1,2]
-    adder = input('\nChoose one simulation adder from the following list: \n  1) Ripple-Carry Adder \n  2) Carry-Skip Adder \n');
-end
+% adder=0;
+% while adder ~= [1,2]
+%     adder = input('\nChoose one simulation adder from the following list: \n  1) Ripple-Carry Adder \n  2) Carry-Skip Adder \n');
+% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%% decimal input generation %%%%%%%%%%%%%%%%%%%%%%%%

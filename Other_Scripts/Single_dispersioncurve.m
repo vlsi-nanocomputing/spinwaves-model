@@ -1,8 +1,8 @@
 clear
 close all
 
-h=30;                                    %thinckness (nm)
-w=100;                                    %width(nm)
+h=10;                                    %thinckness (nm)
+w=30;                                    %width(nm)
 
 Ms=1.4e5;                                 %Ms(A/m)
 A=3.5e-12;                                %exchange constant(J/m)
@@ -11,12 +11,12 @@ r=2.21e5;                                 %gyromagnetic ratio(m/(s.A))
 
 j=1;
 
-freq=2.282;%2.96;                                 % frequency (GHz)
+freq=2.29;%2.282;%2.96;                                 % frequency (GHz)
 
 H=0*79.6;                              %external field(A/m)
 
 damping=2e-4;                          %damping
-dH0=0.03*796;                           %inhomogeneous linewidth
+dH0=0.01*796;                           %inhomogeneous linewidth
     
 Wm=r*Ms*1e-9;                             %unit(GHz)
 Wh=r*H*1e-9;                              %unit(GHz)

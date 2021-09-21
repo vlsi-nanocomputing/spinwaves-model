@@ -13,11 +13,11 @@ function [out,out_I] = DC1(in_A,in_B,model_parameters,plot_info,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=10;           % thinckness  [nm]
 w=30;           % width  [nm]
-L1=260;         % length of the coupling region  [nm]
+L1=230;         % length of the coupling region  [nm]
 gap1=20;        % the gap of the coupling region  [nm]
 B=0;            % external field [mT]
-gap_region1=50; % [nm], the max gap of the region1 for the region1 discretization
-gap_region3=50; % [nm], the max gap of the region1 for the region3 discretization
+gap_region1=100; % [nm], the max gap of the region1 for the region1 discretization
+gap_region3=100; % [nm], the max gap of the region1 for the region3 discretization
 limitation = model_parameters.limitation1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -79,7 +79,7 @@ delta_phase = 0;
 
 %%%%%%%%%%%%%%%%%%%%%%%% DC1 operation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                      %%%%%%%%%%%% region 1 %%%%%%%%%%%%
-dl = model_parameters.dx/3; % discretization resolution
+dl = model_parameters.dx/5; % discretization resolution
 dgap = -dl*tan(20*2*pi/360)*2;
 %gap: from 80nm(30+50) to 40nm(30+10)
 N_cycle = ceil(L_region1/dl);
@@ -100,8 +100,8 @@ for i1=1:1:N_cycle
     DC1_ff1=wm1./(2*pi);
     DC1_ff2=wm2./(2*pi);
     
-    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
-    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A + ak_B))^2;%(abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A + ak_B))^2;%(abs(ak_A).^2 + abs(ak_B).^2);
     DC1_ks = interp1(abs(DC1_ff1_s),k1,model_parameters.SW_frequency);  % rad/nm
     DC1_kas = interp1(abs(DC1_ff2_s),k1,model_parameters.SW_frequency); % rad/nm
     delta_k = abs(DC1_ks-DC1_kas); % rad/nm
@@ -116,7 +116,7 @@ DC1_design = [h, w, d, B];
 DC1_ff1=wm1./(2*pi);
 DC1_ff2=wm2./(2*pi);
 
-dl = model_parameters.dx/2;
+dl = model_parameters.dx/5;
 N_cycle = ceil(L1/dl);
 for i1=1:1:N_cycle
     if i1 == N_cycle 
@@ -124,8 +124,8 @@ for i1=1:1:N_cycle
     end
     ak_A = ak_A*exp(-dl/model_parameters.x_freepath);
     ak_B = ak_B*exp(-dl/model_parameters.x_freepath);
-    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
-    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A + ak_B))^2;%(abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A + ak_B))^2;%(abs(ak_A).^2 + abs(ak_B).^2);
     DC1_ks = interp1(abs(DC1_ff1_s),k1,model_parameters.SW_frequency);  % rad/nm
     DC1_kas = interp1(abs(DC1_ff2_s),k1,model_parameters.SW_frequency); % rad/nm
     delta_k = abs(DC1_ks-DC1_kas); % rad/nm
@@ -135,7 +135,7 @@ end
 
 
              %%%%%%%%%%%%%%%%%%% region 3 %%%%%%%%%%%%%%%%%
-dl = model_parameters.dx/3;
+dl = model_parameters.dx/5;
 dgap = dl*tan(20*2*pi/360)*2;
 %gap: from 80nm(30+50) to 40nm(30+10)
 N_cycle = ceil(L_region3/dl);
@@ -154,8 +154,8 @@ for i1=1:1:N_cycle
     DC1_ff1=wm1./(2*pi);
     DC1_ff2=wm2./(2*pi);
     
-    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
-    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff1_s = DC1_ff1 + DC1_Tkx .* (abs(ak_A + ak_B))^2;%(abs(ak_A).^2 + abs(ak_B).^2);
+    DC1_ff2_s = DC1_ff2 + DC1_Tkx .* (abs(ak_A + ak_B))^2;%(abs(ak_A).^2 + abs(ak_B).^2);
     DC1_ks = interp1(abs(DC1_ff1_s),k1,model_parameters.SW_frequency);  % rad/nm
     DC1_kas = interp1(abs(DC1_ff2_s),k1,model_parameters.SW_frequency); % rad/nm
     delta_k = abs(DC1_ks-DC1_kas); % rad/nm

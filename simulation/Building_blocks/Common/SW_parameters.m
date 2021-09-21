@@ -23,7 +23,7 @@ switch model
         model_parameters.SW_amplitude = 0.093;  % dimensionless
         model_parameters.vgr_sing = 205.7;    % group velocity of single waveguide [m/s]
         model_parameters.vgr_coup = 137;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
-        model_parameters.x_freepath = 9.07e3;   % decay length [nm], calculated from 
+        model_parameters.x_freepath = 10.05e3;%9.07e3;   % decay length [nm], calculated from 
                                % Single_dispersioncurve script 
         model_parameters.limitation1 = 10;
         model_parameters.limitation2 = 10;

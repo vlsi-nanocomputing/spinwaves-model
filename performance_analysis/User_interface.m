@@ -3,8 +3,6 @@
 model = 'YIG 30nm';
 
 switch model 
-    case 'CMOS_45nm'
-        model_path = 'CMOS_45nm';
     case 'YIG 100nm'
         model_path = 'YIG/YIG_100nm';
         addpath('YIG')

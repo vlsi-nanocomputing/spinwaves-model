@@ -53,7 +53,7 @@ if rem(Nbit,4) == 0
     end
     X(1,:) = carry;
 else
-    display('please check your Nbit of the CSA, it must be a multiple of 4!')
+    disp('please check your Nbit of the CSA, it must be a multiple of 4!')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

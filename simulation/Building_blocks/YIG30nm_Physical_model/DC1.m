@@ -179,11 +179,11 @@ in_B2_axk = ak_B*sqrt(DC1_pow_par);
 
 
 if in_A(2) ~= in_B(2)
-    display('DC1 not expected case: the input signals do not have the same frequency')
+    disp('DC1 not expected case: the input signals do not have the same frequency')
     out = [inf, inf, inf, inf];
     out_I = [inf, inf, inf, inf];
 elseif (in_B(3)-in_A(3)) ~= pi/2
-    display('DC1 not expected case: the input B is not shifted by pi/2 with respect to the intput A')
+    disp('DC1 not expected case: the input B is not shifted by pi/2 with respect to the intput A')
     out = [inf, inf, inf, inf];
     out_I = [inf, inf, inf, inf];
 else

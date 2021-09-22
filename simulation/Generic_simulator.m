@@ -1,6 +1,5 @@
 
 % Generic simulator
-%clear all 
 
 % This interface script allows to simulate all the circuit of "Circuits"
 % folder
@@ -12,9 +11,10 @@
 % set more than one simulation using multiple rows of the inputs: every row
 % is a std_logic_vector(MSB downto LSB) that will be used for a single
 % simulation. In that case, the code runs a number of simulations
-% equal to the number of the input A (rows).
+% equal to the number of the input A (rows). The inputs can be modified
+% only through the GUI
 
-% You can use these inputs to simulate the following circuits:
+% You simulate the following circuits:
 %  1) AND(A,B)
 %  2) AND4(A,B,C,D)
 %  3) N-bit Carry_skip_adder(A,B,C), where the C is the carry_in
@@ -28,26 +28,7 @@
 %  11) XOR(A,B)
 
 
-%%%%%%%%%%%%%%%%%%%%%%%% simulation setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %%vectors
-% % A_bin = [0,0,0,0;1,0,0,0]; 
-% % B_bin = [0,1,0,0;1,0,0,0]; 
-% % C_bin = [1;0]; 
-% 
-% %%bit
-% A_bin = [0;0;0;1;1;1;1]; 
-% B_bin = [0;1;1;0;0;1;1]; 
-% C_bin = [1;0;1;0;1;0;1];
-% % A_bin = [0;0;1;1]; 
-% % B_bin = [0;1;0;1]; 
-% % C_bin = [1;0;1;0];
-
-% D_bin = [0;1];
-
 Lw = 7000;   % it is the length of "waveguide" block, [nm]
-% Nbit = 4;   % it is used by RCA and CSA (parallelism). For the Carry-Skip Adder, the Nbit must be a multiple of 4, which is a constraint of the CSA model
-
-%opt_parameters = {'HA_without_regS'};%'HA_without_regS','HA_without_regC','out_signal_plot'}; % optional parameters, it can be empty
 
 titleFontSize = 25;   % title FontSize of the plots
 axisFontSize = 13;    % axes FontSize of the plots

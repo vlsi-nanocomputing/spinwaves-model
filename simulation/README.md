@@ -10,10 +10,3 @@ All the modelled circuits are contained in this folder.
 
 ## Building_blocks
 This folder contains all the building blocks and common files.
-
-
-## Other_files
-This folder contains a possible implementation of 4-bit Carry-Lookahead Adder for YIG100nm Behavioral model. It is not generalized.
-
-
-### For more detailed description, please refer to '../guide.pdf'

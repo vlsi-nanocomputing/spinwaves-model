@@ -1,17 +1,18 @@
 % YIG 100 nm technological parameters
 % It is the lowest level
 
+SW_parameters;
 %%%%%%%%%%%%%%%%%%%%%%%%% design parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h=30;           % thinckness  [nm]
 w=100;          % width  [nm]
-vgr_sing = 195.3;    % group velocity of single waveguide [m/s]
-vgr_coup = 25;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
+vgr_sing = model_parameters.vgr_sing;    % group velocity of single waveguide [m/s]
+vgr_coup = model_parameters.vgr_coup;       % group velocity in the coupled region, that is the vgr of antisymmetric mode [m/s]
 L_sing = 2*(5*h)/sin(2*20*pi/360);
 L1 = 370;       % length of coupled region  [nm]
 L2 = 3000;      % length of coupled region  [nm]
-L_S1 = 1130;      % length of couplied region, S = regenerator_S  [nm]
-L_S2 = 306;      % length of coupled region, S = regenerator_S  [nm]
-L_C = 1506;      % length of coupled region, C = regenerator_C  [nm]
+L_S1 = 1163;      % length of couplied region, S = regenerator_S  [nm]
+L_S2 = 325;      % length of coupled region, S = regenerator_S  [nm]
+L_C = 1516;      % length of coupled region, C = regenerator_C  [nm]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%% DCs length %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,9 +47,9 @@ area_dup = L_dup/1000 * w_dup/1000;      % [um^2]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% Energy consumption %%%%%%%%%%%%%%%%%%%%%%%%%%%
-energy_amp_regS = 3*(9+2+6.5)/4;   % energy consumption of the amplifier of regS [aJ]
-energy_amp_regC = 3*4/4;% 3 aJ power of 4X amplifier
-energy_amp_dup = 3/4*2.3;  % energy consumption of the amplifier of duplicatore [aJ]
+energy_amp_regS = 3*(9+1.5+3.8)/4;   % energy consumption of the amplifier of regS [aJ]
+energy_amp_regC = 3*(2.3)/4;% 3 aJ power of 4X amplifier
+energy_amp_dup = 3*(2.3)/4;  % energy consumption of the amplifier of duplicatore [aJ]
 energy_sw = 12.3;     % energy consumption to excite a single input wave [aJ]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

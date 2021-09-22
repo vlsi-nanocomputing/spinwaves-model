@@ -14,7 +14,7 @@ for j=1:N
         case 1
             out_signal(j,1) = model_parameters.SW_amplitude;
         otherwise
-            display('Error: check your digital inputs')
+            disp('Error: check your digital inputs')
             out_signal(j,1) = inf;
     end
 end

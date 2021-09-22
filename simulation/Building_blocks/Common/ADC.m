@@ -14,7 +14,7 @@ for j=1:N
         out_value(j) = 1;
     else
         out_value(j) = 0.5;
-        display('ADC: forbidden state')
+        disp('ADC: forbidden state')
     end
 end
 

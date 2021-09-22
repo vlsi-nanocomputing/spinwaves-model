@@ -22,7 +22,7 @@ Within the _GUI_ folder, you can find the file `mainWindow.mlapp`. Run this scri
 
 The _simulation_ folder contains the core of the computational model for the two technology nodes. In addition, it is possible to find also the description of the supported circuits.
 
-The performance_analysis folder contains the script to extract the metrics (area, delay, energy).
+The _performance_analysis_ folder contains the script to extract the metrics (area, delay, energy).
 
 ## Contributing
 

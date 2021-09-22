@@ -11,10 +11,10 @@ function [out_signal] = regenerator_C(in_signal,model_parameters,plot_info,varar
 
 %SW_parameters % script
 %%%%%%%%%%%%%%%%%%%%%%%% parameters setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-gain_out = 1.7;             % output amplifier gain
+gain_out = 1.35;             % output amplifier gain
 h=10;                       % thinckness  [nm]
 w=30;                       % width  [nm]
-Lw=1450;                    % length of the DC coupled region
+Lw=1340;                    % length of the DC coupled region
 gap=10;                     % the gap of the DC [nm]
 B=0;                        % external field [mT]
 limitation=model_parameters.limitation2;     % for gap = 10nm

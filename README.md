@@ -17,12 +17,15 @@ The code is structured in different folders:
 - GUI
 - simulation
 - performance_analysis
+- other_scripts
 
 Within the _GUI_ folder, you can find the file `mainWindow.mlapp`. Run this script to launch the mainwindow of the tool, where you can select the outputs to be printed, select the circuit to study, set the input stimuly and choose between the YIG100 and YIG30 technology node.
 
 The _simulation_ folder contains the core of the computational model for the two technology nodes. In addition, it is possible to find also the description of the supported circuits.
 
-The performance_analysis folder contains the script to extract the metrics (area, delay, energy).
+The _performance_analysis_ folder contains the script to extract the metrics (area, delay, energy).
+
+The _other_scripts_ folder contains some scripts useful to design regenerators.
 
 ## Contributing
 

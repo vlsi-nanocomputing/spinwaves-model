@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/409162306.svg)](https://zenodo.org/badge/latestdoi/409162306)
+
 # Spinwave computational model for all-magnon circuits
 
 The Matlab software offers the possibility to study and design all-magnon circuits taking into account their physical behavior.

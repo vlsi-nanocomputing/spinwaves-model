@@ -35,6 +35,23 @@ Branch naming:
 
 When a new feature or fix is completed, please submit a pull request.
 
+### Reference
+
+Since this work is the result of an academic effort, we kindly ask that you acknowledge it by citing the following publication:
+```bibtex
+@ARTICLE{spinwaveModelGarlando,
+  author={Garlando, Umberto and Wang, Qi and Dobrovolskiy, Oleksandr V. and Chumak, Andrii V. and Riente, Fabrizio},
+  journal={IEEE Transactions on Emerging Topics in Computing}, 
+  title={Numerical Model for 32-Bit Magnonic Ripple Carry Adder}, 
+  year={2023},
+  volume={11},
+  number={3},
+  pages={679-688},
+  keywords={Magnonics;Adders;Integrated circuit modeling;Logic gates;Dispersion;Couplings;Directional couplers;Compact model;magnon;magnonic circuits;spintronics},
+  doi={10.1109/TETC.2023.3238581}
+  }
+```
+
 ## Versioning
 
 We use M.m.p as a versioning system. 
